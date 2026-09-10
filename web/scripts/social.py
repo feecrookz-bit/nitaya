@@ -87,6 +87,33 @@ def post(p):
     d.text((W - 60 - GEIST(22).getlength('£5 sample · nityastones.co.uk'), 78), '£5 sample · nityastones.co.uk', font=GEIST(22), fill=INK3)
     im.save(os.path.join(OUT, f"post-{p['id']}.png"))
 
+# ---------------- dark post (matches the black-and-gold the feed already uses) ----------------
+GOLD = (201, 165, 75); BLACK = (17, 17, 17)
+
+def post_dark(p, scene):
+    """The feed's existing black-and-gold identity, without the sale badges:
+    one garden photo, one line, the price, the mark."""
+    W = H = 1080
+    im = cover(asset(scene), W, H)
+    grad = Image.new('L', (1, H))
+    for y in range(H):
+        grad.putpixel((0, y), int(255 * min(1, max(0, (y - H * 0.35) / (H * 0.45)))))
+    im = Image.composite(Image.new('RGB', (W, H), BLACK), im, grad.resize((W, H)).point(lambda v: int(v * 0.92)))
+    d = ImageDraw.Draw(im)
+    wordmark(d, 70, 70, colour=GOLD, size=40, gold=GOLD)
+    render = cover(asset('p-' + p['slug']), 300, 225)
+    im.paste(render, (710, 620))
+    d.rounded_rectangle((710, 620, 1010, 845), 12, outline=GOLD, width=2)
+    spaced(d, (70, 640), p['fam'].upper(), GEIST_B(24), GOLD, 5)
+    y = 690
+    for line in wrap(d, p['name'], CINZEL(72), 600):
+        d.text((70, y), line, font=CINZEL(72), fill=WHITE); y += 84
+    d.text((70, y + 6), f"{p['size']} · {p['thick']}", font=GEIST(28), fill=(190, 186, 178))
+    pf = GEIST_B(44); d.text((70, y + 58), money(p['price']), font=pf, fill=GOLD)
+    d.text((70 + pf.getlength(money(p['price'])) + 14, y + 73), f"{p['unit']} + VAT", font=GEIST(24), fill=(190, 186, 178))
+    d.text((70, H - 90), '34 Mark Road, Hemel Hempstead · 0330 236 9227 · nityastones.co.uk', font=GEIST(24), fill=(160, 156, 148))
+    im.save(os.path.join(OUT, f"dark-{p['id']}.png"))
+
 # ---------------- story ----------------
 def story(scene, caption, sub, cta='Build your patio'):
     W, H = 1080, 1920
@@ -157,6 +184,7 @@ if __name__ == '__main__':
         P('calacatta-blanco', 'calacatta-blanco', 'Calacatta Blanco', 'indoor', 'Indoor porcelain', '600 × 1200 mm', '8 mm rectified', 22.8),
     ]
     for p in products: post(p)
+    post_dark(products[1], 'scene-bodo'); post_dark(products[0], 'scene-raj-wet')
     story('scene-bodo', 'Bodo White, laid.', 'A customer’s extension in Hemel Hempstead. 600×900 porcelain, half bond, straight out from the bifolds.')
     story('scene-autumn', 'Autumn Brown, wet.', 'Riven Indian sandstone photographed after rain — which is how it looks most of the year, and why people choose it.', 'Order a £5 sample')
     guide('sealing', 'sandstone', 'Sealing sandstone', 'Not straight after laying. Wait four to six weeks of dry weather.', 'Sealing damp stone traps moisture and the sealer fails. From our guide to sealing sandstone.')
