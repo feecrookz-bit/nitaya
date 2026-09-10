@@ -2,10 +2,10 @@ import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Float, OrbitControls, ContactShadows, useTexture } from '@react-three/drei'
 import * as THREE from 'three'
-import textureUrl from './assets/sandstone-buff.jpg'
+import textureUrl from './assets/slab-texture.jpg'
 
 /*
- * A single riven sandstone slab — 900 × 600 × 22 mm scaled to scene units —
+ * A single riven Raj Green slab (textured with the yard's own product photo) — 900 × 600 × 22 mm scaled to scene units —
  * floating under the hero copy. The top face is displaced with layered value
  * noise and flat-shaded, which is what hand-cleft stone actually looks like:
  * facets, not smooth bumps. Everything here is local (no HDRI fetch), so it
@@ -79,7 +79,7 @@ function Slab({ spin }) {
   return (
     <group ref={group} position={[0, 0.15, 0]} rotation={[0.08, 0.6, 0]}>
       <mesh geometry={geometry} castShadow receiveShadow>
-        <meshStandardMaterial map={map} roughness={0.96} metalness={0} flatShading color="#d7c6a5" />
+        <meshStandardMaterial map={map} roughness={0.96} metalness={0} flatShading color="#e6dcc8" />
       </mesh>
     </group>
   )

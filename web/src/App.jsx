@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import StoneScene from './StoneScene.jsx'
-import { IMG, CREDITS, RANGES, CAT_LABEL, TEXTURE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, money } from './data.js'
+import Logo from './Logo.jsx'
+import { IMG, RANGES, CAT_LABEL, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, money } from './data.js'
 
 const PHONE = '0330 236 9227'
 const PHONE_HREF = 'tel:03302369227'
@@ -8,17 +9,7 @@ const PHONE_HREF = 'tel:03302369227'
 /* ---------- small pieces ---------- */
 
 function Swatch({ range, className = '' }) {
-  const src = TEXTURE[range.texture]
-  if (!range.tint) {
-    return <div className={`swatch photo ${className}`}><img src={src} alt={`${range.name}, representative`} loading="lazy" /></div>
-  }
-  return (
-    <div className={`swatch ${className}`} style={{ '--tint': range.tint }}>
-      <img src={src} alt={`${range.name}, representative texture`} loading="lazy" />
-      <span className="tint" aria-hidden="true" />
-      <span className="lift" aria-hidden="true" />
-    </div>
-  )
+  return <div className={`swatch ${className}`}><img src={range.img} alt={range.name} loading="lazy" /></div>
 }
 
 function Price({ range }) {
@@ -27,7 +18,7 @@ function Price({ range }) {
     <div className="price">
       <b>{money(range.price)}</b>
       {range.was && <s>{money(range.was)}</s>}
-      <small>per m² + VAT</small>
+      <small>{range.unit || 'per m²'} + VAT</small>
     </div>
   )
 }
@@ -171,13 +162,13 @@ export default function App() {
   }
 
   const visible = RANGES.filter(r => filter === 'all' || r.cat === filter)
-  const sampleIds = ['raj-green', 'rippon-buff', 'black-limestone', 'fossil-mint', 'autumn-brown', 'kandla-grey']
+  const sampleIds = ['raj-green', 'rippon-buff', 'black-limestone', 'fossil-mint', 'autumn-brown', 'kandla-grey-22mm-sandstone-mixed']
 
   return (
     <>
       <header className={`masthead ${over ? 'over' : 'solid'}`}>
         <div className="wrap masthead-in">
-          <a className="brand" href="#top"><b>Nitya Stones</b><span className="mono">Est. 2016</span></a>
+          <a className="brand" href="#top" aria-label="Nitya Stones, home"><Logo compact /></a>
           <nav className="nav mono" aria-label="Primary">
             <a href="#ranges">Ranges</a>
             <a href="#scenes">Inspiration</a>
@@ -192,12 +183,12 @@ export default function App() {
 
       <main id="top">
         <section className="hero">
-          <img src={IMG.hero} alt="A garden terrace laid in pale stone with a dry-stone wall behind" fetchPriority="high" />
+          <img src={IMG.hero} alt="Drone view of a customer\u2019s detached house wrapped in Kandla Grey porcelain paving" fetchPriority="high" />
           <StoneScene />
           <div className="wrap hero-overlay"><div className="hero-in">
             <span className="mono eyebrow">Hemel Hempstead · Trade &amp; retail counter</span>
             <h1>Indian sandstone and 20&nbsp;mm porcelain, <em>off the pallet.</em></h1>
-            <p className="lede">Riven sandstone, limestone and vitrified porcelain from reputable quarries and kilns we've bought from for years, held at the Mark Road yard and on your site in three to four working days. Closer than that, come and collect — there's no minimum off the counter.</p>
+            <p className="lede">Wholesale and retail. Riven sandstone, limestone and vitrified porcelain held at the Mark Road yard and on your site in three to four working days. Closer than that, come and collect — there's no minimum off the counter.</p>
             <div className="cta-row">
               <a className="btn" href="#calculator">Price my patio</a>
               <a className="btn btn-ghost" href="#samples">Order samples — £5</a>
@@ -224,13 +215,13 @@ export default function App() {
             ))}
           </div>
           <div className="ranges">{visible.map(r => <RangeCard key={r.id} range={r} />)}</div>
-          <p className="note" style={{ marginTop: 16 }}>Prices are per m² excluding VAT, as listed on our shop at the time of writing. Swatches are representative textures tinted to the range colour — the real slab is in the £5 sample. Ring the yard for today's rate on anything marked <b>Ask the yard</b>.</p>
+          <p className="note" style={{ marginTop: 16 }}>Prices are per m² excluding VAT and match the shop. Pallet and pack coverages are nominal. Every photo is our own stock, shot at the yard or on a customer's job — and the £5 sample is still the only honest way to pick a colour.</p>
         </div></section>
 
         <section id="scenes" style={{ paddingTop: 0 }}><div className="wrap">
           <div className="sec-head">
             <div><span className="mono eyebrow">Where it ends up</span><h2>Laid, not stacked</h2></div>
-            <p>Four ways the stock leaves the yard and turns into somewhere you'd sit. Bring us a sketch and we'll tell you which pack gets you there.</p>
+            <p>Customers' gardens, laid with stock from Mark Road. Bring us a sketch and we'll tell you which pack gets you there.</p>
           </div>
           <div className="scenes">
             {SCENES.map(s => (
@@ -243,14 +234,17 @@ export default function App() {
         </div></section>
 
         <section className="prov"><div className="wrap prov-grid">
-          <img src={IMG.quarry} alt="Blocks being cut at a stone quarry" />
+          <div className="yard-pics">
+            <img src={IMG.yard} alt="The Nitya Stones showroom and yard on Mark Road" />
+            <img src={IMG.pallets} alt="Pallets of paving stacked in the Nitya Stones yard" />
+          </div>
           <div>
-            <span className="mono eyebrow">Quarry to Mark Road</span>
-            <h2>We source it, hold it, and stand behind it.</h2>
-            <p>Every pallet comes from quarries and manufacturers we've bought from since we opened in 2016 — sandstone quarried and hand-split in Rajasthan, porcelain pressed and fired at 1,200&nbsp;°C, limestone sawn and honed to a flat 20&nbsp;mm. It's checked in at the yard, and if it isn't right it doesn't go out.</p>
+            <span className="mono eyebrow">34 Mark Road, HP2 7BW</span>
+            <h2>Stock on the ground, not on a lead time.</h2>
+            <p>Wholesale and retail from the same yard since 2016. We buy from quarries and manufacturers we know, hold the pallets ourselves, and check them in before they go out. Walk in, see the slabs, take a sample home — or ring and we'll load a van for three-to-four days' time.</p>
             <div className="stats">
               <div className="stat"><b>2016</b><span>Trading from the same Hemel Hempstead yard</span></div>
-              <div className="stat"><b>40+</b><span>Ranges held in stock or on short call-off</span></div>
+              <div className="stat"><b>36</b><span>Ranges held in stock at the yard</span></div>
               <div className="stat"><b>3–4</b><span>Working days from payment to your drive</span></div>
             </div>
           </div>
@@ -394,10 +388,13 @@ export default function App() {
 
       <footer><div className="wrap foot">
         <div className="foot-row">
-          <span className="mono">Nitya Stones · 34 Mark Road, Hemel Hempstead HP2 7BW · Est. 2016</span>
+          <Logo tone="ink" />
           <span className="mono">Sandstone · Limestone · Porcelain · Cladding</span>
         </div>
-        <p className="credits">Photography is placeholder stock from Pexels, to be replaced with yard photography before launch — {CREDITS.map(([k, v]) => `${k}: ${v}`).join(' · ')}.</p>
+        <div className="foot-row">
+          <p className="credits">Photography © Nitya Stones — our own stock and customers' completed gardens.</p>
+          <img className="payments" src={IMG.payments} alt="Mastercard, Maestro, Visa, Visa Electron and Klarna accepted" width="300" height="50" loading="lazy" />
+        </div>
       </div></footer>
     </>
   )
