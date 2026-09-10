@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { Component, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Float, OrbitControls, ContactShadows, useTexture } from '@react-three/drei'
 import * as THREE from 'three'
@@ -125,10 +125,19 @@ function Scene({ reduced }) {
   )
 }
 
+/* If WebGL or the texture fails, mark the wrapper so CSS shows the still image. */
+class Boundary extends Component {
+  constructor(p) { super(p); this.state = { failed: false } }
+  static getDerivedStateFromError() { return { failed: true } }
+  componentDidCatch() { this.props.onFail?.() }
+  render() { return this.state.failed ? null : this.props.children }
+}
+
 export default function StoneScene() {
   const wrap = useRef()
   const [active, setActive] = useState(true)
   const [reduced, setReduced] = useState(false)
+  const [failed, setFailed] = useState(false)
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -147,9 +156,10 @@ export default function StoneScene() {
   }, [])
 
   return (
-    <div ref={wrap} className="hero-3d" aria-hidden="true">
-      <Canvas
-        dpr={[1, 1.75]}
+    <div ref={wrap} className={`hero-3d ${failed ? 'failed' : ''}`} aria-hidden="true">
+      {!failed && <Boundary onFail={() => setFailed(true)}><Canvas
+        dpr={[1, 2]}
+        onCreated={({ gl }) => { gl.domElement.addEventListener('webglcontextlost', () => setFailed(true)) }}
         shadows
         frameloop={active && !reduced ? 'always' : 'demand'}
         camera={{ position: [0, 1.7, 8.2], fov: 26, near: 0.1, far: 50 }}
@@ -157,7 +167,7 @@ export default function StoneScene() {
         style={{ position: 'absolute', inset: 0 }}
       >
         <Scene reduced={reduced} />
-      </Canvas>
+      </Canvas></Boundary>}
     </div>
   )
 }

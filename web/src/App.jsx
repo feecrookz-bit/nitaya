@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import StoneScene from './StoneScene.jsx'
 import Logo from './Logo.jsx'
-import { IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, money } from './data.js'
+import { IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, FAMILY_COLOUR, money } from './data.js'
+import { GUIDES, guideBySlug } from './guides.js'
 
 const PHONE = '0330 236 9227'
 const PHONE_HREF = 'tel:03302369227'
@@ -58,12 +59,13 @@ function Price({ p, big }) {
 }
 function ProductCard({ p }) {
   return (
-    <a className="product" href={href('product/' + p.id)}>
+    <a className="product" href={href('product/' + p.id)} style={{ '--fc': FAMILY_COLOUR[p.cat].c, '--tc': p.tag === 'Splits' ? 'var(--green)' : p.tag === 'Pallet deal' ? 'var(--rust)' : 'var(--gold-2)' }}>
       <img src={p.img} alt={p.name} loading="lazy" />
       <div className="product-body">
         {p.tag && <span className="tag">{p.tag}</span>}
+        <span className="fam">{CAT_LABEL[p.cat]}</span>
         <h3>{p.name}</h3>
-        <span className="spec">{p.size} · {p.thick} · {CAT_LABEL[p.cat]}</span>
+        <span className="spec">{p.size} · {p.thick}</span>
         <Price p={p} />
       </div>
     </a>
@@ -183,7 +185,7 @@ function Atlas() {
   return (
     <div className="atlas">
       {FAMILIES.map(f => (
-        <a key={f.key} className="family" href={href('shop?cat=' + f.cat)}>
+        <a key={f.key} className="family" href={href('shop?cat=' + f.cat)} style={{ '--fc': FAMILY_COLOUR[f.cat].c }}>
           <img src={pic[f.key]} alt="" loading="lazy" />
           <div><span className="lat">{f.lat}</span><h3>{f.name}</h3><p>{f.text}</p><small>{f.note}</small></div>
         </a>
@@ -205,7 +207,7 @@ function Home({ bag }) {
             <a className="pill ghost" href={href('build')}>Build your patio</a>
           </div>
         </div>
-        <div className="wrap"><StoneScene /></div>
+        <div className="wrap"><StoneScene /><div className="hero-static"><img src={byId('raj-green').img} alt="Raj Green riven sandstone slab" /></div></div>
         <div className="hero-strip">
           <div><b>2016</b>Trading from the same Hemel Hempstead yard.</div>
           <div><b>36</b>Ranges in stock — sandstone, limestone, porcelain, cladding.</div>
@@ -219,7 +221,7 @@ function Home({ bag }) {
         <div className="media"><Editions /></div>
       </div></section>
 
-      <section className="chapter grey"><div className="wrap">
+      <section className="chapter sand"><div className="wrap">
         <div className="head-row"><div><p className="kicker">This season</p><h2>{SEASON.title}.</h2><p className="intro">Four stones that suit the light this time of year: the warm sandstones that come up richer wet, and the dark ones that hide leaf litter.</p></div><a className="more" href={href('shop')}>All 36 stones</a></div>
         <div className="grid">{season.map(p => <ProductCard key={p.id} p={p} />)}</div>
       </div></section>
@@ -229,7 +231,7 @@ function Home({ bag }) {
           <div className="actions"><a className="pill accent" href={href('build')}>Start building</a><a className="more" href={href('samples')}>Or order £5 samples first</a></div></div>
       </div></section>
 
-      <section className="chapter grey"><div className="wrap">
+      <section className="chapter sage"><div className="wrap">
         <div className="narrow"><p className="kicker">Stone families</p><h2>Know what you're laying.</h2><p className="intro">Four materials, four geologies, four ways of behaving in a Hertfordshire winter.</p></div>
         <div className="media"><Atlas /></div>
       </div></section>
@@ -265,8 +267,58 @@ function Home({ bag }) {
         </div>
       </div></section>
 
+      <section className="chapter slate"><div className="wrap">
+        <div className="head-row"><div><p className="kicker">Guides</p><h2>Know before you lay.</h2><p className="intro">Laying, choosing, sealing, cleaning — written by the yard, not a content agency.</p></div><a className="more" href={href('guides')}>All guides</a></div>
+        <div className="guides">{GUIDES.slice(0, 3).map(g => <GuideCard key={g.slug} g={g} />)}</div>
+      </div></section>
+
       <section className="chapter"><div className="wrap"><Newsletter /></div></section>
     </>
+  )
+}
+
+function GuideCard({ g }) {
+  return (
+    <a className="guide" href={href('guide/' + g.slug)} style={{ '--fc': FAMILY_COLOUR[g.family].c }}>
+      <span className="meta">{CAT_LABEL[g.family]}</span>
+      <h3>{g.title}</h3>
+      <p>{g.standfirst}</p>
+      <span className="read">{g.minutes} min read</span>
+    </a>
+  )
+}
+
+function Guides() {
+  return (
+    <section className="chapter" style={{ paddingTop: 'clamp(36px,5vw,64px)' }}><div className="wrap">
+      <div className="narrow"><p className="kicker">Guides</p><h2>Know before you lay.</h2><p className="intro">What we tell customers across the counter, written down. Choosing, laying, sealing, cleaning and what happens on delivery day.</p></div>
+      <div className="media guides">{GUIDES.map(g => <GuideCard key={g.slug} g={g} />)}</div>
+    </div></section>
+  )
+}
+
+function Guide({ route }) {
+  const g = guideBySlug(route.id)
+  if (!g) return <div className="wrap empty"><h2>Not found</h2><p style={{ marginTop: 12 }}><a className="more" href={href('guides')}>All guides</a></p></div>
+  const others = GUIDES.filter(x => x.slug !== g.slug).slice(0, 3)
+  return (
+    <div className="wrap">
+      <article className="article" style={{ '--fc': FAMILY_COLOUR[g.family].c }}>
+        <nav className="crumbs" aria-label="Breadcrumb"><a href={href('guides')}>Guides</a><span>/</span><span>{CAT_LABEL[g.family]}</span></nav>
+        <span className="meta">{CAT_LABEL[g.family]} · {g.minutes} min read</span>
+        <h1>{g.title}</h1>
+        <p className="stand">{g.standfirst}</p>
+        {g.sections.map(sec => <section key={sec.h}><h2>{sec.h}</h2>{sec.p.map((t, i) => <p key={i}>{t}</p>)}</section>)}
+        <div className="related">
+          <p className="kicker">Shop the stone</p>
+          <div className="grid">{g.related.map(byId).filter(Boolean).map(p => <ProductCard key={p.id} p={p} />)}</div>
+        </div>
+        <div className="related">
+          <p className="kicker">More guides</p>
+          <div className="guides">{others.map(x => <GuideCard key={x.slug} g={x} />)}</div>
+        </div>
+      </article>
+    </div>
   )
 }
 
@@ -611,10 +663,10 @@ export default function App() {
   const route = useRoute()
   const bag = useBag()
   const [menu, setMenu] = useState(false)
-  const NAV = [['shop', 'Shop'], ['collections', 'Collections'], ['build', 'Build your patio'], ['about', 'About'], ['contact', 'Contact']]
+  const NAV = [['shop', 'Shop'], ['collections', 'Collections'], ['build', 'Build your patio'], ['guides', 'Guides'], ['about', 'About'], ['contact', 'Contact']]
   const page = {
     home: <Home bag={bag} />, shop: <Shop key={route.q.toString()} route={route} />, product: <Product key={route.id} route={route} bag={bag} />, samples: <Samples bag={bag} />,
-    cart: <Bag bag={bag} />, checkout: <Checkout bag={bag} />, about: <About />, faq: <Faq />, contact: <Contact />, collections: <Collections />, build: <Build bag={bag} />,
+    cart: <Bag bag={bag} />, checkout: <Checkout bag={bag} />, about: <About />, faq: <Faq />, contact: <Contact />, collections: <Collections />, build: <Build bag={bag} />, guides: <Guides />, guide: <Guide key={route.id} route={route} />,
   }[route.page] || <Home bag={bag} />
   return (
     <>
@@ -632,7 +684,7 @@ export default function App() {
         <div className="foot">
           <div><Logo /><p style={{ marginTop: 14, maxWidth: '32ch' }}>Wholesale and retail suppliers of outdoor and indoor porcelain, sandstone, limestone and cladding. 34 Mark Road, Hemel Hempstead HP2 7BW.</p></div>
           <div><h4>Shop</h4>{CATS.map(([k, l]) => <a key={k} href={href('shop?cat=' + k)}>{l}</a>)}<a href={href('samples')}>Samples</a></div>
-          <div><h4>Help</h4><a href={href('build')}>Build your patio</a><a href={href('collections')}>Collections</a><a href={href('faq')}>FAQ</a><a href={href('about')}>Ordering &amp; delivery</a><a href={href('about')}>Laying patterns</a><a href={href('contact')}>Trade accounts</a></div>
+          <div><h4>Help</h4><a href={href('guides')}>Guides</a><a href={href('build')}>Build your patio</a><a href={href('collections')}>Collections</a><a href={href('faq')}>FAQ</a><a href={href('about')}>Ordering &amp; delivery</a><a href={href('about')}>Laying patterns</a><a href={href('contact')}>Trade accounts</a></div>
           <div><h4>The yard</h4><a href={PHONE_HREF}>{PHONE}</a><a href="mailto:info@nityastones.co.uk">info@nityastones.co.uk</a><span style={{ display: 'block', paddingTop: 3 }}>Mon–Fri 8–6 · Sat 8–1</span></div>
         </div>
         <div className="foot-bottom"><span>© Nitya Stones · Photography © Nitya Stones</span><img className="payments" src={IMG.payments} alt="Cards and Klarna accepted" /></div>

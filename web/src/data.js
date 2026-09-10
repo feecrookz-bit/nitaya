@@ -184,3 +184,13 @@ export const FAMILIES = [
     text: 'Strips cleft from sandstone and quartzite blocks so each face breaks differently. Laid in a running bond it reads as a dry-stone wall.',
     note: '600 × 150 mm · 22 mm · walls only' },
 ]
+
+// Colour drawn from the stones: one hue per family, used for tags, kickers,
+// tints and the guides. Sand is the existing accent.
+export const FAMILY_COLOUR = {
+  sandstone: { c: '#3F6B4F', tint: '#EAF0EB', name: 'Raj green' },
+  limestone: { c: '#4E6172', tint: '#E9EDF1', name: 'Kandla slate' },
+  outdoor: { c: '#B5552E', tint: '#F6EAE2', name: 'Autumn rust' },
+  indoor: { c: '#8A6D3B', tint: '#F3EDE1', name: 'Rippon buff' },
+  cladding: { c: '#6B5E52', tint: '#EFEAE4', name: 'Cleft stone' },
+}
