@@ -8,6 +8,8 @@ import { viteSingleFile } from 'vite-plugin-singlefile'
 const single = process.env.SINGLE === '1'
 
 export default defineConfig({
+  // BASE_PATH=/nitaya/ for GitHub Pages; default '/' for the single file and root hosting
+  base: single ? './' : (process.env.BASE_PATH || '/'),
   plugins: [react(), ...(single ? [viteSingleFile()] : [])],
   build: {
     outDir: single ? 'dist-single' : 'dist',
