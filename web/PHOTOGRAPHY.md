@@ -87,3 +87,14 @@ python3 scripts/photos.py sheet   # before/after contact sheet
 To swap in a better image for a range, change its `src` in
 `scripts/photos.json` and re-run `grade`. Per-image overrides: `trim_bottom`
 (remove a baked-in caption), `grade: false` (texture maps).
+
+## Social templates
+
+`python3 scripts/social.py` writes on-brand Instagram assets to `social/`
+(gitignored) from the same renders and graded photos the store uses:
+1080×1080 product posts with the family colour, 1080×1920 stories from the
+customer-garden photos, 1080×1350 guide-tip cards on deep green, and a
+this-season four-up. Fonts and colours mirror the site, so a post and the
+product page it links to look like the same brand. Their live Instagram,
+Facebook and X pages are behind login walls and could not be read from this
+environment — align these with screenshots or exports of the real feed.
