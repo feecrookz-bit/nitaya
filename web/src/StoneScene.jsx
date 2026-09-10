@@ -79,7 +79,7 @@ function Slab({ spin }) {
   return (
     <group ref={group} position={[0, 0.15, 0]} rotation={[0.08, 0.6, 0]}>
       <mesh geometry={geometry} castShadow receiveShadow>
-        <meshStandardMaterial map={map} roughness={0.96} metalness={0} flatShading color="#e6dcc8" />
+        <meshStandardMaterial map={map} roughness={0.96} metalness={0} flatShading color="#efe7d6" />
       </mesh>
     </group>
   )
@@ -89,17 +89,17 @@ function Scene({ reduced }) {
   return (
     <>
       {/* fill */}
-      <ambientLight intensity={0.55} color="#e9eef2" />
+      <ambientLight intensity={0.9} color="#f2eee6" />
       {/* key: soft, high, front-left, casting */}
       <directionalLight
-        position={[-4, 6, 4]} intensity={2.4} color="#fff3dc" castShadow
+        position={[-4, 6, 4]} intensity={3.4} color="#fff3dc" castShadow
         shadow-mapSize-width={1024} shadow-mapSize-height={1024}
         shadow-camera-near={1} shadow-camera-far={20}
         shadow-camera-left={-4} shadow-camera-right={4} shadow-camera-top={4} shadow-camera-bottom={-4}
         shadow-bias={-0.0004}
       />
       {/* rim: behind and to the right, lifts the far edge off the photo */}
-      <spotLight position={[5, 3, -5]} angle={0.5} penumbra={0.9} intensity={18} color="#cfe3ff" />
+      <spotLight position={[5, 3, -5]} angle={0.5} penumbra={0.9} intensity={30} color="#e8d9b0" />
       {/* low bounce, as if off the ground */}
       <pointLight position={[0, -2.5, 2]} intensity={2} color="#b79a6a" />
 
@@ -109,7 +109,7 @@ function Scene({ reduced }) {
         </Float>
       </Suspense>
 
-      <ContactShadows position={[0, -0.75, 0]} opacity={0.55} scale={7} blur={2.4} far={2.2} color="#0a0c0a" frames={reduced ? 1 : Infinity} />
+      <ContactShadows position={[0, -0.75, 0]} opacity={0.7} scale={7} blur={2.4} far={2.2} color="#0a0c0a" frames={reduced ? 1 : Infinity} />
 
       <OrbitControls
         enableZoom={false}

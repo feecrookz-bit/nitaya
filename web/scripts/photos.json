@@ -17,38 +17,38 @@
  "scene-autumn": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2025/01/WhatsApp-Image-2025-07-24-at-20.28.47.jpeg",
   "aspect": "4:3",
-  "width": 1200
+  "width": 1100
  },
  "scene-bodo": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-17.37.29.jpeg",
   "aspect": "4:3",
-  "width": 1200,
+  "width": 1100,
   "trim_bottom": 0.17
  },
  "scene-circle": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-17.41.48.jpeg",
   "aspect": "4:3",
-  "width": 1200
+  "width": 1100
  },
  "scene-raj-wet": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2023/07/WhatsApp-Image-2025-07-24-at-21.47.52.jpeg",
   "aspect": "4:3",
-  "width": 1200
+  "width": 1100
  },
  "scene-himalayan": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2025/03/WhatsApp-Image-2025-12-05-at-16.49.14.jpeg",
   "aspect": "4:3",
-  "width": 1200
+  "width": 1100
  },
  "scene-pool": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2025/07/WhatsApp-Image-2025-07-02-at-20.58.30.jpeg",
   "aspect": "4:3",
-  "width": 1200
+  "width": 1100
  },
  "scene-copper": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2023/07/WhatsApp-Image-2026-08-15-at-15.45.50-1.jpeg",
   "aspect": "4:3",
-  "width": 1200
+  "width": 1100
  },
  "slab-texture": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2024/04/Untitled-design-6.png",
@@ -57,220 +57,634 @@
   "grade": false
  },
  "p-aspire-grey-porcelain-tiles-30x60-8mm": {
-  "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/Untitled-design-58.png",
+  "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/Untitled-design-18.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Aspire Grey Porcelain Tiles 30X60 | 8MM"
+  "width": 800,
+  "name": "Aspire Grey Porcelain Tiles 30X60 | 8MM",
+  "mode": "studio",
+  "slab": [
+   600,
+   300
+  ],
+  "thick": 8,
+  "face": "full"
  },
  "p-autumn-brown-22mm-mixed-patio-pack-18-19": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2025/01/WhatsApp-Image-2025-07-25-at-16.08.00.jpeg",
   "aspect": "4:3",
-  "width": 900,
+  "width": 800,
   "name": "Autumn Brown (22mm) Mixed Patio Pack 18.19 Sq.m.",
-  "trim_bottom": 0.1
+  "trim_bottom": 0,
+  "mode": "studio",
+  "slab": [
+   900,
+   600
+  ],
+  "thick": 22,
+  "face": "box",
+  "face_box": [
+   0.32,
+   0.32,
+   0.72,
+   0.6
+  ]
  },
  "p-beige-porcelain-600-600-16mm-28-08-sq-m-": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-17.40.38.jpeg",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Beige Porcelain 600*600*16mm \u2013 28.08 Sq.m/ Per Pallet"
+  "width": 800,
+  "name": "Beige Porcelain 600*600*16mm \u2013 28.08 Sq.m/ Per Pallet",
+  "mode": "studio",
+  "slab": [
+   600,
+   600
+  ],
+  "thick": 16,
+  "face": "auto"
  },
  "p-black-limestone-600-600-20mm-18-sq-mt": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-18.29.34.jpeg",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Black Limestone 600*600*20MM \u2013 18 Sq.mt."
+  "width": 800,
+  "name": "Black Limestone 600*600*20MM \u2013 18 Sq.mt.",
+  "mode": "studio",
+  "slab": [
+   600,
+   600
+  ],
+  "thick": 20,
+  "face": "auto"
  },
  "p-black-porcelain-600-600-16mm-28-08-sq-m-": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-17.16.42.jpeg",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Black Porcelain 600*600*16mm \u2013 28.08 Sq.m/ Per Pallet"
+  "width": 800,
+  "name": "Black Porcelain 600*600*16mm \u2013 28.08 Sq.m/ Per Pallet",
+  "mode": "studio",
+  "slab": [
+   600,
+   600
+  ],
+  "thick": 16,
+  "face": "auto"
  },
  "p-bodo-white-porcelain-600x900x20mm-28-08-": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-17.37.29.jpeg",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Bodo White Porcelain 600x900X20MM \u2013 28.08 Sq.m."
+  "width": 800,
+  "name": "Bodo White Porcelain 600x900X20MM \u2013 28.08 Sq.m.",
+  "mode": "studio",
+  "slab": [
+   900,
+   600
+  ],
+  "thick": 20,
+  "face": "box",
+  "face_box": [
+   0.18,
+   0.66,
+   0.5,
+   0.86
+  ],
+  "trim_bottom": 0
  },
  "p-brit-raven-porcelain-tiles-600-600-8-mm": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/Untitled-design-23-1.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Brit Raven Porcelain Tiles 600\u00d7600 | 8 MM"
+  "width": 800,
+  "name": "Brit Raven Porcelain Tiles 600\u00d7600 | 8 MM",
+  "mode": "studio",
+  "slab": [
+   600,
+   600
+  ],
+  "thick": 8,
+  "face": "full"
  },
  "p-calacatta-blanco-porcelain-tiles-600-120": {
-  "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/Untitled-design-33.png",
+  "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/Untitled-design-32.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Calacatta Blanco Porcelain Tiles 600\u00d71200 | 8 MM"
+  "width": 800,
+  "name": "Calacatta Blanco Porcelain Tiles 600\u00d71200 | 8 MM",
+  "mode": "studio",
+  "slab": [
+   1200,
+   600
+  ],
+  "thick": 8,
+  "face": "full"
  },
  "p-copper-slate-porcelain-600x900x20mm-21-6": {
-  "src": "https://nityastones.co.uk/wp-content/uploads/2023/07/WhatsApp-Image-2026-08-15-at-15.45.50-1.jpeg",
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/07/Untitled-design-43.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Copper Slate Porcelain 600x900X20MM \u2013 21.60 Sq.mt."
+  "width": 800,
+  "name": "Copper Slate Porcelain 600x900X20MM \u2013 21.60 Sq.mt.",
+  "mode": "studio",
+  "slab": [
+   900,
+   600
+  ],
+  "thick": 20,
+  "face": "full"
  },
  "p-crystal-gris-porcelain-600-900-20mm-21-6": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2025/03/WhatsApp-Image-2025-12-08-at-21.53.57.jpeg",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Crystal Gris Porcelain 600\u00d7900 (20mm) 21.60 sq.mt."
+  "width": 800,
+  "name": "Crystal Gris Porcelain 600\u00d7900 (20mm) 21.60 sq.mt.",
+  "mode": "studio",
+  "slab": [
+   900,
+   600
+  ],
+  "thick": 20,
+  "face": "box",
+  "face_box": [
+   0.3,
+   0.78,
+   0.7,
+   0.95
+  ]
  },
  "p-dark-stonella-porcelain-tiles-30-60-8-mm": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/Untitled-design-22-1.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Dark Stonella Porcelain Tiles 30\u00d760 | 8 MM"
+  "width": 800,
+  "name": "Dark Stonella Porcelain Tiles 30\u00d760 | 8 MM",
+  "mode": "studio",
+  "slab": [
+   600,
+   300
+  ],
+  "thick": 8,
+  "face": "full"
  },
  "p-earthstone-grey-porcelain-600-900-20mm-2": {
-  "src": "https://nityastones.co.uk/wp-content/uploads/2023/07/WhatsApp-Image-2024-07-20-at-00.24.25.jpeg",
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/07/Untitled-design-39.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Earthstone Grey Porcelain 600\u00d7900 (20mm) 21.60 Sq.m."
+  "width": 800,
+  "name": "Earthstone Grey Porcelain 600\u00d7900 (20mm) 21.60 Sq.m.",
+  "mode": "studio",
+  "slab": [
+   900,
+   600
+  ],
+  "thick": 20,
+  "face": "full"
  },
  "p-eden-ash-porcelain-tile-30x60-8mm": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/Untitled-design-16.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Eden Ash Porcelain Tile 30X60 | 8MM"
+  "width": 800,
+  "name": "Eden Ash Porcelain Tile 30X60 | 8MM",
+  "mode": "studio",
+  "slab": [
+   600,
+   300
+  ],
+  "thick": 8,
+  "face": "full"
  },
  "p-egyptian-limestone-sinai-pearl-mixed-pat": {
-  "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-18.26.16.jpeg",
+  "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-18.28.26.jpeg",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Egyptian Limestone Sinai Pearl Mixed Patios Pack"
+  "width": 800,
+  "name": "Egyptian Limestone Sinai Pearl Mixed Patios Pack",
+  "mode": "studio",
+  "slab": [
+   900,
+   600
+  ],
+  "thick": 20,
+  "face": "auto"
  },
  "p-egyptian-sinai-pearl-600-600-20mm-18-sq-": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-18.28.26.jpeg",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Egyptian Sinai Pearl 600*600*20MM \u2013 18 Sq.mt."
+  "width": 800,
+  "name": "Egyptian Sinai Pearl 600*600*20MM \u2013 18 Sq.mt.",
+  "mode": "studio",
+  "slab": [
+   600,
+   600
+  ],
+  "thick": 20,
+  "face": "auto"
  },
  "p-fossil-mint-22mm-mixed-patio-pack-size-1": {
-  "src": "https://nityastones.co.uk/wp-content/uploads/2023/04/WhatsApp-Image-2025-07-24-at-20.34.13.jpeg",
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/04/WhatsApp-Image-2025-07-24-at-20.34.13-1.jpeg",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Fossil Mint  (22mm) Mixed Patio Pack Size 18.19 sq.m."
+  "width": 800,
+  "name": "Fossil Mint  (22mm) Mixed Patio Pack Size 18.19 sq.m.",
+  "mode": "studio",
+  "slab": [
+   900,
+   600
+  ],
+  "thick": 22,
+  "face": "box",
+  "face_box": [
+   0.36,
+   0.52,
+   0.74,
+   0.72
+  ]
  },
  "p-himalayan-white-porcelain-600-900x20mm-2": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2025/03/WhatsApp-Image-2026-08-15-at-15.39.46-2.jpeg",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Himalayan White Porcelain 600\u00d7900X20mm \u2013 21.60 Sq.mt."
+  "width": 800,
+  "name": "Himalayan White Porcelain 600\u00d7900X20mm \u2013 21.60 Sq.mt.",
+  "mode": "studio",
+  "slab": [
+   900,
+   600
+  ],
+  "thick": 20,
+  "face": "box",
+  "face_box": [
+   0.06,
+   0.7,
+   0.36,
+   0.9
+  ]
  },
  "p-hs-beige-porcelain-600x900x20mm-28-08-sq": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-17.28.30.jpeg",
   "aspect": "4:3",
-  "width": 900,
-  "name": "HS Beige Porcelain 600x900X20MM \u2013 28.08 Sq.m."
+  "width": 800,
+  "name": "HS Beige Porcelain 600x900X20MM \u2013 28.08 Sq.m.",
+  "mode": "studio",
+  "slab": [
+   900,
+   600
+  ],
+  "thick": 20,
+  "face": "box",
+  "face_box": [
+   0.42,
+   0.22,
+   0.6,
+   0.4
+  ]
  },
  "p-jiniva-natural-porcelain-indoor-tiles-60": {
-  "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/Untitled-design-38.png",
+  "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/Untitled-design-37.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Jiniva Natural Porcelain Indoor Tiles 600\u00d71200 | 8 MM"
+  "width": 800,
+  "name": "Jiniva Natural Porcelain Indoor Tiles 600\u00d71200 | 8 MM",
+  "mode": "studio",
+  "slab": [
+   1200,
+   600
+  ],
+  "thick": 8,
+  "face": "full"
  },
  "p-kandla-grey-20mm-porcelain-600x900x20mm-": {
-  "src": "https://nityastones.co.uk/wp-content/uploads/2023/04/WhatsApp-Image-2025-07-24-at-21.09.01-2.jpeg",
+  "src": "https://nityastones.co.uk/wp-content/uploads/2024/04/kandla-grey-porcelain-600x900-1.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Kandla Grey (20mm) Porcelain 600x900X20MM \u2013 21.60 Sq.m."
+  "width": 800,
+  "name": "Kandla Grey (20mm) Porcelain 600x900X20MM \u2013 21.60 Sq.m.",
+  "mode": "studio",
+  "slab": [
+   900,
+   600
+  ],
+  "thick": 20,
+  "face": "full"
  },
  "p-kandla-grey-22mm-sandstone-900-600-slabs": {
-  "src": "https://nityastones.co.uk/wp-content/uploads/2023/04/WhatsApp-Image-2025-07-24-at-20.40.42.jpeg",
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/04/Untitled-design-57.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Kandla Grey (22mm) Sandstone 900\u00d7600 Slabs Size 18.9 sq. mt."
+  "width": 800,
+  "name": "Kandla Grey (22mm) Sandstone 900\u00d7600 Slabs Size 18.9 sq. mt.",
+  "mode": "studio",
+  "slab": [
+   900,
+   600
+  ],
+  "thick": 22,
+  "face": "full"
  },
  "p-kandla-grey-22mm-sandstone-mixed-patio-s": {
-  "src": "https://nityastones.co.uk/wp-content/uploads/2023/04/WhatsApp-Image-2025-07-24-at-20.47.36-1.jpeg",
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/04/Untitled-design-57.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Kandla Grey (22mm) Sandstone Mixed Patio Size 18.19 sq. mt."
+  "width": 800,
+  "name": "Kandla Grey (22mm) Sandstone Mixed Patio Size 18.19 sq. mt.",
+  "mode": "studio",
+  "slab": [
+   900,
+   600
+  ],
+  "thick": 22,
+  "face": "full"
  },
  "p-kandla-grey-circle-kit-2-85-mt": {
-  "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-17.41.48.jpeg",
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/04/Untitled-design-57.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Kandla Grey Circle Kit \u2013 2.85 Mt."
+  "width": 800,
+  "name": "Kandla Grey Circle Kit \u2013 2.85 Mt.",
+  "mode": "studio",
+  "slab": [
+   900,
+   600
+  ],
+  "thick": 20,
+  "face": "full"
  },
  "p-light-grey-porcelain-600-600-16mm-28-08-": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-17.17.47.jpeg",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Light Grey Porcelain 600*600*16mm \u2013 28.08 Sq.m/per pallet"
+  "width": 800,
+  "name": "Light Grey Porcelain 600*600*16mm \u2013 28.08 Sq.m/per pallet",
+  "mode": "studio",
+  "slab": [
+   600,
+   600
+  ],
+  "thick": 16,
+  "face": "auto"
  },
  "p-lobbies-silver-porcelain-tiles-600-1200-": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/Untitled-design-30.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Lobbies Silver Porcelain Tiles 600\u00d71200 | 8 MM"
+  "width": 800,
+  "name": "Lobbies Silver Porcelain Tiles 600\u00d71200 | 8 MM",
+  "mode": "studio",
+  "slab": [
+   1200,
+   600
+  ],
+  "thick": 8,
+  "face": "full"
  },
  "p-miracle-statuario-porcelain-tiles-600-12": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/Untitled-design-26-1.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Miracle Statuario Porcelain Tiles 600\u00d71200 | 8 MM"
+  "width": 800,
+  "name": "Miracle Statuario Porcelain Tiles 600\u00d71200 | 8 MM",
+  "mode": "studio",
+  "slab": [
+   1200,
+   600
+  ],
+  "thick": 8,
+  "face": "full"
  },
  "p-modern-statuario-porcelain-tiles-600-120": {
-  "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/Untitled-design-36.png",
+  "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/Untitled-design-35.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Modern Statuario Porcelain Tiles 600\u00d71200 | 8 MM"
+  "width": 800,
+  "name": "Modern Statuario Porcelain Tiles 600\u00d71200 | 8 MM",
+  "mode": "studio",
+  "slab": [
+   1200,
+   600
+  ],
+  "thick": 8,
+  "face": "full"
  },
  "p-noor-grigio-porcelain-600x900x20mm-28-08": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-18.09.47.jpeg",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Noor Grigio Porcelain 600x900X20MM \u2013 28.08 Sq.m."
+  "width": 800,
+  "name": "Noor Grigio Porcelain 600x900X20MM \u2013 28.08 Sq.m.",
+  "mode": "studio",
+  "slab": [
+   900,
+   600
+  ],
+  "thick": 20,
+  "face": "box",
+  "face_box": [
+   0.26,
+   0.35,
+   0.74,
+   0.66
+  ]
  },
  "p-quartz-white-porcelain-600-900x20mm-21-6": {
-  "src": "https://nityastones.co.uk/wp-content/uploads/2025/07/WhatsApp-Image-2025-07-02-at-20.58.30.jpeg",
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/07/Untitled-design-41.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Quartz White Porcelain 600\u00d7900X20MM \u2013 21.60 Sq.mt."
+  "width": 800,
+  "name": "Quartz White Porcelain 600\u00d7900X20MM \u2013 21.60 Sq.mt.",
+  "mode": "studio",
+  "slab": [
+   900,
+   600
+  ],
+  "thick": 20,
+  "face": "full"
  },
  "p-raj-green-22mm-mixed-patio-pack-size-18-": {
-  "src": "https://nityastones.co.uk/wp-content/uploads/2023/07/WhatsApp-Image-2025-07-24-at-21.47.52.jpeg",
+  "src": "https://nityastones.co.uk/wp-content/uploads/2024/04/Untitled-design-6.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Raj Green (22mm) Mixed Patio Pack Size 18.19 Sq.mt."
+  "width": 800,
+  "name": "Raj Green (22mm) Mixed Patio Pack Size 18.19 Sq.mt.",
+  "mode": "studio",
+  "slab": [
+   900,
+   600
+  ],
+  "thick": 22,
+  "face": "full"
  },
  "p-rippon-buff-22mm-mixed-patio-pack-size-1": {
-  "src": "https://nityastones.co.uk/wp-content/uploads/2023/04/WhatsApp-Image-2025-07-24-at-21.00.40.jpeg",
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/04/Untitled-design-51.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Rippon Buff. (22mm) Mixed Patio Pack Size 18.19 sq.m."
+  "width": 800,
+  "name": "Rippon Buff. (22mm) Mixed Patio Pack Size 18.19 sq.m.",
+  "mode": "studio",
+  "slab": [
+   900,
+   600
+  ],
+  "thick": 22,
+  "face": "full"
  },
  "p-rovero-dark-grey-30-60-8-mm": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/Untitled-design-21-2.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Rovero Dark Grey 30\u00d760 | 8 MM"
+  "width": 800,
+  "name": "Rovero Dark Grey 30\u00d760 | 8 MM",
+  "mode": "studio",
+  "slab": [
+   600,
+   300
+  ],
+  "thick": 8,
+  "face": "full"
  },
  "p-saint-lawrence-black-diamond-porcelain-t": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/Untitled-design-28-1.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Saint Lawrence Black Diamond Porcelain Tiles 600\u00d71200 | 8 MM"
+  "width": 800,
+  "name": "Saint Lawrence Black Diamond Porcelain Tiles 600\u00d71200 | 8 MM",
+  "mode": "studio",
+  "slab": [
+   1200,
+   600
+  ],
+  "thick": 8,
+  "face": "full"
  },
  "p-sand-grigio-tiles-30-60-8-mm": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/Untitled-design-19.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Sand Grigio Tiles 30\u00d760 | 8 MM"
+  "width": 800,
+  "name": "Sand Grigio Tiles 30\u00d760 | 8 MM",
+  "mode": "studio",
+  "slab": [
+   600,
+   300
+  ],
+  "thick": 8,
+  "face": "full"
  },
  "p-stone-cladding-600-150-22mm": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/Untitled-design-12.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Stone Cladding 600\u00d7150 | 22MM"
+  "width": 800,
+  "name": "Stone Cladding 600\u00d7150 | 22MM",
+  "mode": "studio",
+  "slab": [
+   600,
+   150
+  ],
+  "thick": 22,
+  "face": "full"
  },
  "p-unika-gris-tiles-30-60-8-mm": {
   "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/Untitled-design-20.png",
   "aspect": "4:3",
-  "width": 900,
-  "name": "Unika Gris Tiles 30\u00d760 | 8 MM"
+  "width": 800,
+  "name": "Unika Gris Tiles 30\u00d760 | 8 MM",
+  "mode": "studio",
+  "slab": [
+   600,
+   300
+  ],
+  "thick": 8,
+  "face": "full"
+ },
+ "g-autumn-brown-22mm-mixed-patio-pack-18-19": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2025/01/WhatsApp-Image-2025-07-24-at-20.28.47.jpeg",
+  "aspect": "4:3",
+  "width": 1000,
+  "name": "Autumn Brown (22mm) Mixed Patio Pack 18.19 Sq.m.",
+  "watermark": true
+ },
+ "g-beige-porcelain-600-600-16mm-28-08-sq-m-": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-17.07.21.jpeg",
+  "aspect": "4:3",
+  "width": 1000,
+  "name": "Beige Porcelain 600*600*16mm \u2013 28.08 Sq.m/ Per Pallet",
+  "watermark": true
+ },
+ "g-copper-slate-porcelain-600x900x20mm-21-6": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/07/WhatsApp-Image-2026-08-15-at-15.45.50-1.jpeg",
+  "aspect": "4:3",
+  "width": 1000,
+  "name": "Copper Slate Porcelain 600x900X20MM \u2013 21.60 Sq.mt.",
+  "watermark": true
+ },
+ "g-earthstone-grey-porcelain-600-900-20mm-2": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/07/WhatsApp-Image-2024-07-20-at-00.24.25.jpeg",
+  "aspect": "4:3",
+  "width": 1000,
+  "name": "Earthstone Grey Porcelain 600\u00d7900 (20mm) 21.60 Sq.m.",
+  "watermark": true
+ },
+ "g-egyptian-limestone-sinai-pearl-mixed-pat": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-18.26.16.jpeg",
+  "aspect": "4:3",
+  "width": 1000,
+  "name": "Egyptian Limestone Sinai Pearl Mixed Patios Pack",
+  "watermark": true
+ },
+ "g-fossil-mint-22mm-mixed-patio-pack-size-1": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/04/WhatsApp-Image-2025-07-24-at-20.34.13.jpeg",
+  "aspect": "4:3",
+  "width": 1000,
+  "name": "Fossil Mint  (22mm) Mixed Patio Pack Size 18.19 sq.m.",
+  "watermark": true
+ },
+ "g-himalayan-white-porcelain-600-900x20mm-2": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2025/03/WhatsApp-Image-2025-12-05-at-16.49.14.jpeg",
+  "aspect": "4:3",
+  "width": 1000,
+  "name": "Himalayan White Porcelain 600\u00d7900X20mm \u2013 21.60 Sq.mt.",
+  "watermark": true
+ },
+ "g-hs-beige-porcelain-600x900x20mm-28-08-sq": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-17.27.58.jpeg",
+  "aspect": "4:3",
+  "width": 1000,
+  "name": "HS Beige Porcelain 600x900X20MM \u2013 28.08 Sq.m.",
+  "watermark": true
+ },
+ "g-kandla-grey-20mm-porcelain-600x900x20mm-": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/04/WhatsApp-Image-2025-07-24-at-21.09.01-2.jpeg",
+  "aspect": "4:3",
+  "width": 1000,
+  "name": "Kandla Grey (20mm) Porcelain 600x900X20MM \u2013 21.60 Sq.m.",
+  "watermark": true
+ },
+ "g-kandla-grey-22mm-sandstone-900-600-slabs": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/04/WhatsApp-Image-2025-07-24-at-20.40.42.jpeg",
+  "aspect": "4:3",
+  "width": 1000,
+  "name": "Kandla Grey (22mm) Sandstone 900\u00d7600 Slabs Size 18.9 sq. mt.",
+  "watermark": true
+ },
+ "g-kandla-grey-22mm-sandstone-mixed-patio-s": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/04/WhatsApp-Image-2025-07-24-at-20.47.36-1.jpeg",
+  "aspect": "4:3",
+  "width": 1000,
+  "name": "Kandla Grey (22mm) Sandstone Mixed Patio Size 18.19 sq. mt.",
+  "watermark": true
+ },
+ "g-kandla-grey-circle-kit-2-85-mt": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-17.41.48.jpeg",
+  "aspect": "4:3",
+  "width": 1000,
+  "name": "Kandla Grey Circle Kit \u2013 2.85 Mt.",
+  "watermark": true
+ },
+ "g-light-grey-porcelain-600-600-16mm-28-08-": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-15.51.57.jpeg",
+  "aspect": "4:3",
+  "width": 1000,
+  "name": "Light Grey Porcelain 600*600*16mm \u2013 28.08 Sq.m/per pallet",
+  "watermark": true
+ },
+ "g-noor-grigio-porcelain-600x900x20mm-28-08": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-15-at-17.45.01.jpeg",
+  "aspect": "4:3",
+  "width": 1000,
+  "name": "Noor Grigio Porcelain 600x900X20MM \u2013 28.08 Sq.m.",
+  "watermark": true
+ },
+ "g-quartz-white-porcelain-600-900x20mm-21-6": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2025/07/WhatsApp-Image-2025-07-02-at-20.58.30.jpeg",
+  "aspect": "4:3",
+  "width": 1000,
+  "name": "Quartz White Porcelain 600\u00d7900X20MM \u2013 21.60 Sq.mt.",
+  "watermark": true
+ },
+ "g-raj-green-22mm-mixed-patio-pack-size-18-": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/07/WhatsApp-Image-2025-07-24-at-21.47.52.jpeg",
+  "aspect": "4:3",
+  "width": 1000,
+  "name": "Raj Green (22mm) Mixed Patio Pack Size 18.19 Sq.mt.",
+  "watermark": true
+ },
+ "g-rippon-buff-22mm-mixed-patio-pack-size-1": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/04/WhatsApp-Image-2025-07-24-at-21.00.40.jpeg",
+  "aspect": "4:3",
+  "width": 1000,
+  "name": "Rippon Buff. (22mm) Mixed Patio Pack Size 18.19 sq.m.",
+  "watermark": true
  }
 }

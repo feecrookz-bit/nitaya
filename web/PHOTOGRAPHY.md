@@ -46,6 +46,19 @@ being forked onto a lorry, the sample box. And keep asking customers for
 finished-garden photos — the drone shot on the hero is the best image the
 business owns.
 
+## Studio renders
+
+Product cards don't use the phone photos directly any more. `photos.py` maps
+each product's real face texture (the yard's own top-down photo, or a
+face_box crop of a laid slab) onto a rendered slab at its true size and
+thickness — one camera, one key light, one studio sweep for all 36. The
+render is what makes a phone snap on the grass read as a catalogue shot; the
+texture underneath is still theirs. Entries with `mode: studio` in
+`photos.json` carry `slab` (mm), `thick` (mm) and either `face: full` for a
+clean texture or `face_box` (fractions l,t,r,b) to pick one slab out of a
+photo. To upgrade a range, point its `src` at a better top-down texture —
+that is all a manufacturer or a half-day shoot needs to supply.
+
 ## Watermark
 
 Scene, hero and yard photography is stamped bottom-right with the modernised

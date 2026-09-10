@@ -46,10 +46,12 @@ def fetch():
 
 
 def original_path(name):
-    for ext in ('.jpeg', '.jpg', '.png', '.webp'):
-        p = os.path.join(ORIG, name + ext)
-        if os.path.exists(p):
-            return p
+    # The manifest's extension wins, so changing a product's src in
+    # photos.json can't be shadowed by a stale cached original.
+    ext = os.path.splitext(MANIFEST[name]['src'])[1].lower()
+    p = os.path.join(ORIG, name + ext)
+    if os.path.exists(p):
+        return p
     raise FileNotFoundError(name)
 
 
@@ -175,11 +177,111 @@ def watermark(im, opacity=0.68):
     return out.convert('RGB')
 
 
+# ---------- studio render ----------
+
+STUDIO_TOP = (247, 247, 249)   # Apple-grey studio sweep
+STUDIO_BOTTOM = (228, 228, 231)
+
+
+def face_texture(im, spec):
+    """The slab face to map: the whole image for a clean top-down texture,
+    or the inner 70% of the tile for a phone shot of a tile on the ground."""
+    if spec.get('face_box'):
+        l, t, r, b = spec['face_box']
+        return im.crop((int(l * im.width), int(t * im.height), int(r * im.width), int(b * im.height)))
+    if spec.get('face') == 'full':
+        return im
+    box = content_box(im) if is_plain_ground(im) else (0, 0, im.width, im.height)
+    if not box:
+        box = (0, 0, im.width, im.height)
+    w, h = box[2] - box[0], box[3] - box[1]
+    inset = 0.15
+    return im.crop((int(box[0] + w * inset), int(box[1] + h * inset), int(box[2] - w * inset), int(box[3] - h * inset)))
+
+
+def perspective_coeffs(src_pts, dst_pts):
+    """Coefficients for Image.transform(PERSPECTIVE) mapping dst → src."""
+    import numpy as np
+    A = []
+    for (x, y), (u, v) in zip(dst_pts, src_pts):
+        A.append([x, y, 1, 0, 0, 0, -u * x, -u * y])
+        A.append([0, 0, 0, x, y, 1, -v * x, -v * y])
+    B = np.array([c for p in src_pts for c in p], dtype=float)
+    return tuple(np.linalg.solve(np.array(A, dtype=float), B))
+
+
+def studio_render(texture, slab_mm, thick_mm, out_w=1200, out_h=900):
+    """One slab, lit from the top-left, viewed from ~28° above the front edge,
+    on a studio sweep. Everything is proportional to the real dimensions so a
+    600×1200 indoor tile and a 600×150 cladding strip read at true scale
+    against each other."""
+    from PIL import ImageChops
+    sw, sd = slab_mm                     # width, depth in mm
+    # each product fills the frame; a long thin strip still reads at its shape
+    W = int(out_w * 0.78)
+    D = int(W * (sd / sw) * 0.58)        # foreshortened depth
+    D = max(D, int(out_h * 0.10))
+    px_per_mm = W / sw
+    T = max(4, int(thick_mm * px_per_mm * 0.75))
+    skew = int(W * 0.055)
+
+    tex = texture.convert('RGB')
+    tex = crop_aspect(tex, f'{sw}:{sd}')
+    face_w, face_h = W + 2 * skew, D
+    tex = tex.resize((face_w, face_h), Image.LANCZOS)
+    # true trapezoid: top edge narrower than the bottom edge
+    dst = [(skew, 0), (face_w - skew, 0), (face_w, face_h), (0, face_h)]
+    src = [(0, 0), (face_w, 0), (face_w, face_h), (0, face_h)]
+    coeffs = perspective_coeffs(src, dst)
+    face = tex.transform((face_w, face_h), Image.PERSPECTIVE, coeffs, Image.BICUBIC)
+    mask = Image.new('L', (face_w, face_h), 0)
+    ImageDraw.Draw(mask).polygon(dst, fill=255)
+
+    # ground
+    bg = Image.new('RGB', (out_w, out_h), STUDIO_TOP)
+    grad = Image.linear_gradient('L').resize((out_w, out_h))
+    bg = Image.composite(Image.new('RGB', (out_w, out_h), STUDIO_BOTTOM), bg, grad)
+
+    # place: centred, sitting on the lower third
+    x0 = (out_w - face_w) // 2
+    y0 = int(out_h * 0.54 - face_h / 2)
+
+    # contact shadow, soft and offset down-right
+    sh = Image.new('L', (out_w, out_h), 0)
+    sd_ = ImageDraw.Draw(sh)
+    sd_.polygon([(x0 + skew + 6, y0 + 10), (x0 + face_w - skew + 14, y0 + 10), (x0 + face_w + 22, y0 + face_h + T + 12), (x0 + 2, y0 + face_h + T + 12)], fill=150)
+    sh = sh.filter(ImageFilter.GaussianBlur(max(6, out_w // 60)))
+    bg = Image.composite(Image.new('RGB', (out_w, out_h), (150, 150, 156)), bg, sh)
+
+    # front edge: darker slice of the same texture
+    edge_tex = tex.crop((0, face_h - max(2, T), face_w, face_h)).resize((face_w, T))
+    edge = ImageEnhance.Brightness(edge_tex).enhance(0.62)
+    bg.paste(edge, (x0, y0 + face_h), None)
+    # right edge: thin darker sliver
+    side = Image.new('RGB', (max(2, skew // 5 + 2), face_h), (0, 0, 0))
+    side_mask = Image.new('L', side.size, 90)
+    bg.paste(side, (x0 + face_w - skew, y0), side_mask)
+
+    # face with a soft light fall-off from the top edge — one axis, no seams
+    hl = Image.linear_gradient('L').resize((face_w, face_h)).transpose(Image.FLIP_TOP_BOTTOM).point(lambda v: int(v * 0.07))
+    face = ImageChops.add(face, Image.merge('RGB', (hl, hl, hl)))
+    bg.paste(face, (x0, y0), mask)
+    return bg
+
+
 def grade_one(name, spec):
     im = Image.open(original_path(name)).convert('RGB')
     im = ImageOps.exif_transpose(im)
     if spec.get('trim_bottom'):
         im = im.crop((0, 0, im.width, int(im.height * (1 - spec['trim_bottom']))))
+    if spec.get('mode') == 'studio':
+        tex = white_balance(face_texture(im, spec))
+        im = studio_render(tex, spec['slab'], spec['thick'])
+        im = im.resize((spec['width'], int(spec['width'] * 3 / 4)), Image.LANCZOS)
+        im = im.filter(ImageFilter.UnsharpMask(radius=1.0, percent=40, threshold=3))
+        out = os.path.join(OUT, name + '.jpg')
+        im.save(out, quality=78, optimize=True, progressive=True)
+        return out
     if spec.get('grade', True):
         plain = name.startswith('p-') and is_plain_ground(im)
         if plain:
