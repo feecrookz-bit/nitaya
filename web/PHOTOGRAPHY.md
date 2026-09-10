@@ -46,6 +46,15 @@ being forked onto a lorry, the sample box. And keep asking customers for
 finished-garden photos — the drone shot on the hero is the best image the
 business owns.
 
+## Watermark
+
+Scene, hero and yard photography is stamped bottom-right with the modernised
+mark (monogram + NITYA STONES in Cinzel, white at 68%, soft shadow, ~16% of
+the image width). Product cards are left clean — a stamp on a slab face reads
+as cheap and hides the texture. Turn it off per image with `watermark: false`
+in `photos.json`, or on for a product with `watermark: true`. The stamp only
+ever goes on photography the business owns or is licensed to use.
+
 ## Rules for anything we didn't shoot
 
 - Manufacturer imagery: fine, with the trade relationship. Keep the source

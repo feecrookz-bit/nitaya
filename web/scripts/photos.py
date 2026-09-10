@@ -17,7 +17,9 @@ The pass is the same for every image so the cards read as one shoot:
      turns a phone snap on the yard floor into something that reads as a
      product shot.
 Overrides per image live in photos.json (trim_bottom removes a baked-in
-caption; grade:false skips the tonal work for texture maps).
+caption; grade:false skips the tonal work for texture maps; watermark:false
+leaves an image unstamped — product cards default to unstamped, scene and
+yard photography defaults to stamped so it can't be lifted anonymously).
 """
 import json, os, sys, urllib.request
 from PIL import Image, ImageFilter, ImageEnhance, ImageOps, ImageStat, ImageDraw
@@ -27,6 +29,7 @@ ROOT = os.path.dirname(HERE)
 MANIFEST = json.load(open(os.path.join(HERE, 'photos.json')))
 ORIG = os.path.join(HERE, 'originals')
 OUT = os.path.join(ROOT, 'src', 'assets')
+FONT = os.path.join(HERE, 'fonts', 'Cinzel-600.ttf')
 UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/124 Safari/537.36'
 
 
@@ -129,6 +132,49 @@ def crop_aspect(im, aspect):
     return im.crop((0, y, w, y + nh))
 
 
+def watermark(im, opacity=0.68):
+    """Modernised mark — monogram under an arch, NITYA STONES in Cinzel —
+    drawn bottom-right at ~16% of the image width, white with a soft shadow."""
+    from PIL import ImageFont
+    W, H = im.size
+    scale = max(120, int(W * 0.16)) / 100  # design unit: 100 = mark width
+    font = ImageFont.truetype(FONT, int(11 * scale))
+    text = 'NITYA STONES'
+    tw = int(font.getlength(text) + 0.16 * 11 * scale * (len(text) - 1))
+    mono = int(22 * scale)
+    mw = mono + int(6 * scale) + tw
+    mh = mono
+    layer = Image.new('RGBA', (mw + 8, mh + 8), (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    lw = max(1, int(1.1 * scale))
+    x0, y0 = 4, 4
+    # arch with tails
+    d.arc((x0, y0, x0 + mono, y0 + mono * 1.35), 195, 345, fill=(255, 255, 255, 255), width=lw)
+    d.line((x0, y0 + mono * 0.62, x0 - lw * 1.5, y0 + mono * 0.75), fill=(255, 255, 255, 255), width=lw)
+    d.line((x0 + mono, y0 + mono * 0.62, x0 + mono + lw * 1.5, y0 + mono * 0.75), fill=(255, 255, 255, 255), width=lw)
+    # N
+    nx = x0 + mono * 0.3; ny = y0 + mono * 0.3; nh = mono * 0.65; nw = mono * 0.4
+    d.line((nx, ny + nh, nx, ny, nx + nw, ny + nh, nx + nw, ny), fill=(255, 255, 255, 255), width=lw, joint='curve')
+    # wordmark, letter-spaced
+    tx = x0 + mono + int(6 * scale)
+    ty = y0 + (mono - font.size) // 2 - int(1 * scale)
+    sp = 0.16 * 11 * scale
+    for ch in text:
+        d.text((tx, ty), ch, font=font, fill=(255, 255, 255, 255))
+        tx += font.getlength(ch) + sp
+    shadow = layer.split()[3].filter(ImageFilter.GaussianBlur(max(1, int(1.5 * scale))))
+    shadow_img = Image.new('RGBA', layer.size, (0, 0, 0, 0))
+    shadow_img.putalpha(shadow.point(lambda a: int(a * 0.55)))
+    out = im.convert('RGBA')
+    margin = int(W * 0.025)
+    pos = (W - layer.width - margin, H - layer.height - margin)
+    out.alpha_composite(shadow_img, (pos[0] + int(1 * scale), pos[1] + int(1 * scale)))
+    stamped = layer.copy()
+    stamped.putalpha(layer.split()[3].point(lambda a: int(a * opacity)))
+    out.alpha_composite(stamped, pos)
+    return out.convert('RGB')
+
+
 def grade_one(name, spec):
     im = Image.open(original_path(name)).convert('RGB')
     im = ImageOps.exif_transpose(im)
@@ -152,6 +198,9 @@ def grade_one(name, spec):
         im = im.resize((spec['width'], int(im.height * spec['width'] / im.width)), Image.LANCZOS)
     if spec.get('grade', True):
         im = im.filter(ImageFilter.UnsharpMask(radius=1.2, percent=60, threshold=3))
+    default_stamp = not name.startswith('p-') and spec.get('grade', True)
+    if spec.get('watermark', default_stamp):
+        im = watermark(im)
     out = os.path.join(OUT, name + '.jpg')
     im.save(out, quality=74, optimize=True, progressive=True)
     return out
