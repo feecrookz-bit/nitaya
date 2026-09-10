@@ -152,3 +152,35 @@ export const REVIEWS = [
 ]
 
 export const money = (n) => '£' + n.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+
+/* ---------- curated structure (Fruit Plug system) ---------- */
+
+// Three tiers. Every product here is real stock at the shop price; the tiers
+// are the curation, not a different price list.
+export const EDITIONS = [
+  { num: 'Edition I', name: 'Essentials', why: 'The stones most patios in Hertfordshire are laid in. Riven sandstone and honed limestone at the yard\'s straightest price.',
+    ids: ['kandla-grey', 'raj-green', 'rippon-buff', 'autumn-brown', 'fossil-mint', 'black-limestone'], from: 19.5 },
+  { num: 'Edition II', name: 'Premium Select', why: '20 mm vitrified porcelain: calibrated, R11, frost-proof, and it stays the colour you chose. The most-laid tier this season.',
+    ids: ['bodo-white', 'himalayan-white', 'copper-slate', 'crystal-gris', 'earthstone-grey', 'quartz-white'], from: 19.5, featured: true },
+  { num: 'Edition III', name: 'Signature', why: 'Egyptian limestone, marble-effect large format for inside, and the circle kit. The pieces that make a garden a project.',
+    ids: ['sinai-pearl', 'calacatta-blanco', 'saint-lawrence', 'miracle-statuario', 'kandla-circle', 'cladding'], from: 22.8 },
+]
+
+// This season's palette — a short, honest edit of what's on the ground now.
+export const SEASON = { title: 'Autumn palette', ids: ['autumn-brown', 'raj-green', 'copper-slate', 'black-limestone'] }
+
+// Stone families: where each material actually comes from and how it behaves.
+export const FAMILIES = [
+  { key: 'sandstone', name: 'Indian sandstone', lat: 'Rajasthan · sedimentary', cat: 'sandstone',
+    text: 'Quarried and hand-split along its bedding planes, which is why the face is riven and no two slabs match. Kandla, Raj, Rippon, Autumn and Fossil are quarry districts, not brands.',
+    note: '22 mm · uncalibrated · seal it or let it weather' },
+  { key: 'limestone', name: 'Limestone', lat: 'Sinai & Kota · sedimentary', cat: 'limestone',
+    text: 'Fine-grained and dense enough to saw and hone flat. Black Limestone is near-black wet and charcoal dry; Sinai Pearl carries fossil detail in a pale ground.',
+    note: '20 mm · honed · sawn edges' },
+  { key: 'outdoor', name: 'Vitrified porcelain', lat: 'Spain & Gujarat · fired at 1,200 °C', cat: 'outdoor',
+    text: 'Pressed clay fired until it turns glassy: near-zero absorption, so it doesn\'t stain, freeze or grow algae. Calibrated, so it lays flat off a thin bed.',
+    note: '20 mm R11 outside · 8 mm rectified inside' },
+  { key: 'cladding', name: 'Split-face stone', lat: 'Mixed quarries · cleft', cat: 'cladding',
+    text: 'Strips cleft from sandstone and quartzite blocks so each face breaks differently. Laid in a running bond it reads as a dry-stone wall.',
+    note: '600 × 150 mm · 22 mm · walls only' },
+]

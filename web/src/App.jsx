@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import StoneScene from './StoneScene.jsx'
 import Logo from './Logo.jsx'
-import { IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, money } from './data.js'
+import { IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, money } from './data.js'
 
 const PHONE = '0330 236 9227'
 const PHONE_HREF = 'tel:03302369227'
@@ -10,7 +10,7 @@ const VAT = 0.2
 /* ---------------- tiny hash router ---------------- */
 function useRoute() {
   const parse = () => {
-    const h = window.location.hash.replace(/^#\/?/, '')
+    const h = window.location.hash.replace(/^#\/?/, '').split('#')[0]
     const [path, qs] = h.split('?')
     const parts = path.split('/').filter(Boolean)
     return { page: parts[0] || 'home', id: parts[1] || null, q: new URLSearchParams(qs || '') }
@@ -142,41 +142,96 @@ function Calculator({ initial = 'autumn-brown', bag, compact = false }) {
 }
 
 /* ---------------- pages ---------------- */
+function Newsletter() {
+  const [email, setEmail] = useState(''); const [ok, setOk] = useState('')
+  return (
+    <div className="newsletter">
+      <div><p className="kicker" style={{ color: 'var(--gold)' }}>Early access</p><h2>New pallets, first.</h2><p>When a range lands, a finish changes or a pallet deal opens up, you hear before it goes on the site. One email a month, from the yard.</p></div>
+      <form onSubmit={e => { e.preventDefault(); if (email.includes('@')) { setOk('You\'re on the list. First email when the next pallets land.'); setEmail('') } }}>
+        <input id="nlEmail" type="email" placeholder="you@example.co.uk" value={email} onChange={e => setEmail(e.target.value)} aria-label="Email address" />
+        <button className="pill" type="submit">Join</button>
+        {ok && <span className="ok" role="status">{ok}</span>}
+      </form>
+    </div>
+  )
+}
+
+function Editions() {
+  return (
+    <div className="editions">
+      {EDITIONS.map(ed => {
+        const items = ed.ids.map(byId)
+        return (
+          <div key={ed.num} className={`edition ${ed.featured ? 'featured' : ''}`}>
+            {ed.featured && <span className="badge">Most laid</span>}
+            <span className="num">{ed.num}</span>
+            <h3>{ed.name}</h3>
+            <p className="why">{ed.why}</p>
+            <div className="edition-pics">{items.slice(0, 3).map(p => <img key={p.id} src={p.img} alt={p.name} loading="lazy" />)}</div>
+            <ul>{items.map(p => <li key={p.id}><a href={href('product/' + p.id)} style={{ textDecoration: 'none' }}>{p.name}</a><span>{money(p.price)} {p.unit === 'per m²' ? '/m²' : p.unit.replace('per ', '/')}</span></li>)}</ul>
+            <p className="from"><b>{money(ed.from)}</b> per m² + VAT, from</p>
+            <a className={`pill ${ed.featured ? 'accent' : 'ghost'}`} href={href('collections#' + ed.num.split(' ')[1])}>Explore {ed.name}</a>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+function Atlas() {
+  const pic = { sandstone: byId('raj-green').gallery || byId('raj-green').img, limestone: byId('black-limestone').img, outdoor: byId('bodo-white').gallery || byId('bodo-white').img, cladding: byId('cladding').img }
+  return (
+    <div className="atlas">
+      {FAMILIES.map(f => (
+        <a key={f.key} className="family" href={href('shop?cat=' + f.cat)}>
+          <img src={pic[f.key]} alt="" loading="lazy" />
+          <div><span className="lat">{f.lat}</span><h3>{f.name}</h3><p>{f.text}</p><small>{f.note}</small></div>
+        </a>
+      ))}
+    </div>
+  )
+}
+
 function Home({ bag }) {
-  const featured = ['kandla-grey', 'bodo-white', 'raj-green', 'black-limestone', 'calacatta-blanco', 'copper-slate', 'sinai-pearl', 'himalayan-white'].map(byId)
-  const catImg = { sandstone: byId('raj-green').gallery || byId('raj-green').img, limestone: byId('black-limestone').img, outdoor: SCENES[1].img, indoor: byId('calacatta-blanco').img, cladding: byId('cladding').img }
+  const season = SEASON.ids.map(byId)
   return (
     <>
       <section className="hero">
         <div className="wrap">
-          <p className="kicker">Hemel Hempstead · Trade &amp; retail · Since 2016</p>
-          <h1>Stone, off the pallet.<span>Indian sandstone · Limestone · 20 mm porcelain</span></h1>
-          <p className="intro">Held at our Mark Road yard and on your site in three to four working days. No minimum for collection. Price match on everything.</p>
+          <div className="trust"><span><b>Since 2016</b> · Mark Road, Hemel Hempstead</span><span className="dot">·</span><span><b>36 stones</b> on the ground</span><span className="dot">·</span><span><b>3–4 working days</b> to your drive</span></div>
+          <h1>Natural stone, sourced direct.<span>Hand-picked from the quarries we buy from, held at our own yard, priced straight.</span></h1>
           <div className="actions">
-            <a className="pill" href={href('shop')}>Shop the ranges</a>
-            <a className="pill ghost" href={href('samples')}>Order samples · £5</a>
+            <a className="pill" href={href('shop')}>Shop this season's palette</a>
+            <a className="pill ghost" href={href('build')}>Build your patio</a>
           </div>
         </div>
         <div className="wrap"><StoneScene /></div>
         <div className="hero-strip">
-          <div><b>3–4 working days</b>From cleared payment. We call on the day.</div>
-          <div><b>Price match</b>Same stone cheaper elsewhere? We'll match it.</div>
-          <div><b>Split packs</b>Outdoor porcelain and Kandla Grey 600×900.</div>
-          <div><b>Card, Klarna, phone</b>Pay online or ring the yard.</div>
-          <div><b>Collect free</b>HP2 7BW · Mon–Fri 8–6 · Sat 8–1.</div>
+          <div><b>2016</b>Trading from the same Hemel Hempstead yard.</div>
+          <div><b>36</b>Ranges in stock — sandstone, limestone, porcelain, cladding.</div>
+          <div><b>3–4 days</b>Working days from cleared payment. We call on the day.</div>
+          <div><b>£0 minimum</b>Collect from HP2 7BW, any quantity. Price match on all of it.</div>
         </div>
       </section>
 
       <section className="chapter"><div className="wrap">
-        <div className="head-row"><div><p className="kicker">Shop by range</p><h2>Five materials. One yard.</h2></div><a className="more" href={href('shop')}>All 36 products</a></div>
-        <div className="cats">
-          {CATS.map(([k, label, sub]) => <a key={k} className="cat" href={href('shop?cat=' + k)}><img src={catImg[k]} alt="" loading="lazy" /><span><b>{label}</b><small>{sub}</small></span></a>)}
-        </div>
+        <div className="narrow"><p className="kicker">The collections</p><h2>Three editions. One yard.</h2><p className="intro">Every stone we hold, arranged by what it's for rather than what it's called. Same shop prices — the editions are the curation.</p></div>
+        <div className="media"><Editions /></div>
       </div></section>
 
       <section className="chapter grey"><div className="wrap">
-        <div className="head-row"><div><p className="kicker">Most laid this season</p><h2>The ones people come back for.</h2></div><a className="more" href={href('shop')}>Shop all</a></div>
-        <div className="grid">{featured.map(p => <ProductCard key={p.id} p={p} />)}</div>
+        <div className="head-row"><div><p className="kicker">This season</p><h2>{SEASON.title}.</h2><p className="intro">Four stones that suit the light this time of year: the warm sandstones that come up richer wet, and the dark ones that hide leaf litter.</p></div><a className="more" href={href('shop')}>All 36 stones</a></div>
+        <div className="grid">{season.map(p => <ProductCard key={p.id} p={p} />)}</div>
+      </div></section>
+
+      <section className="chapter"><div className="wrap builder-teaser">
+        <div className="narrow"><p className="kicker">Build your patio</p><h2>Pick the stone. Draw the area. Get the packs.</h2><p className="intro">Choose from the 36 stones on the ground, put in your dimensions, pick a laying pattern, and it works out the whole packs, the price and a saved design you can come back to or reorder from.</p>
+          <div className="actions"><a className="pill accent" href={href('build')}>Start building</a><a className="more" href={href('samples')}>Or order £5 samples first</a></div></div>
+      </div></section>
+
+      <section className="chapter grey"><div className="wrap">
+        <div className="narrow"><p className="kicker">Stone families</p><h2>Know what you're laying.</h2><p className="intro">Four materials, four geologies, four ways of behaving in a Hertfordshire winter.</p></div>
+        <div className="media"><Atlas /></div>
       </div></section>
 
       <section className="chapter"><div className="wrap">
@@ -186,38 +241,116 @@ function Home({ bag }) {
         </div>
       </div></section>
 
-      <section className="chapter grey" id="calculator"><div className="wrap">
-        <div className="narrow"><p className="kicker">Price it</p><h2>Measure once. Order once.</h2><p className="intro">Length by width, plus an allowance for cuts, rounded up to whole packs — the number that actually leaves the yard.</p></div>
-        <div className="media"><Calculator bag={bag} /></div>
-      </div></section>
-
-      <section className="chapter" id="samples"><div className="wrap">
-        <div className="narrow"><p className="kicker">Before you order forty square metres</p><h2>The colour on your screen is not the colour on your patio.</h2><p className="intro">Natural stone shifts between batches and changes again when it's wet. A £5 sample on the ground where the patio is going, looked at over two days, is the only honest way to choose.</p>
-          <div className="actions"><a className="pill" href={href('samples')}>Order samples</a></div></div>
-        <div className="media samples">
-          {['raj-green', 'rippon-buff', 'kandla-grey', 'fossil-mint', 'autumn-brown', 'black-limestone'].map(id => { const p = byId(id); return <figure key={id}><img src={p.img} alt={p.name} loading="lazy" /><figcaption>{p.name}</figcaption></figure> })}
-        </div>
-      </div></section>
-
       <section className="chapter grey"><div className="wrap yard">
         <div className="yard-pics"><img src={IMG.yard} alt="The Nitya Stones showroom on Mark Road" loading="lazy" /><img src={IMG.pallets} alt="Pallets of paving in the Nitya Stones yard" loading="lazy" /></div>
         <div>
-          <p className="kicker">34 Mark Road, HP2 7BW</p>
-          <h2>Stock on the ground, not on a lead time.</h2>
-          <p className="intro">Wholesale and retail from the same yard since 2016. We buy from quarries and manufacturers we know, hold the pallets ourselves and check them in before they go out. Walk in, see the slabs, take a sample home.</p>
-          <div className="stats"><div className="stat"><b>2016</b><span>Same Hemel Hempstead yard</span></div><div className="stat"><b>36</b><span>Ranges in stock</span></div><div className="stat"><b>3–4</b><span>Working days to your drive</span></div></div>
+          <p className="kicker">Sourcing</p>
+          <h2>From the quarry to Mark Road.</h2>
+          <p className="intro">We opened the yard in 2016 to sell the stone we'd buy ourselves. Sandstone comes hand-split from the quarry districts of Rajasthan, limestone sawn and honed from Sinai, porcelain pressed in Spain and Gujarat. It's bought direct, held on our own ground, and checked in before it goes out — if it isn't right, it doesn't leave.</p>
+          <div className="stats"><div className="stat"><b>2016</b><span>Same yard, same people</span></div><div className="stat"><b>36</b><span>Stones in stock today</span></div><div className="stat"><b>120 m²</b><span>Custom finishes from</span></div></div>
           <div className="actions" style={{ justifyContent: 'flex-start' }}><a className="more" href={href('about')}>About the yard</a></div>
         </div>
       </div></section>
 
-      <section className="chapter"><div className="wrap">
-        <div className="head-row"><div><p className="kicker">From customers</p><h2>Said about the yard.</h2></div></div>
+      <section className="chapter" id="calculator"><div className="wrap">
+        <div className="head-row"><div><p className="kicker">Quick price</p><h2>Measure once. Order once.</h2></div><a className="more" href={href('build')}>Or build the full design</a></div>
+        <Calculator bag={bag} />
+      </div></section>
+
+      <section className="chapter grey"><div className="wrap">
+        <div className="head-row"><div><p className="kicker">From customers</p><h2>Said about the yard.</h2></div><a className="more" href="https://nityastones.co.uk" target="_blank" rel="noreferrer">More reviews</a></div>
         <div className="quotes">
           {REVIEWS.map(r => <blockquote key={r.who} className="quote"><p>“{r.quote}”</p><cite><b>{r.who}</b><span>{r.what}</span></cite></blockquote>)}
-          <div className="quote quote-since"><b>Since 2016</b><span>Ten seasons supplying landscapers and homeowners from Mark Road.</span></div>
+          <div className="quote quote-since"><b>Since 2016</b><span>Ten seasons supplying landscapers, builders and homeowners from Mark Road.</span></div>
         </div>
       </div></section>
+
+      <section className="chapter"><div className="wrap"><Newsletter /></div></section>
     </>
+  )
+}
+
+function Collections() {
+  return (
+    <>
+      <section className="chapter" style={{ paddingTop: 'clamp(36px,5vw,64px)', paddingBottom: 0 }}><div className="wrap narrow"><p className="kicker">Collections</p><h2>Three editions.</h2><p className="intro">Every stone we hold, arranged by what it's for. Same shop prices — the editions are the curation, not a different price list.</p></div></section>
+      {EDITIONS.map((ed, i) => (
+        <section key={ed.num} id={ed.num.split(' ')[1]} className={`chapter ${i % 2 ? 'grey' : ''}`}><div className="wrap">
+          <div className="head-row"><div><p className="kicker">{ed.num}{ed.featured ? ' · Most laid' : ''}</p><h2>{ed.name}.</h2><p className="intro">{ed.why}</p></div><span className="from" style={{ color: 'var(--ink-3)' }}>from <b style={{ fontFamily: 'Cinzel,serif', fontSize: '1.4rem', color: 'var(--ink)' }}>{money(ed.from)}</b> /m² + VAT</span></div>
+          <div className="grid">{ed.ids.map(byId).map(p => <ProductCard key={p.id} p={p} />)}</div>
+        </div></section>
+      ))}
+    </>
+  )
+}
+
+function PatternThumb({ p }) {
+  const rects = useMemo(() => {
+    const W = 300, H = 180, mm = 7, joint = 10 / mm, out = [], r = rng(7); let n = 0
+    if (p.kind === 'mixed') { for (let y = 0; y < H;) { const rowH = (r() > 0.55 ? 600 : 295) / mm; for (let x = -6; x < W;) { let o = MIXED.filter(s => Math.abs(s[1] / mm - rowH) < 1); if (!o.length) o = [[600, rowH * mm]]; const w = o[Math.floor(r() * o.length)][0] / mm; out.push({ x, y, w, h: rowH, i: n++ }); x += w + joint } y += rowH + joint } }
+    else { const sw = p.w / mm, sh = p.h / mm, off = p.kind === 'stack' ? 0 : p.kind === 'third' ? sw / 3 : sw / 2; let row = 0; for (let y = -sh * .3; y < H; y += sh + joint) { const sh_ = p.kind === 'third' ? (row % 3) * off : (row % 2) * off; for (let x = -sh_ - sw * .3; x < W; x += sw + joint) out.push({ x, y, w: sw, h: sh, i: n++ }); row++ } }
+    return out
+  }, [p])
+  return <svg viewBox="0 0 300 180" aria-hidden="true"><rect width="300" height="180" fill="#3a3a3a" />{rects.map(q => <rect key={q.i} x={q.x} y={q.y} width={q.w} height={q.h} fill={['#d6d2ca', '#cbc7bf', '#c2beb6', '#d0ccc4', '#c8c4bc'][q.i % 5]} />)}</svg>
+}
+
+function Build({ bag }) {
+  const [saved, setSaved] = useState(() => { try { return JSON.parse(localStorage.getItem('nitya-designs') || '[]') } catch { return [] } })
+  const [pid, setPid] = useState('raj-green')
+  const [len, setLen] = useState('6'), [wid, setWid] = useState('4'), [waste, setWaste] = useState('10')
+  const [pat, setPat] = useState(0)
+  const [msg, setMsg] = useState('')
+  const p = byId(pid)
+  const num = (v, d) => { const n = parseFloat(v); return isFinite(n) && n >= 0 ? n : d }
+  const net = num(len, 0) * num(wid, 0), pct = Math.min(num(waste, 10), 40), gross = net * (1 + pct / 100)
+  const packs = p.cover ? Math.ceil(gross / p.cover) : Math.ceil(gross)
+  const ex = p.unit === 'per m²' ? (p.cover ? packs * p.cover : gross) * p.price : packs * p.price
+  const patterns = p.size.includes('Mixed') ? [PATTERNS[0]] : p.cat === 'cladding' ? [PATTERNS[3]] : p.size.includes('600 × 600') ? [PATTERNS[2], PATTERNS[1]] : [PATTERNS[1], PATTERNS[2]]
+  const pattern = patterns[Math.min(pat, patterns.length - 1)]
+  const persist = (list) => { setSaved(list); try { localStorage.setItem('nitya-designs', JSON.stringify(list)) } catch { /* private mode */ } }
+  const save = () => { const d = { id: Date.now(), pid, len, wid, waste, pattern: pattern.title, packs, ex }; persist([d, ...saved].slice(0, 8)); setMsg('Design saved — it\'s on this device to come back to or reorder from.') }
+  const load = (d) => { setPid(d.pid); setLen(d.len); setWid(d.wid); setWaste(d.waste); setPat(0); window.scrollTo({ top: 0 }) }
+  const byFamily = CATS.map(([k, l]) => [l, PRODUCTS.filter(x => x.cat === k && x.unit !== 'per kit')])
+  return (
+    <section className="chapter" style={{ paddingTop: 'clamp(36px,5vw,64px)' }}><div className="wrap">
+      <div className="head-row"><div><p className="kicker">Build your patio</p><h2>Pick the stone. Draw the area. Get the packs.</h2><p className="intro">36 stones on the ground. Choose one, put in the dimensions, pick how it lays, and the design on the right is what leaves the yard.</p></div></div>
+      <div className="builder">
+        <div>
+          <div className="bstep"><h3><i>I</i> Choose the stone</h3>
+            {byFamily.map(([label, list]) => <div key={label}><p className="note" style={{ marginBottom: 8, fontWeight: 500, color: 'var(--ink-2)' }}>{label}</p>
+              <div className="stone-pick">{list.map(x => <button key={x.id} type="button" aria-pressed={pid === x.id} onClick={() => { setPid(x.id); setPat(0) }}><img src={x.img} alt="" loading="lazy" /><b>{x.name}</b><small>{money(x.price)} {x.unit === 'per m²' ? '/m²' : x.unit.replace('per ', '/')}</small></button>)}</div></div>)}
+          </div>
+          <div className="bstep"><h3><i>II</i> Draw the area</h3>
+            <div className="three">
+              <div className="field"><label htmlFor="bLen">Length (m)</label><input id="bLen" type="number" min="0" step="0.1" value={len} onChange={e => setLen(e.target.value)} /></div>
+              <div className="field"><label htmlFor="bWid">Width (m)</label><input id="bWid" type="number" min="0" step="0.1" value={wid} onChange={e => setWid(e.target.value)} /></div>
+              <div className="field"><label htmlFor="bWaste">Cuts allowance (%)</label><input id="bWaste" type="number" min="0" max="40" step="1" value={waste} onChange={e => setWaste(e.target.value)} /></div>
+            </div>
+            <p className="note">10% covers a straight patio. Circles, diagonals and lots of edges want 15–20%.</p>
+          </div>
+          <div className="bstep"><h3><i>III</i> Pick the lay</h3>
+            <div className="pattern-pick">{patterns.map((q, i) => <button key={q.title} type="button" aria-pressed={i === Math.min(pat, patterns.length - 1)} onClick={() => setPat(i)}><PatternThumb p={q} /><b>{q.title}</b><span className="note">{q.sub}</span></button>)}</div>
+          </div>
+          {saved.length > 0 && <div className="saved"><p className="kicker" style={{ marginBottom: 0 }}>Saved designs</p>
+            {saved.map(d => { const x = byId(d.pid); return <div key={d.id} className="saved-row"><img src={x.img} alt="" /><div><b>{x.name}</b><small>{d.len} × {d.wid} m · {d.pattern} · {d.packs} {x.unit === 'per pallet' ? 'pallets' : x.cover ? 'packs' : 'm²'} · {money(d.ex * (1 + VAT))} inc VAT</small></div><div style={{ display: 'flex', gap: 8 }}><button className="more" type="button" onClick={() => load(d)}>Open</button><button className="remove" type="button" onClick={() => persist(saved.filter(s => s.id !== d.id))}>Remove</button></div></div> })}
+          </div>}
+        </div>
+        <aside className="design">
+          <h3>Your design</h3>
+          <img src={p.img} alt={p.name} />
+          <div className="row"><span className="k">Stone</span><span className="v">{p.name}</span></div>
+          <div className="row"><span className="k">Area</span><span className="v">{net.toFixed(2)} m² · +{pct}% = {gross.toFixed(2)} m²</span></div>
+          <div className="row"><span className="k">Lay</span><span className="v">{pattern.title}</span></div>
+          <div className="row"><span className="k">{p.unit === 'per pallet' ? 'Pallets' : p.cover ? 'Packs' : 'Supplied'}</span><span className="v">{p.cover ? `${packs} × ${p.cover.toFixed(2)} m²` : `${gross.toFixed(2)} m²`}</span></div>
+          <div className="row"><span className="k">Stone, ex VAT</span><span className="v">{money(ex)}</span></div>
+          <div className="row total"><span className="k">Total inc VAT</span><span className="v">{money(ex * (1 + VAT))}</span></div>
+          <button className="pill" type="button" onClick={() => { bag.add(p.id, packs); go('cart') }}>Add to bag</button>
+          <button className="pill ghost" type="button" onClick={save}>Save this design</button>
+          {msg && <p className="note" role="status" style={{ color: 'var(--gold)' }}>{msg}</p>}
+          <p className="note">Delivery is quoted on quantity and postcode before you pay. Collection from HP2 7BW is free.</p>
+        </aside>
+      </div>
+    </div></section>
   )
 }
 
@@ -478,10 +611,10 @@ export default function App() {
   const route = useRoute()
   const bag = useBag()
   const [menu, setMenu] = useState(false)
-  const NAV = [['shop', 'Shop'], ['samples', 'Samples'], ['about', 'About'], ['faq', 'FAQ'], ['contact', 'Contact']]
+  const NAV = [['shop', 'Shop'], ['collections', 'Collections'], ['build', 'Build your patio'], ['about', 'About'], ['contact', 'Contact']]
   const page = {
     home: <Home bag={bag} />, shop: <Shop key={route.q.toString()} route={route} />, product: <Product key={route.id} route={route} bag={bag} />, samples: <Samples bag={bag} />,
-    cart: <Bag bag={bag} />, checkout: <Checkout bag={bag} />, about: <About />, faq: <Faq />, contact: <Contact />,
+    cart: <Bag bag={bag} />, checkout: <Checkout bag={bag} />, about: <About />, faq: <Faq />, contact: <Contact />, collections: <Collections />, build: <Build bag={bag} />,
   }[route.page] || <Home bag={bag} />
   return (
     <>
@@ -499,7 +632,7 @@ export default function App() {
         <div className="foot">
           <div><Logo /><p style={{ marginTop: 14, maxWidth: '32ch' }}>Wholesale and retail suppliers of outdoor and indoor porcelain, sandstone, limestone and cladding. 34 Mark Road, Hemel Hempstead HP2 7BW.</p></div>
           <div><h4>Shop</h4>{CATS.map(([k, l]) => <a key={k} href={href('shop?cat=' + k)}>{l}</a>)}<a href={href('samples')}>Samples</a></div>
-          <div><h4>Help</h4><a href={href('faq')}>FAQ</a><a href={href('about')}>Ordering &amp; delivery</a><a href={href('about')}>Laying patterns</a><a href={href('contact')}>Trade accounts</a></div>
+          <div><h4>Help</h4><a href={href('build')}>Build your patio</a><a href={href('collections')}>Collections</a><a href={href('faq')}>FAQ</a><a href={href('about')}>Ordering &amp; delivery</a><a href={href('about')}>Laying patterns</a><a href={href('contact')}>Trade accounts</a></div>
           <div><h4>The yard</h4><a href={PHONE_HREF}>{PHONE}</a><a href="mailto:info@nityastones.co.uk">info@nityastones.co.uk</a><span style={{ display: 'block', paddingTop: 3 }}>Mon–Fri 8–6 · Sat 8–1</span></div>
         </div>
         <div className="foot-bottom"><span>© Nitya Stones · Photography © Nitya Stones</span><img className="payments" src={IMG.payments} alt="Cards and Klarna accepted" /></div>
