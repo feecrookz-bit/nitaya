@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import StoneScene from './StoneScene.jsx'
 import Logo from './Logo.jsx'
+import { HeroSlides, Marquee, CountUp, useReveal, Parallax } from './Motion.jsx'
 import { IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, FAMILY_COLOUR, money } from './data.js'
 import { GUIDES, guideBySlug } from './guides.js'
 
@@ -196,70 +197,90 @@ function Atlas() {
 
 function Home({ bag }) {
   const season = SEASON.ids.map(byId)
+  useReveal('home')
   return (
     <>
-      <section className="hero">
-        <div className="wrap">
+      <section className="hero-cine">
+        <HeroSlides slides={[
+          { src: IMG.hero, caption: 'Kandla Grey porcelain · Hemel Hempstead' },
+          { src: SCENES[1].img, caption: 'Bodo White · half bond' },
+          { src: SCENES[0].img, caption: 'Autumn Brown · laid random' },
+          { src: SCENES[5].img, caption: 'Quartz White · poolside' },
+          { src: SCENES[3].img, caption: 'Raj Green · after rain' },
+        ]} />
+        <div className="wrap"><div className="hero-in">
           <div className="trust"><span><b>Since 2016</b> · Mark Road, Hemel Hempstead</span><span className="dot">·</span><span><b>36 stones</b> on the ground</span><span className="dot">·</span><span><b>3–4 working days</b> to your drive</span></div>
-          <h1>Natural stone, sourced direct.<span>Hand-picked from the quarries we buy from, held at our own yard, priced straight.</span></h1>
+          <h1>Natural stone, sourced direct.<span>Hand-picked from the quarries we buy from, held at our own yard, priced straight. Every garden in these pictures left Mark Road on a pallet.</span></h1>
           <div className="actions">
             <a className="pill" href={href('shop')}>Shop this season's palette</a>
             <a className="pill ghost" href={href('build')}>Build your patio</a>
           </div>
-        </div>
-        <div className="wrap"><StoneScene /><div className="hero-static"><img src={byId('raj-green').img} alt="Raj Green riven sandstone slab" /></div></div>
-        <div className="hero-strip">
-          <div><b>2016</b>Trading from the same Hemel Hempstead yard.</div>
-          <div><b>36</b>Ranges in stock — sandstone, limestone, porcelain, cladding.</div>
-          <div><b>3–4 days</b>Working days from cleared payment. We call on the day.</div>
-          <div><b>£0 minimum</b>Collect from HP2 7BW, any quantity. Price match on all of it.</div>
-        </div>
+        </div></div>
+        <div className="scroll-cue" aria-hidden="true" />
+      </section>
+      <div className="hero-strip">
+        <div><b><CountUp to={2016} plain /></b>Trading from the same Hemel Hempstead yard.</div>
+        <div><b><CountUp to={36} /></b>Ranges in stock — sandstone, limestone, porcelain, cladding.</div>
+        <div><b>3–4 days</b>Working days from cleared payment. We call on the day.</div>
+        <div><b>£0 minimum</b>Collect from HP2 7BW, any quantity. Price match on all of it.</div>
+      </div>
+
+      <section className="slab-moment" data-reveal>
+        <div className="wrap narrow"><p className="kicker">Turn it over</p><h2>Riven, hand-split, 22 mm.</h2><p className="intro">Drag the slab. This is Raj Green from the yard, cleft along its bedding so no two faces match.</p></div>
+        <div className="wrap"><StoneScene /><div className="hero-static"><img src={byId('raj-green').img} alt="Raj Green riven sandstone slab" /></div><p className="slab-hint">Drag to rotate</p></div>
       </section>
 
-      <section className="chapter"><div className="wrap">
+      <section className="chapter" style={{ paddingBottom: 0 }} data-reveal><div className="wrap">
+        <div className="head-row"><div><p className="kicker">On the ground now</p><h2>Thirty-six stones, passing by.</h2></div><a className="more" href={href('shop')}>Shop all</a></div>
+      </div>
+        <Marquee items={PRODUCTS.slice(0, 18).map(p => ({ img: p.img, name: p.name, href: href('product/' + p.id) }))} speed={70} />
+        <Marquee items={PRODUCTS.slice(18).map(p => ({ img: p.img, name: p.name, href: href('product/' + p.id) }))} speed={80} reverse />
+      </section>
+
+      <section className="chapter" data-reveal><div className="wrap">
         <div className="narrow"><p className="kicker">The collections</p><h2>Three editions. One yard.</h2><p className="intro">Every stone we hold, arranged by what it's for rather than what it's called. Same shop prices — the editions are the curation.</p></div>
         <div className="media"><Editions /></div>
       </div></section>
 
-      <section className="chapter sand"><div className="wrap">
+      <section className="chapter sand" data-reveal><div className="wrap">
         <div className="head-row"><div><p className="kicker">This season</p><h2>{SEASON.title}.</h2><p className="intro">Four stones that suit the light this time of year: the warm sandstones that come up richer wet, and the dark ones that hide leaf litter.</p></div><a className="more" href={href('shop')}>All 36 stones</a></div>
         <div className="grid">{season.map(p => <ProductCard key={p.id} p={p} />)}</div>
       </div></section>
 
-      <section className="chapter"><div className="wrap builder-teaser">
+      <section className="chapter" data-reveal><div className="wrap builder-teaser">
         <div className="narrow"><p className="kicker">Build your patio</p><h2>Pick the stone. Draw the area. Get the packs.</h2><p className="intro">Choose from the 36 stones on the ground, put in your dimensions, pick a laying pattern, and it works out the whole packs, the price and a saved design you can come back to or reorder from.</p>
           <div className="actions"><a className="pill accent" href={href('build')}>Start building</a><a className="more" href={href('samples')}>Or order £5 samples first</a></div></div>
       </div></section>
 
-      <section className="chapter sage"><div className="wrap">
+      <section className="chapter sage" data-reveal><div className="wrap">
         <div className="narrow"><p className="kicker">Stone families</p><h2>Know what you're laying.</h2><p className="intro">Four materials, four geologies, four ways of behaving in a Hertfordshire winter.</p></div>
         <div className="media"><Atlas /></div>
       </div></section>
 
-      <section className="chapter"><div className="wrap">
+      <section className="chapter" data-reveal><div className="wrap">
         <div className="narrow"><p className="kicker">Customers' gardens</p><h2>Laid, not stacked.</h2><p className="intro">Every one of these left Mark Road on a pallet. Tap a garden to shop the stone in it.</p></div>
         <div className="media scenes">
           {SCENES.map(s => <a key={s.title} className="scene" href={href('product/' + s.product)}><img src={s.img} alt={s.title} loading="lazy" /><figcaption><b>{s.title}</b><span>{s.sub}</span></figcaption></a>)}
         </div>
       </div></section>
 
-      <section className="chapter grey"><div className="wrap yard">
-        <div className="yard-pics"><img src={IMG.yard} alt="The Nitya Stones showroom on Mark Road" loading="lazy" /><img src={IMG.pallets} alt="Pallets of paving in the Nitya Stones yard" loading="lazy" /></div>
+      <section className="chapter grey" data-reveal><div className="wrap yard">
+        <Parallax amount={0.08}><div className="yard-pics"><img src={IMG.yard} alt="The Nitya Stones showroom on Mark Road" loading="lazy" /><img src={IMG.pallets} alt="Pallets of paving in the Nitya Stones yard" loading="lazy" /></div></Parallax>
         <div>
           <p className="kicker">Sourcing</p>
           <h2>From the quarry to Mark Road.</h2>
           <p className="intro">We opened the yard in 2016 to sell the stone we'd buy ourselves. Sandstone comes hand-split from the quarry districts of Rajasthan, limestone sawn and honed from Sinai, porcelain pressed in Spain and Gujarat. It's bought direct, held on our own ground, and checked in before it goes out — if it isn't right, it doesn't leave.</p>
-          <div className="stats"><div className="stat"><b>2016</b><span>Same yard, same people</span></div><div className="stat"><b>36</b><span>Stones in stock today</span></div><div className="stat"><b>120 m²</b><span>Custom finishes from</span></div></div>
+          <div className="stats"><div className="stat"><b><CountUp to={2016} plain /></b><span>Same yard, same people</span></div><div className="stat"><b><CountUp to={36} /></b><span>Stones in stock today</span></div><div className="stat"><b><CountUp to={120} suffix=" m²" /></b><span>Custom finishes from</span></div></div>
           <div className="actions" style={{ justifyContent: 'flex-start' }}><a className="more" href={href('about')}>About the yard</a></div>
         </div>
       </div></section>
 
-      <section className="chapter" id="calculator"><div className="wrap">
+      <section className="chapter" id="calculator" data-reveal><div className="wrap">
         <div className="head-row"><div><p className="kicker">Quick price</p><h2>Measure once. Order once.</h2></div><a className="more" href={href('build')}>Or build the full design</a></div>
         <Calculator bag={bag} />
       </div></section>
 
-      <section className="chapter grey"><div className="wrap">
+      <section className="chapter grey" data-reveal><div className="wrap">
         <div className="head-row"><div><p className="kicker">From customers</p><h2>Said about the yard.</h2></div><a className="more" href="https://nityastones.co.uk" target="_blank" rel="noreferrer">More reviews</a></div>
         <div className="quotes">
           {REVIEWS.map(r => <blockquote key={r.who} className="quote"><p>“{r.quote}”</p><cite><b>{r.who}</b><span>{r.what}</span></cite></blockquote>)}
@@ -267,12 +288,12 @@ function Home({ bag }) {
         </div>
       </div></section>
 
-      <section className="chapter slate"><div className="wrap">
+      <section className="chapter slate" data-reveal><div className="wrap">
         <div className="head-row"><div><p className="kicker">Guides</p><h2>Know before you lay.</h2><p className="intro">Laying, choosing, sealing, cleaning — written by the yard, not a content agency.</p></div><a className="more" href={href('guides')}>All guides</a></div>
         <div className="guides">{GUIDES.slice(0, 3).map(g => <GuideCard key={g.slug} g={g} />)}</div>
       </div></section>
 
-      <section className="chapter"><div className="wrap"><Newsletter /></div></section>
+      <section className="chapter" data-reveal><div className="wrap"><Newsletter /></div></section>
     </>
   )
 }
