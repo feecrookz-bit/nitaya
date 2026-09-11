@@ -30,7 +30,7 @@ export function Marquee({ items, reverse = false, speed = 60 }) {
       <div className="marquee-track">
         {[...items, ...items].map((it, n) => (
           <a key={n} className="marquee-tile" href={it.href} tabIndex={n < items.length ? 0 : -1} aria-hidden={n >= items.length}>
-            <img src={it.img} alt={n < items.length ? it.name : ''} loading="lazy" />
+            <img src={it.img} alt={n < items.length ? it.name : ''} />
             <span>{it.name}</span>
           </a>
         ))}

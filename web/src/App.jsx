@@ -12,10 +12,11 @@ const VAT = 0.2
 /* ---------------- tiny hash router ---------------- */
 function useRoute() {
   const parse = () => {
-    const h = window.location.hash.replace(/^#\/?/, '').split('#')[0]
+    const raw = window.location.hash.replace(/^#\/?/, '')
+    const [h, anchor] = raw.split('#')
     const [path, qs] = h.split('?')
     const parts = path.split('/').filter(Boolean)
-    return { page: parts[0] || 'home', id: parts[1] || null, q: new URLSearchParams(qs || '') }
+    return { page: parts[0] || 'home', id: parts[1] || null, q: new URLSearchParams(qs || ''), anchor: anchor || null }
   }
   const [route, setRoute] = useState(parse)
   useEffect(() => {
@@ -23,6 +24,11 @@ function useRoute() {
     window.addEventListener('hashchange', on)
     return () => window.removeEventListener('hashchange', on)
   }, [])
+  useEffect(() => {
+    if (!route.anchor) return
+    const t = setTimeout(() => { const el = document.getElementById(route.anchor); if (el) el.scrollIntoView({ block: 'start' }) }, 60)
+    return () => clearTimeout(t)
+  }, [route])
   return route
 }
 const go = (to) => { window.location.hash = to }
@@ -473,7 +479,7 @@ function Product({ route, bag }) {
       <div className="wrap pdp">
         <div className="gallery">
           <div className="main"><img src={pics[img]} alt={p.name} /></div>
-          {pics.length > 1 && <div className="thumbs">{pics.map((src, i) => <button key={i} type="button" aria-pressed={img === i} onClick={() => setImg(i)}><img src={src} alt="" /></button>)}</div>}
+          {pics.length > 1 && <div className="thumbs">{pics.map((src, i) => <button key={i} type="button" aria-pressed={img === i} aria-label={i === 0 ? `${p.name} studio render` : `${p.name} in a customer's garden`} onClick={() => setImg(i)}><img src={src} alt="" /></button>)}</div>}
         </div>
         <div>
           <nav className="crumbs" aria-label="Breadcrumb"><a href={href('shop')}>Shop</a><span>/</span><a href={href('shop?cat=' + p.cat)}>{CAT_LABEL[p.cat]}</a><span>/</span><span>{p.name}</span></nav>
