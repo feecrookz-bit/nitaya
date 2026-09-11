@@ -488,3 +488,32 @@ footer{padding-block:44px 52px;color:var(--on-black-2);font-size:.8rem;backgroun
   [data-reveal].pre{opacity:1;transform:none}
   .parallax{transform:none!important}
 }
+
+/* ---------- guide diagrams ---------- */
+.diagram{margin:28px 0 8px;background:var(--grey);border:1px solid var(--hair);border-radius:var(--radius);padding:18px 18px 14px}
+.diagram svg{width:100%;height:auto;display:block}
+.diagram figcaption{font-size:.84rem;color:var(--ink-3);margin-top:10px}
+
+/* ---------- wet / dry ---------- */
+.wetdry{position:relative;aspect-ratio:4/3;border-radius:var(--radius);overflow:hidden;user-select:none;touch-action:pan-y;cursor:ew-resize;background:var(--grey)}
+.wetdry img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.wetdry .wet{position:absolute;inset:0}
+.wetdry .sheen{position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,0) 40%,rgba(255,255,255,.18) 50%,rgba(255,255,255,0) 60%);mix-blend-mode:screen;pointer-events:none}
+.wetdry .handle{position:absolute;top:0;bottom:0;width:2px;background:#fff;transform:translateX(-1px);box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+.wetdry .handle span{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:#fff;color:var(--ink);display:grid;place-items:center;font-size:1.1rem;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.wetdry .handle:focus-visible{outline:none}
+.wetdry .handle:focus-visible span{outline:2px solid var(--gold)}
+.wetdry .lbl{position:absolute;bottom:12px;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.5);padding:5px 10px;border-radius:999px;pointer-events:none}
+.wetdry .lbl.l{left:12px}.wetdry .lbl.r{right:12px}
+.wetdry-note{font-size:.82rem;color:var(--ink-3);margin-top:8px}
+
+/* ---------- delivery estimate ---------- */
+.deliv{display:grid;gap:10px}
+.deliv-row{display:flex;gap:10px;align-items:end}
+.deliv-row .field{flex:1}
+.deliv-out{font-size:.92rem;color:var(--ink-2);line-height:1.5}
+.deliv-out b{color:var(--ink)}
+.bands{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:14px}
+.band{background:var(--grey);border:1px solid var(--hair);border-radius:12px;padding:12px 14px;font-size:.86rem}
+.band b{display:block;font-size:1.05rem;color:var(--ink)}
+.band span{color:var(--ink-3)}

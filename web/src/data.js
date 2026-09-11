@@ -194,3 +194,45 @@ export const FAMILY_COLOUR = {
   indoor: { c: '#8A6D3B', tint: '#F3EDE1', name: 'Rippon buff' },
   cladding: { c: '#6B5E52', tint: '#EFEAE4', name: 'Cleft stone' },
 }
+
+/* ---------- delivery estimate ----------
+ * Indicative per-pallet bands by postcode area. The yard confirms the actual
+ * cost by phone before anything is charged; these figures exist so a
+ * customer sees a number instead of "quoted at checkout". CONFIRM WITH THE
+ * YARD before launch — edit here, nothing else references them.
+ */
+export const DELIVERY = {
+  bands: [
+    { key: 'local', name: 'Local', areas: ['HP', 'AL', 'WD', 'LU', 'SG', 'MK'], perPallet: 45, note: 'Herts, Beds, Bucks and around the yard' },
+    { key: 'london', name: 'London & M25', areas: ['EN', 'HA', 'UB', 'NW', 'N', 'W', 'WC', 'EC', 'E', 'SE', 'SW', 'TW', 'KT', 'SM', 'CR', 'BR', 'DA', 'RM', 'IG', 'SL', 'RG', 'OX', 'CB', 'CM', 'SS'], perPallet: 65, note: 'Inside and around the M25' },
+    { key: 'national', name: 'England & Wales', areas: null, perPallet: 95, note: 'Mainland, kerbside' },
+  ],
+  ask: ['AB', 'IV', 'KW', 'PH', 'PA', 'HS', 'ZE', 'KA', 'DG', 'TD', 'EH', 'G', 'ML', 'FK', 'KY', 'DD', 'TR', 'PL', 'BT', 'IM', 'JE', 'GY', 'PO30', 'PO31', 'PO32', 'PO33', 'PO34', 'PO35', 'PO36', 'PO37', 'PO38', 'PO39', 'PO40', 'PO41'],
+}
+export function deliveryFor(postcode) {
+  const pc = (postcode || '').toUpperCase().replace(/\s+/g, '')
+  const m = pc.match(/^([A-Z]{1,2})(\d{1,2})/)
+  if (!m) return null
+  const area = m[1]
+  if (DELIVERY.ask.includes(area) || DELIVERY.ask.includes(area + m[2])) return { band: null, ask: true }
+  const band = DELIVERY.bands.find(b => b.areas && b.areas.includes(area)) || DELIVERY.bands[2]
+  return { band, ask: false }
+}
+
+/* Search vocabulary: colour and use words that customers type but product
+ * names don't contain. */
+export const SEARCH_TAGS = {
+  sandstone: 'sandstone indian riven patio paving slabs garden natural stone',
+  limestone: 'limestone honed patio paving slabs natural stone',
+  outdoor: 'porcelain outdoor patio paving slabs tiles vitrified non slip r11 frost proof modern',
+  indoor: 'porcelain indoor tiles floor wall bathroom kitchen hallway rectified marble effect',
+  cladding: 'cladding wall split face strips feature wall fireplace',
+}
+export const COLOUR_TAGS = {
+  'kandla-grey': 'grey silver', 'kandla-grey-900': 'grey silver', 'raj-green': 'green multi brown', 'rippon-buff': 'buff yellow cream honey', 'autumn-brown': 'brown rust dark', 'fossil-mint': 'cream mint beige light pale', 'kandla-circle': 'grey circle feature',
+  'black-limestone': 'black dark charcoal', 'sinai-pearl': 'cream pale white light', 'sinai-pearl-mixed': 'cream pale white light',
+  'bodo-white': 'white light marble', 'himalayan-white': 'white light pale', 'quartz-white': 'white light', 'crystal-gris': 'grey', 'earthstone-grey': 'grey charcoal', 'kandla-porcelain': 'grey riven', 'noor-grigio': 'grey light', 'hs-beige': 'beige sand warm', 'copper-slate': 'copper rust slate dark multi',
+  'beige-porcelain': 'beige', 'light-grey-porcelain': 'grey light', 'black-porcelain': 'black dark',
+  'calacatta-blanco': 'white marble veined', 'miracle-statuario': 'white marble gloss', 'modern-statuario': 'white marble', 'saint-lawrence': 'black marble gold', 'lobbies-silver': 'grey silver', 'jiniva-natural': 'beige grey', 'brit-raven': 'charcoal dark concrete', 'aspire-grey': 'grey', 'dark-stonella': 'dark grey', 'eden-ash': 'grey ash light', 'rovero-dark-grey': 'dark grey', 'sand-grigio': 'grey sand', 'unika-gris': 'grey',
+  cladding: 'grey buff mixed',
+}

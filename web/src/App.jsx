@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
-import StoneScene from './StoneScene.jsx'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+const StoneScene = lazy(() => import('./StoneScene.jsx'))
+import WetDry from './WetDry.jsx'
+import { GUIDE_DIAGRAM } from './Diagrams.jsx'
 import Logo from './Logo.jsx'
 import { HeroSlides, Marquee, CountUp, useReveal, Parallax } from './Motion.jsx'
-import { IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, FAMILY_COLOUR, money } from './data.js'
+import { IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, FAMILY_COLOUR, DELIVERY, deliveryFor, SEARCH_TAGS, COLOUR_TAGS, money } from './data.js'
 import { GUIDES, guideBySlug } from './guides.js'
 
 const PHONE = '0330 236 9227'
@@ -52,7 +54,8 @@ function useBag() {
 }
 const lineProduct = (id) => id.startsWith('sample:') ? { ...SAMPLE, id, name: `Sample — ${byId(id.slice(7))?.name || ''}`, img: byId(id.slice(7))?.img } : byId(id)
 const lineUnitPrice = (p) => p.unit === 'per m²' && p.cover ? p.price * p.cover : p.price
-const lineUnitLabel = (p) => p.unit === 'per m²' ? (p.cover ? `pack of ${p.cover.toFixed(2)} m²` : 'per m²') : p.unit === 'per pallet' ? 'pallet' : p.unit === 'per kit' ? 'kit' : 'each'
+const packWord = (p) => (p.cat === 'outdoor' || p.unit === 'per pallet') ? 'pallet' : 'pack'
+const lineUnitLabel = (p) => p.unit === 'per m²' ? (p.cover ? `${packWord(p)} of ${p.cover.toFixed(2)} m²` : 'per m²') : p.unit === 'per pallet' ? 'pallet' : p.unit === 'per kit' ? 'kit' : 'each'
 
 /* ---------------- shared bits ---------------- */
 function Price({ p, big }) {
@@ -150,6 +153,25 @@ function Calculator({ initial = 'autumn-brown', bag, compact = false }) {
   )
 }
 
+function DeliveryEstimate({ pallets = 1, compact = false }) {
+  const [pc, setPc] = useState(() => { try { return localStorage.getItem('nitya-pc') || '' } catch { return '' } })
+  const r = deliveryFor(pc)
+  useEffect(() => { try { localStorage.setItem('nitya-pc', pc) } catch { /* private mode */ } }, [pc])
+  return (
+    <div className="deliv">
+      <div className="deliv-row">
+        <div className="field"><label htmlFor={compact ? 'dpc2' : 'dpc'}>Delivery postcode</label><input id={compact ? 'dpc2' : 'dpc'} type="text" autoComplete="postal-code" placeholder="e.g. HP2 7BW" value={pc} onChange={e => setPc(e.target.value)} /></div>
+      </div>
+      <p className="deliv-out">
+        {!pc ? <>Enter a postcode for an indicative delivery cost, or <b>collect free from Mark Road</b>.</>
+          : !r ? <>That doesn't look like a UK postcode yet.</>
+          : r.ask ? <>We deliver there but price it by the job — <b>ring {PHONE}</b> for a quote, or collect free.</>
+          : <>Indicative delivery to <b>{pc.toUpperCase()}</b> ({r.band.name}): <b>{money(r.band.perPallet)} per pallet</b>{pallets > 1 ? <> · {pallets} pallets ≈ <b>{money(r.band.perPallet * pallets)}</b></> : null}. Confirmed by phone before you pay. Collection from HP2 7BW is free.</>}
+      </p>
+    </div>
+  )
+}
+
 /* ---------------- pages ---------------- */
 function Newsletter() {
   const [email, setEmail] = useState(''); const [ok, setOk] = useState('')
@@ -233,7 +255,7 @@ function Home({ bag }) {
 
       <section className="slab-moment" data-reveal>
         <div className="wrap narrow"><p className="kicker">Turn it over</p><h2>Riven, hand-split, 22 mm.</h2><p className="intro">Drag the slab. This is Raj Green from the yard, cleft along its bedding so no two faces match.</p></div>
-        <div className="wrap"><StoneScene /><div className="hero-static"><img src={byId('raj-green').img} alt="Raj Green riven sandstone slab" /></div><p className="slab-hint">Drag to rotate</p></div>
+        <div className="wrap"><Suspense fallback={<div className="hero-3d" aria-hidden="true" />}><StoneScene /></Suspense><div className="hero-static"><img src={byId('raj-green').img} alt="Raj Green riven sandstone slab" /></div><p className="slab-hint">Drag to rotate</p></div>
       </section>
 
       <section className="chapter" style={{ paddingBottom: 0 }} data-reveal><div className="wrap">
@@ -335,6 +357,7 @@ function Guide({ route }) {
         <span className="meta">{CAT_LABEL[g.family]} · {g.minutes} min read</span>
         <h1>{g.title}</h1>
         <p className="stand">{g.standfirst}</p>
+        {GUIDE_DIAGRAM[g.slug] && (() => { const D = GUIDE_DIAGRAM[g.slug]; return <D /> })()}
         {g.sections.map(sec => <section key={sec.h}><h2>{sec.h}</h2>{sec.p.map((t, i) => <p key={i}>{t}</p>)}</section>)}
         <div className="related">
           <p className="kicker">Shop the stone</p>
@@ -438,7 +461,7 @@ function Shop({ route }) {
   const [q, setQ] = useState(route.q.get('q') || '')
   const [sort, setSort] = useState('featured')
   let list = PRODUCTS.filter(p => cat === 'all' || p.cat === cat)
-  if (q.trim()) { const t = q.trim().toLowerCase(); list = list.filter(p => (p.name + ' ' + p.cat + ' ' + p.size + ' ' + p.finish + ' ' + p.origin).toLowerCase().includes(t)) }
+  if (q.trim()) { const words = q.trim().toLowerCase().split(/\s+/); list = list.filter(p => { const hay = (p.name + ' ' + CAT_LABEL[p.cat] + ' ' + SEARCH_TAGS[p.cat] + ' ' + (COLOUR_TAGS[p.id] || '') + ' ' + p.size + ' ' + p.thick + ' ' + p.finish + ' ' + p.origin + ' ' + p.blurb).toLowerCase(); return words.every(w => hay.includes(w)) }) }
   if (sort === 'low') list = [...list].sort((a, b) => (a.unit === 'per m²' ? a.price : a.price / (a.cover || 1)) - (b.unit === 'per m²' ? b.price : b.price / (b.cover || 1)))
   if (sort === 'high') list = [...list].sort((a, b) => (b.unit === 'per m²' ? b.price : b.price / (b.cover || 1)) - (a.unit === 'per m²' ? a.price : a.price / (a.cover || 1)))
   if (sort === 'az') list = [...list].sort((a, b) => a.name.localeCompare(b.name))
@@ -479,6 +502,7 @@ function Product({ route, bag }) {
       <div className="wrap pdp">
         <div className="gallery">
           <div className="main"><img src={pics[img]} alt={p.name} /></div>
+          {(p.cat === 'sandstone' || p.cat === 'limestone') && p.unit !== 'per kit' && <div><WetDry dry={p.img} wet={p.wet} name={p.name} /><p className="wetdry-note">Drag to compare. {p.wet ? 'Both photos are the same slab, hosed and dry.' : 'The wet side is simulated from the dry photo until we\'ve shot the slab hosed — natural stone comes up darker and richer than any screen shows.'}</p></div>}
           {pics.length > 1 && <div className="thumbs">{pics.map((src, i) => <button key={i} type="button" aria-pressed={img === i} aria-label={i === 0 ? `${p.name} studio render` : `${p.name} in a customer's garden`} onClick={() => setImg(i)}><img src={src} alt="" /></button>)}</div>}
         </div>
         <div>
@@ -502,6 +526,7 @@ function Product({ route, bag }) {
               <div className="qty" role="group" aria-label="Quantity"><button type="button" onClick={() => setQty(q => Math.max(1, q - 1))} aria-label="Fewer">−</button><output aria-live="polite">{qty}</output><button type="button" onClick={() => setQty(q => q + 1)} aria-label="More">+</button></div>
               <button className="pill" type="button" onClick={addToBag}>Add to bag · {money(unitPrice * qty * (1 + VAT))} inc VAT</button>
             </div>
+            <DeliveryEstimate />
             <div className="buy-actions">
               <button className="more" type="button" onClick={() => { bag.add('sample:' + p.id, 1); setAdded('Sample added to your bag — £5') }}>Order a 100×100 mm sample · £5</button>
               <span className="added" role="status" aria-live="polite">{added}</span>
@@ -552,7 +577,7 @@ function Bag({ bag }) {
           {items.map(l => (
             <div key={l.id} className="line">
               <img src={l.p.img} alt="" />
-              <div><div className="name">{l.p.name}</div><div className="meta">{lineUnitLabel(l.p)} · {money(lineUnitPrice(l.p))} + VAT</div>
+              <div><div className="name">{l.p.name}</div><div className="meta">{lineUnitLabel(l.p)} · {money(lineUnitPrice(l.p))} + VAT{l.p.cover ? <> · <b>{l.qty} {packWord(l.p)}{l.qty === 1 ? '' : 's'} = {(l.qty * l.p.cover).toFixed(2)} m²</b></> : null}</div>
                 <div className="qty" style={{ marginTop: 10 }}><button type="button" onClick={() => bag.set(l.id, l.qty - 1)} aria-label="Fewer">−</button><output>{l.qty}</output><button type="button" onClick={() => bag.set(l.id, l.qty + 1)} aria-label="More">+</button></div></div>
               <div className="right"><span className="sum">{money(lineUnitPrice(l.p) * l.qty)}</span><button className="remove" type="button" onClick={() => bag.set(l.id, 0)}>Remove</button></div>
             </div>
@@ -563,11 +588,11 @@ function Bag({ bag }) {
         <h3>Summary</h3>
         <div className="row"><span className="k">Goods, ex VAT</span><span className="v">{money(ex)}</span></div>
         <div className="row"><span className="k">VAT at 20%</span><span className="v">{money(ex * VAT)}</span></div>
-        <div className="row"><span className="k">Delivery</span><span className="v">Quoted at checkout</span></div>
+        <div className="row"><span className="k">Delivery</span><span className="v">{items.reduce((n, l) => n + (l.p.cover ? l.qty : 0), 0) || 0} {items.reduce((n, l) => n + (l.p.cover ? l.qty : 0), 0) === 1 ? 'pallet' : 'pallets'} · see below</span></div>
         <div className="row total"><span className="k">Total inc VAT</span><span className="v">{money(ex * (1 + VAT))}</span></div>
+        <DeliveryEstimate pallets={items.reduce((n, l) => n + (l.p.cover ? l.qty : 0), 0) || 1} compact />
         <a className="pill" href={href('checkout')}>Checkout</a>
         <a className="more" href={href('shop')} style={{ justifySelf: 'center' }}>Keep shopping</a>
-        <p className="note">Delivery depends on quantity and postcode and is confirmed before you pay. Collection from Mark Road is free with no minimum.</p>
       </aside>
     </div>
   )
@@ -598,6 +623,7 @@ function Checkout({ bag }) {
           {f.method === 'delivery' && <>
             <div className="field"><label htmlFor="coLine1">Address</label><input id="coLine1" autoComplete="address-line1" value={f.line1} onChange={set('line1')} /></div>
             <div className="two"><div className="field"><label htmlFor="coTown">Town</label><input id="coTown" autoComplete="address-level2" value={f.town} onChange={set('town')} /></div><div className="field"><label htmlFor="coPost">Postcode</label><input id="coPost" autoComplete="postal-code" value={f.postcode} onChange={set('postcode')} /></div></div>
+            {f.postcode && (() => { const r = deliveryFor(f.postcode); const pallets = items.reduce((n, l) => n + (l.p.cover ? l.qty : 0), 0) || 1; return <p className="deliv-out">{!r ? 'Check the postcode.' : r.ask ? <>Priced by the job for this postcode — we'll ring you with the cost.</> : <>Indicative: <b>{money(r.band.perPallet)} per pallet</b> × {pallets} = <b>{money(r.band.perPallet * pallets)}</b> ({r.band.name}). Confirmed by phone before payment.</>}</p> })()}
             <div className="field"><label htmlFor="coNotes">Access notes</label><input id="coNotes" placeholder="Narrow drive, no kerb, leave on the lawn…" value={f.notes} onChange={set('notes')} /></div>
           </>}
         </div>
@@ -635,6 +661,11 @@ function About() {
       </div></section>
       <section className="chapter grey"><div className="wrap">
         <div className="head-row"><div><p className="kicker">Sample, measure, pay, delivered</p><h2>How ordering works.</h2></div></div>
+        <div className="bands" style={{ marginBottom: 26 }}>
+          {DELIVERY.bands.map(b => <div key={b.key} className="band"><span>{b.name}</span><b>{money(b.perPallet)} per pallet</b><span>{b.note}{b.areas ? ' · ' + b.areas.slice(0, 6).join(', ') + (b.areas.length > 6 ? '…' : '') : ''}</span></div>)}
+          <div className="band"><span>Collection</span><b>Free</b><span>34 Mark Road, HP2 7BW · no minimum</span></div>
+        </div>
+        <p className="note" style={{ marginBottom: 26 }}>Delivery figures are indicative, kerbside on a tail-lift, and confirmed by phone before you pay. Scotland, the far South West, islands and Northern Ireland are priced by the job.</p>
         <div className="steps">
           <div className="step"><span className="num">I</span><h3>Take a sample</h3><p>100×100 mm, £5, posted. Look at it wet and dry, in daylight, where it's going.</p></div>
           <div className="step"><span className="num">II</span><h3>Measure the area</h3><p>Length × width, plus 10% for cuts. The calculator rounds it to whole packs.</p></div>
