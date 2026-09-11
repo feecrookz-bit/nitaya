@@ -67,9 +67,11 @@ async function open(pw){
   // storage all behave as on a normal page; document.write would not run them.
   const f=document.createElement('iframe');
   f.setAttribute('title','Nitya Stones');
-  f.style.cssText='position:fixed;inset:0;width:100%;height:100%;border:0;background:#F5F3F0';
-  f.srcdoc=html;
-  document.body.replaceChildren(f);
+  f.style.cssText='position:fixed;inset:0;width:100%;height:100%;border:0;background:#F5F3F0;opacity:0;transition:opacity .4s';
+  const go=document.getElementById('go'); if(go){go.disabled=true;go.textContent='Opening…'}
+  await new Promise(res=>{f.addEventListener('load',res,{once:true});document.body.appendChild(f);f.srcdoc=html;});
+  document.querySelector('.g').remove();
+  f.style.opacity='1';
   document.title='Nitya Stones';
 }
 document.getElementById('f').addEventListener('submit',async e=>{

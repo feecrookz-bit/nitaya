@@ -25,25 +25,28 @@ jobs:
       - run: npm ci --legacy-peer-deps
         working-directory: web
 
-      # With a SITE_PASSWORD secret the whole site is published encrypted
-      # behind a password gate (scripts/protect.mjs). Without one it's open.
+      # The site is published encrypted behind a password gate
+      # (scripts/protect.mjs) using the SITE_PASSWORD repository secret.
+      # Without the secret the deploy stops rather than publishing it open;
+      # set PUBLIC_PREVIEW=true as a repository variable to allow that.
       - name: Build
         working-directory: web
         env:
           SITE_PASSWORD: ${{ secrets.SITE_PASSWORD }}
+          PUBLIC_PREVIEW: ${{ vars.PUBLIC_PREVIEW }}
         run: |
+          mkdir -p publish
           if [ -n "$SITE_PASSWORD" ]; then
             SINGLE=1 npm run build
-            mkdir -p publish
             node scripts/protect.mjs dist-single/index.html publish/index.html "$SITE_PASSWORD"
-            cp publish/index.html publish/404.html
-            echo "gated" > publish/.mode
-          else
+          elif [ "$PUBLIC_PREVIEW" = "true" ]; then
             BASE_PATH=/nitaya/ npm run build
-            rm -rf publish && cp -r dist publish
-            cp publish/index.html publish/404.html
-            echo "open" > publish/.mode
+            cp -r dist/. publish/
+          else
+            echo "::error::No SITE_PASSWORD secret set and PUBLIC_PREVIEW is not 'true' — refusing to publish the site open. Add the secret in Settings → Secrets and variables → Actions."
+            exit 1
           fi
+          cp publish/index.html publish/404.html
           touch publish/.nojekyll
 
       - uses: peaceiris/actions-gh-pages@v4
