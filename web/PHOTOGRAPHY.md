@@ -98,3 +98,12 @@ this-season four-up. Fonts and colours mirror the site, so a post and the
 product page it links to look like the same brand. Their live Instagram,
 Facebook and X pages are behind login walls and could not be read from this
 environment — align these with screenshots or exports of the real feed.
+
+## Password-protected preview
+
+`node scripts/protect.mjs dist-single/index.html out.html "password"` encrypts
+the single-file build (AES-256-GCM, PBKDF2 key) into a page that is only a
+password form plus ciphertext; the browser decrypts it locally. The deploy
+workflow does this automatically when a `SITE_PASSWORD` repository secret is
+set, and publishes the open site when it isn't. There is no recovery: change
+the password by changing the secret and pushing.

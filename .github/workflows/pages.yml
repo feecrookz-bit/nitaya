@@ -24,16 +24,30 @@ jobs:
           cache-dependency-path: web/package-lock.json
       - run: npm ci --legacy-peer-deps
         working-directory: web
-      - run: npm run build
+
+      # With a SITE_PASSWORD secret the whole site is published encrypted
+      # behind a password gate (scripts/protect.mjs). Without one it's open.
+      - name: Build
         working-directory: web
         env:
-          BASE_PATH: /nitaya/
-      - run: |
-          touch web/dist/.nojekyll
-          cp web/dist/index.html web/dist/404.html
-      # Publishes web/dist to the gh-pages branch; Pages serves that branch.
+          SITE_PASSWORD: ${{ secrets.SITE_PASSWORD }}
+        run: |
+          if [ -n "$SITE_PASSWORD" ]; then
+            SINGLE=1 npm run build
+            mkdir -p publish
+            node scripts/protect.mjs dist-single/index.html publish/index.html "$SITE_PASSWORD"
+            cp publish/index.html publish/404.html
+            echo "gated" > publish/.mode
+          else
+            BASE_PATH=/nitaya/ npm run build
+            rm -rf publish && cp -r dist publish
+            cp publish/index.html publish/404.html
+            echo "open" > publish/.mode
+          fi
+          touch publish/.nojekyll
+
       - uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: web/dist
+          publish_dir: web/publish
           force_orphan: true
