@@ -64,9 +64,10 @@ button{font:inherit;color:inherit}
 .nav{position:sticky;top:0;z-index:60;background:var(--black);color:var(--on-black)}
 .nav-in{display:flex;align-items:center;gap:26px;height:60px}
 .brand{text-decoration:none;margin-right:auto;display:flex;align-items:center}
-.logo{display:block;height:54px;width:auto}
+.logo{display:block;height:54px;width:auto;aspect-ratio:904/464;flex:none;object-fit:contain}
 .logo.compact{height:46px}
 footer .logo{height:82px}
+.brand{flex:none}
 .links{display:flex;gap:24px}
 .links a,.links button{text-decoration:none;font-size:.86rem;color:var(--on-black-2);background:none;border:0;padding:0;cursor:pointer}
 .links a:hover,.links button:hover,.links .active{color:var(--on-black)}
