@@ -230,12 +230,12 @@ function Home({ bag }) {
     <>
       <section className="hero-cine">
         <HeroSlides slides={[
-          { src: IMG.hero, caption: 'Kandla Grey porcelain · Hemel Hempstead' },
-          { src: SCENES[1].img, caption: 'Bodo White · half bond' },
+          { src: SCENES[1].img, caption: 'Bodo White · Hemel Hempstead' },
           { src: SCENES[0].img, caption: 'Autumn Brown · laid random' },
           { src: SCENES[5].img, caption: 'Quartz White · poolside' },
           { src: SCENES[3].img, caption: 'Raj Green · after rain' },
-        ]} />
+          { src: IMG.hero, caption: 'Kandla Grey porcelain · from above' },
+        ]} interval={7500} />
         <div className="wrap"><div className="hero-in">
           <div className="trust"><span><b>Since 2016</b> · Mark Road, Hemel Hempstead</span><span className="dot">·</span><span><b>36 stones</b> on the ground</span><span className="dot">·</span><span><b>3–4 working days</b> to your drive</span></div>
           <h1>Natural stone, sourced direct.<span>Hand-picked from the quarries we buy from, held at our own yard, priced straight. Every garden in these pictures left Mark Road on a pallet.</span></h1>
@@ -265,7 +265,7 @@ function Home({ bag }) {
         <Marquee items={PRODUCTS.slice(18).map(p => ({ img: p.img, name: p.name, href: href('product/' + p.id) }))} speed={80} reverse />
       </section>
 
-      <section className="chapter" data-reveal><div className="wrap">
+      <section className="chapter editions" data-reveal><div className="wrap">
         <div className="narrow"><p className="kicker">The collections</p><h2>Three editions. One yard.</h2><p className="intro">Every stone we hold, arranged by what it's for rather than what it's called. Same shop prices — the editions are the curation.</p></div>
         <div className="media"><Editions /></div>
       </div></section>

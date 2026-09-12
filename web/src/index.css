@@ -470,8 +470,8 @@ footer{padding-block:44px 52px;color:var(--on-black-2);font-size:.8rem;backgroun
 .marquee + .marquee{margin-top:14px}
 
 /* reveal */
-[data-reveal].pre{opacity:0;transform:translateY(22px)}
-[data-reveal].in{opacity:1;transform:none;transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+[data-reveal].pre > .wrap{opacity:0;transform:translateY(22px)}
+[data-reveal].in > .wrap{opacity:1;transform:none;transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
 
 /* parallax */
 .parallax{transform:translateY(var(--py,0));will-change:transform}
@@ -485,7 +485,7 @@ footer{padding-block:44px 52px;color:var(--on-black-2);font-size:.8rem;backgroun
   .slide,.slide.on{animation:none!important;transition:none!important}
   .marquee-track{animation:none!important}
   .scroll-cue::after{animation:none!important}
-  [data-reveal].pre{opacity:1;transform:none}
+  [data-reveal].pre > .wrap{opacity:1;transform:none}
   .parallax{transform:none!important}
 }
 
@@ -517,3 +517,135 @@ footer{padding-block:44px 52px;color:var(--on-black-2);font-size:.8rem;backgroun
 .band{background:var(--grey);border:1px solid var(--hair);border-radius:12px;padding:12px 14px;font-size:.86rem}
 .band b{display:block;font-size:1.05rem;color:var(--ink)}
 .band span{color:var(--ink-3)}
+
+/* =====================================================================
+   PREMIUM PASS — two text colours, one accent, more air, editorial scale.
+   Later rules win: this block deliberately overrides earlier component
+   colour choices so type reads as one system across the site.
+   ===================================================================== */
+:root{--ink:#161616;--ink-2:#4F4F4F;--ink-3:#8A8A8A;--canvas:#F7F5F1;--grey:#FFFFFF;--grey-2:#EFECE6;--hair:#E3DFD8;--hair-2:#CFCAC1;--gold:#C9A54B;--gold-2:#A8853A;--radius:10px}
+body{font-size:17px;line-height:1.55}
+h1,h2,h3{color:var(--ink);letter-spacing:.015em}
+.chapter{padding-block:clamp(88px,11vw,150px)}
+.chapter h2{font-size:clamp(2.1rem,4.6vw,3.4rem);line-height:1.08}
+.narrow h2::after,.head-row h2::after{content:"";display:block;width:44px;height:2px;background:var(--gold);margin:22px auto 0}
+.head-row h2::after{margin-left:0}
+.intro{color:var(--ink-2);font-size:clamp(1.05rem,1.5vw,1.2rem);line-height:1.6;margin-top:22px;font-weight:400}
+.kicker{color:var(--gold-2);font-size:.72rem;letter-spacing:.24em;margin-bottom:16px}
+.note{color:var(--ink-3)}
+
+/* one link style everywhere */
+.more{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:2px;font-weight:500}
+.more:hover{color:var(--gold-2);border-bottom-color:var(--gold-2);text-decoration:none}
+.on-black .more,.chapter.deep .more,.hero-cine .more{color:#fff;border-bottom-color:var(--gold)}
+
+/* numbers, labels: ink, not colour */
+.hero-strip b,.stat b{color:var(--ink)}
+.stat b{font-size:2.4rem}
+.family .lat,.guide .meta,.product .fam,.article .meta{color:var(--ink-3)}
+.edition .num,.edition.featured .num,.step .num{color:var(--gold-2)}
+.tag{background:transparent;color:var(--ink-2);border:1px solid var(--hair-2)}
+.hero-strip{background:var(--canvas)}
+.hero-strip b{font-size:1.5rem}
+.hero-strip div{padding:26px 24px;font-size:.84rem}
+
+/* nav: taller, small caps, gold active */
+.nav-in{height:68px;gap:30px}
+.links{gap:28px}
+.links a,.links button{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(245,243,240,.72);padding-bottom:4px;border-bottom:1px solid transparent}
+.links a:hover,.links .active{color:#fff;border-bottom-color:var(--gold)}
+.bag-btn{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;border-color:rgba(255,255,255,.28)}
+.logo-word b{font-size:1.05rem;letter-spacing:.22em}
+.logo-word small{display:none}
+footer .logo-word small{display:block}
+
+/* hero: taller, quieter, a gold rule, film grain */
+.hero-cine{min-height:min(92vh,880px)}
+.hero-cine .hero-in{padding:clamp(150px,20vw,240px) 0 clamp(64px,8vw,96px);max-width:900px}
+.hero-cine .trust{display:none}
+.hero-cine .hero-in::before{content:"Est. 2016 · Mark Road, Hemel Hempstead";display:block;font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.8);margin-bottom:22px}
+.hero-cine h1{font-size:clamp(2.8rem,7vw,5.6rem);letter-spacing:.01em;line-height:1.0}
+.hero-cine h1::after{content:"";display:block;width:56px;height:2px;background:var(--gold);margin:26px 0 22px}
+.hero-cine h1 span{color:rgba(255,255,255,.82);font-size:.34em;line-height:1.5;margin-top:0;max-width:34em;font-weight:400}
+.hero-cine .actions{margin-top:30px;gap:16px}
+.hero-cine .pill{padding:15px 28px;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.slide{transition:opacity 2.2s ease}
+.slides::after{background:linear-gradient(180deg,rgba(8,8,8,.30) 0%,rgba(8,8,8,.05) 30%,rgba(8,8,8,.30) 60%,rgba(8,8,8,.86) 100%)}
+.slides::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.12;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.slide-caption{font-size:.68rem;letter-spacing:.22em;color:rgba(255,255,255,.65)}
+.scroll-cue{opacity:.7}
+
+/* buttons */
+.pill{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;padding:14px 26px}
+.pill:hover{background:var(--gold);border-color:var(--gold);color:#161616}
+.pill.accent{background:var(--gold);border-color:var(--gold)}
+.pill.accent:hover{background:#161616;border-color:#161616;color:#fff}
+.pill.ghost{border-color:var(--hair-2);color:var(--ink)}
+.pill.ghost:hover{border-color:var(--ink);background:transparent;color:var(--ink)}
+
+/* cards: no borders, more air, image breathes */
+.product,.guide,.family,.edition,.step,.quote,.pattern,.band,.calc,.buy,.panel,.summary,.line,.bstep,.diagram{border:0;box-shadow:0 1px 0 rgba(22,22,22,.04),0 10px 30px -18px rgba(22,22,22,.18)}
+.product:hover,.guide:hover{box-shadow:0 1px 0 rgba(22,22,22,.04),0 28px 48px -20px rgba(22,22,22,.28)}
+.product-body{padding:22px 22px 26px;gap:6px}
+.product h3{font-size:1.06rem}
+.product .spec{font-size:.82rem}
+.product .price{margin-top:12px}
+.price b{font-size:1.15rem;font-weight:600}
+.grid{gap:22px}
+.cat,.scene{border:0}
+.guide{border-top:2px solid var(--fc,var(--gold))}
+.family{border-top:2px solid var(--fc,var(--gold))}
+.edition{border-top:2px solid var(--ed,var(--gold));padding:30px 30px 32px}
+
+/* editions chapter: charcoal, gold numerals */
+.chapter.editions{background:#161616;color:#F5F3F0}
+.chapter.editions .kicker{color:var(--gold)}
+.chapter.editions h2,.chapter.editions h3{color:#F5F3F0}
+.chapter.editions .intro{color:rgba(245,243,240,.72)}
+.chapter.editions .edition{background:#1F1F1F;box-shadow:none;border-top:2px solid var(--ed,var(--gold))}
+.chapter.editions .edition .why,.chapter.editions .edition .from,.chapter.editions .edition li span{color:rgba(245,243,240,.66)}
+.chapter.editions .edition li{border-bottom-color:rgba(255,255,255,.08)}
+.chapter.editions .edition li a{color:#F5F3F0}
+.chapter.editions .edition .from b{color:#F5F3F0}
+.chapter.editions .edition .num{color:var(--gold)}
+.chapter.editions .edition.featured{border:1px solid var(--gold);border-top:2px solid var(--gold)}
+.chapter.editions .edition .badge{background:var(--gold);color:#161616}
+.chapter.editions .pill.ghost{color:#F5F3F0;border-color:rgba(255,255,255,.3)}
+.chapter.editions .pill.ghost:hover{border-color:#fff;color:#fff}
+.chapter.editions .pill.accent{background:var(--gold);color:#161616}
+
+/* quieter tints */
+.chapter.sand{background:#F3EEE6}
+.chapter.sage{background:#EEF1EC}
+.chapter.slate{background:#ECEEF0}
+
+/* seg control + inputs */
+.seg{background:transparent;border:1px solid var(--hair-2)}
+.seg button{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;padding:9px 16px}
+.seg button[aria-pressed="true"]{background:#161616;color:#fff}
+.field input,.field select,.field textarea{border-radius:8px;border-color:var(--hair-2)}
+.field label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+
+/* marquee + scenes captions */
+.marquee-tile span{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.scene figcaption b{font-family:Cinzel,serif;font-size:1.05rem;letter-spacing:.03em}
+
+/* footer: deeper, gold mark */
+footer{padding-block:64px 56px;background:#111}
+.foot h4{color:rgba(245,243,240,.9)}
+.foot a{color:rgba(245,243,240,.6)}
+.foot a:hover{color:#fff}
+.foot-bottom{margin-top:44px}
+
+/* newsletter + dark panels stay charcoal, not green */
+.newsletter,.design,.calc-out,.quote-since{background:#161616!important;color:#F5F3F0}
+.newsletter .kicker,.design .row.total .v,.calc-out .row.total .v,.quote-since b{color:var(--gold)}
+.newsletter p,.design .row .k,.calc-out .row .k,.calc-out .note,.quote-since span{color:rgba(245,243,240,.66)}
+.newsletter .pill,.design .pill,.calc-out .pill{background:var(--gold);border-color:var(--gold);color:#161616}
+.newsletter .pill:hover,.design .pill:hover,.calc-out .pill:hover{background:#fff;border-color:#fff}
+
+@media (max-width:640px){
+  .hero-cine{min-height:82vh}
+  .hero-cine .hero-in{padding-top:120px}
+  .chapter{padding-block:64px}
+}

@@ -269,6 +269,36 @@ def studio_render(texture, slab_mm, thick_mm, out_w=1200, out_h=900):
     return bg
 
 
+def cinematic(im):
+    """Film look for scene photography: firmer S-curve, slightly muted
+    greens, cool shadows / warm highlights, a soft vignette and fine grain.
+    Subtle enough that the garden still looks like the garden."""
+    import random
+    im = s_curve(im, 0.20)
+    im = ImageEnhance.Color(im).enhance(0.92)
+    r, g, b = im.split()
+    # split tone: lift blue in shadows, lift red in highlights
+    b = b.point(lambda v: min(255, int(v + (255 - v) * 0.06)))
+    r = r.point(lambda v: min(255, int(v + v * 0.04)))
+    im = Image.merge('RGB', (r, g, b))
+    w, h = im.size
+    vig = Image.new('L', (w, h), 0)
+    ImageDraw.Draw(vig).ellipse((-int(w * .15), -int(h * .25), int(w * 1.15), int(h * 1.25)), fill=255)
+    vig = vig.filter(ImageFilter.GaussianBlur(max(w, h) // 5))
+    dark = ImageEnhance.Brightness(im).enhance(0.72)
+    im = Image.composite(im, dark, vig)
+    rnd = random.Random(7)
+    grain = Image.effect_noise((w, h), 14).convert('L')
+    grain = Image.merge('RGB', (grain, grain, grain))
+    im = Image.blend(im, ImageChops_overlay(im, grain), 0.10)
+    return im
+
+
+def ImageChops_overlay(base, top):
+    from PIL import ImageChops
+    return ImageChops.overlay(base, top)
+
+
 def grade_one(name, spec):
     im = Image.open(original_path(name)).convert('RGB')
     im = ImageOps.exif_transpose(im)
@@ -295,6 +325,8 @@ def grade_one(name, spec):
             im = auto_levels(im)
             im = s_curve(im)
             im = ImageEnhance.Color(im).enhance(1.06)
+        if spec.get('cine', name.startswith('scene-') or name in ('hero', 'yard', 'pallets')):
+            im = cinematic(im)
     im = crop_aspect(im, spec['aspect'])
     if im.width > spec['width']:
         im = im.resize((spec['width'], int(im.height * spec['width'] / im.width)), Image.LANCZOS)
