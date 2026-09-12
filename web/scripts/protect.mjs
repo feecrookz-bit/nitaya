@@ -66,16 +66,15 @@ async function unlock(pw){
 async function open(pw){
   const html=await unlock(pw);
   try{sessionStorage.setItem('ns-preview',pw)}catch(e){}
-  // The site runs in a same-origin srcdoc frame: module scripts, WebGL and
-  // storage all behave as on a normal page; document.write would not run them.
-  const f=document.createElement('iframe');
-  f.setAttribute('title','Nitya Stones');
-  f.style.cssText='position:fixed;inset:0;width:100%;height:100%;border:0;background:#F5F3F0;opacity:0;transition:opacity .4s';
+  // The decrypted page replaces this document in place — no iframe. The site
+  // then owns the real URL, so hash links, the back button and deep links
+  // behave exactly as on an unprotected page (srcdoc and blob: frames both
+  // refuse hash navigation in some mobile browsers). Scripts adopted from a
+  // parsed document never run, so each one is re-created to execute it.
   const go=document.getElementById('go'); if(go){go.disabled=true;go.textContent='Opening…'}
-  await new Promise(res=>{f.addEventListener('load',res,{once:true});document.body.appendChild(f);f.srcdoc=html;});
-  document.querySelector('.g').remove();
-  f.style.opacity='1';
-  document.title='Nitya Stones';
+  const doc=new DOMParser().parseFromString(html,'text/html');
+  document.replaceChild(document.adoptNode(doc.documentElement),document.documentElement);
+  for(const s of document.querySelectorAll('script')){const r=document.createElement('script');for(const a of s.attributes)r.setAttribute(a.name,a.value);r.textContent=s.textContent;s.replaceWith(r);}
 }
 document.getElementById('f').addEventListener('submit',async e=>{
   e.preventDefault();const go=document.getElementById('go'),err=document.getElementById('err');
