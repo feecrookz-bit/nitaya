@@ -3,6 +3,7 @@ const StoneScene = lazy(() => import('./StoneScene.jsx'))
 import WetDry from './WetDry.jsx'
 import { GUIDE_DIAGRAM } from './Diagrams.jsx'
 import Logo from './Logo.jsx'
+import logoPng from './assets/logo.png'
 import { HeroSlides, Marquee, CountUp, useReveal, Parallax } from './Motion.jsx'
 import { IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, FAMILY_COLOUR, DELIVERY, deliveryFor, SEARCH_TAGS, COLOUR_TAGS, PAIRS, money } from './data.js'
 import { GUIDES, guideBySlug } from './guides.js'
@@ -241,6 +242,7 @@ function Home({ bag }) {
           { src: IMG.hero, caption: 'Kandla Grey porcelain · from above' },
         ]} interval={7500} />
         <div className="wrap"><div className="hero-in">
+          <img className="hero-mark" src={logoPng} alt="" aria-hidden="true" />
           <div className="trust"><span><b>Since 2016</b> · Mark Road, Hemel Hempstead</span><span className="dot">·</span><span><b>36 stones</b> on the ground</span><span className="dot">·</span><span><b>3–4 working days</b> to your drive</span></div>
           <h1>Natural stone, sourced direct.<span>Hand-picked from the quarries we buy from, held at our own yard, priced straight. Every garden in these pictures left Mark Road on a pallet.</span></h1>
           <div className="actions">

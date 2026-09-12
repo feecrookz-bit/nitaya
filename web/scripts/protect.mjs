@@ -47,7 +47,7 @@ button:disabled{opacity:.6;cursor:default}
 small{color:#7E7C76;font-size:.78rem}
 </style></head><body>
 <div class="g"><div class="card">
-<div class="mark"><img src="__LOGO__" alt="Nitya Stones" style="height:72px;width:auto"></div>
+<div class="mark"><img src="__LOGO__" alt="Nitya Stones" style="height:120px;width:auto"></div>
 <h1>Private preview</h1>
 <p>This site is under review. Enter the password to open it.</p>
 <form id="f"><input id="pw" type="password" autocomplete="current-password" placeholder="Password" autofocus required><button id="go" type="submit">Open the site</button><div class="err" id="err" role="alert"></div></form>
