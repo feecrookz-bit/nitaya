@@ -745,3 +745,22 @@ footer{padding-block:64px 56px;background:#111}
 .offers-seg{color:var(--gold-2)!important}
 .offers-seg[aria-pressed="true"]{background:var(--gold)!important;color:#161616!important}
 .trust-links a{color:inherit}
+
+/* ---------- header breakpoints (final) ---------- */
+.links a,.links button{white-space:nowrap}
+@media (max-width:1100px){
+  .links{display:none}
+  .menu-btn{display:inline-flex}
+}
+@media (max-width:640px){
+  .nav-in{gap:8px;height:64px}
+  .logo.compact{height:42px}
+  .theme-label{display:none}
+  .theme-btn{padding:8px 10px;gap:0}
+  .bag-btn{padding:7px 10px;letter-spacing:.06em}
+  .menu-btn{padding:6px 10px}
+}
+@media (max-width:380px){
+  .logo.compact{height:38px}
+  .theme-btn{padding:7px 8px}
+}
