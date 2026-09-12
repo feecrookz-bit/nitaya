@@ -738,9 +738,31 @@ function Contact() {
 /* ---------------- shell ---------------- */
 const TITLES = { home: 'Nitya Stones — Sandstone, Limestone & Porcelain Paving, Hemel Hempstead', shop: 'Shop', collections: 'Collections', build: 'Build your patio', samples: 'Samples', cart: 'Your bag', checkout: 'Checkout', about: 'About the yard', faq: 'FAQ', contact: 'Contact', guides: 'Guides' }
 
+function useTheme() {
+  const [theme, setTheme] = useState(() => { try { return localStorage.getItem('nitya-theme') || 'dark' } catch { return 'dark' } })
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0F0F10' : '#161616')
+    try { localStorage.setItem('nitya-theme', theme) } catch { /* private mode */ }
+  }, [theme])
+  return [theme, () => setTheme(t => t === 'dark' ? 'light' : 'dark')]
+}
+
+function ThemeButton({ theme, toggle }) {
+  return (
+    <button className="theme-btn" type="button" onClick={toggle} aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'} aria-pressed={theme === 'dark'}>
+      {theme === 'dark'
+        ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>
+        : <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /></svg>}
+      {theme === 'dark' ? 'Light' : 'Dark'}
+    </button>
+  )
+}
+
 export default function App() {
   const route = useRoute()
   const bag = useBag()
+  const [theme, toggleTheme] = useTheme()
   useEffect(() => {
     const t = route.page === 'product' ? byId(route.id)?.name : route.page === 'guide' ? guideBySlug(route.id)?.title : TITLES[route.page]
     document.title = route.page === 'home' || !t ? TITLES.home : `${t} — Nitya Stones`
@@ -757,6 +779,7 @@ export default function App() {
         <div className="nav-in">
           <a className="brand" href={href('')} aria-label="Nitya Stones, home"><Logo compact /></a>
           <nav className="links" aria-label="Primary">{NAV.map(([k, l]) => <a key={k} href={href(k)} className={route.page === k ? 'active' : ''}>{l}</a>)}</nav>
+          <ThemeButton theme={theme} toggle={toggleTheme} />
           <a className="bag-btn" href={href('cart')}>Bag {bag.count > 0 && <b>{bag.count}</b>}</a>
           <button className="menu-btn" type="button" aria-expanded={menu} onClick={() => setMenu(m => !m)}>Menu</button>
         </div>

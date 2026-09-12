@@ -687,3 +687,56 @@ footer{padding-block:64px 56px;background:#111}
 .value p{color:var(--ink-2);font-size:.94rem}
 .social{display:flex;gap:14px;margin-top:14px}
 .social a{display:inline-flex;align-items:center;gap:6px}
+
+/* =====================================================================
+   DARK THEME — second token set. Everything below the nav is styled through
+   tokens, so this block only redefines them plus the few literals.
+   ===================================================================== */
+:root[data-theme="dark"]{
+  --canvas:#0F0F10; --grey:#19191B; --grey-2:#222224; --hair:#2A2A2D; --hair-2:#3B3B40;
+  --ink:#F4F2EC; --ink-2:#BDB9B0; --ink-3:#8E8A82;
+  --gold:#C9A54B; --gold-2:#D9B75F;
+  --black:#0B0B0C; --on-black:#F4F2EC; --on-black-2:#A9A59C;
+}
+:root[data-theme="dark"] body{background:var(--canvas)}
+:root[data-theme="dark"] .nav{background:rgba(11,11,12,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--hair)}
+:root[data-theme="dark"] .chapter.grey{background:#141416}
+:root[data-theme="dark"] .chapter.sand{background:#1A1714}
+:root[data-theme="dark"] .chapter.sage{background:#141816}
+:root[data-theme="dark"] .chapter.slate{background:#141618}
+:root[data-theme="dark"] .chapter.dark-collections{background:#0B0B0C}
+:root[data-theme="dark"] .chapter.dark-collections .edition{background:#161618}
+:root[data-theme="dark"] .newsletter,:root[data-theme="dark"] .design,:root[data-theme="dark"] .calc-out,:root[data-theme="dark"] .quote-since{background:#1F1F22!important}
+:root[data-theme="dark"] .product,:root[data-theme="dark"] .guide,:root[data-theme="dark"] .family,:root[data-theme="dark"] .edition,:root[data-theme="dark"] .step,:root[data-theme="dark"] .quote,:root[data-theme="dark"] .pattern,:root[data-theme="dark"] .band,:root[data-theme="dark"] .calc,:root[data-theme="dark"] .buy,:root[data-theme="dark"] .panel,:root[data-theme="dark"] .summary,:root[data-theme="dark"] .line,:root[data-theme="dark"] .bstep,:root[data-theme="dark"] .diagram,:root[data-theme="dark"] .value,:root[data-theme="dark"] .pair{box-shadow:0 1px 0 rgba(255,255,255,.03),0 14px 34px -18px rgba(0,0,0,.7)}
+:root[data-theme="dark"] .product:hover,:root[data-theme="dark"] .guide:hover{box-shadow:0 1px 0 rgba(255,255,255,.04),0 30px 50px -20px rgba(0,0,0,.85)}
+:root[data-theme="dark"] .product img{border-bottom:1px solid var(--hair)}
+:root[data-theme="dark"] .article p{color:var(--ink-2)}
+:root[data-theme="dark"] .hero-strip{background:#0B0B0C;border-color:var(--hair)}
+:root[data-theme="dark"] .hero-strip div{border-color:var(--hair)}
+:root[data-theme="dark"] .pill{background:var(--gold);border-color:var(--gold);color:#161616}
+:root[data-theme="dark"] .pill:hover{background:#fff;border-color:#fff}
+:root[data-theme="dark"] .pill.ghost{background:transparent;color:var(--ink);border-color:var(--hair-2)}
+:root[data-theme="dark"] .pill.ghost:hover{border-color:var(--ink)}
+:root[data-theme="dark"] .pill.accent{background:var(--gold);color:#161616}
+:root[data-theme="dark"] .pill.accent:hover{background:#fff;border-color:#fff}
+:root[data-theme="dark"] .seg button[aria-pressed="true"]{background:var(--gold);color:#161616}
+:root[data-theme="dark"] .stone-pick button,:root[data-theme="dark"] .pattern-pick button{background:var(--grey-2)}
+:root[data-theme="dark"] .stone-pick button[aria-pressed="true"],:root[data-theme="dark"] .pattern-pick button[aria-pressed="true"]{border-color:var(--gold)}
+:root[data-theme="dark"] .thumbs button[aria-pressed="true"]{border-color:var(--gold)}
+:root[data-theme="dark"] .choice label:has(input:checked){border-color:var(--gold)}
+:root[data-theme="dark"] .stat b,:root[data-theme="dark"] .hero-strip b{color:var(--gold)}
+:root[data-theme="dark"] .field input,:root[data-theme="dark"] .field select,:root[data-theme="dark"] .field textarea,:root[data-theme="dark"] .search input,:root[data-theme="dark"] .select{background:var(--grey-2);border-color:var(--hair-2);color:var(--ink)}
+:root[data-theme="dark"] .field select option{background:#222}
+:root[data-theme="dark"] .marquee{-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+:root[data-theme="dark"] .marquee-tile img{border-color:var(--hair)}
+:root[data-theme="dark"] .slab-moment{background:var(--canvas)}
+:root[data-theme="dark"] .hero-static img{border-radius:var(--radius)}
+:root[data-theme="dark"] .empty,:root[data-theme="dark"] .done{color:var(--ink-2)}
+:root[data-theme="dark"] footer{background:#0B0B0C;border-top:1px solid var(--hair)}
+:root[data-theme="dark"] .sticky-buy{background:rgba(11,11,12,.96);border-top:1px solid var(--hair)}
+
+/* theme switch */
+.theme-btn{display:inline-flex;align-items:center;gap:7px;background:transparent;border:1px solid rgba(255,255,255,.28);color:var(--on-black);border-radius:999px;padding:7px 12px;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.theme-btn:hover{border-color:var(--gold);color:var(--gold)}
+.theme-btn svg{width:14px;height:14px}
+.drawer .theme-btn{align-self:flex-start;margin-top:8px}
