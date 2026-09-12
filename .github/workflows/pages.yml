@@ -39,6 +39,7 @@ jobs:
           if [ -n "$SITE_PASSWORD" ]; then
             SINGLE=1 npm run build
             node scripts/protect.mjs dist-single/index.html publish/index.html "$SITE_PASSWORD"
+            cp public/favicon.svg public/apple-touch-icon.png publish/
           elif [ "$PUBLIC_PREVIEW" = "true" ]; then
             BASE_PATH=/nitaya/ npm run build
             cp -r dist/. publish/

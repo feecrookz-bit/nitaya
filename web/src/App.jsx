@@ -4,7 +4,7 @@ import WetDry from './WetDry.jsx'
 import { GUIDE_DIAGRAM } from './Diagrams.jsx'
 import Logo from './Logo.jsx'
 import { HeroSlides, Marquee, CountUp, useReveal, Parallax } from './Motion.jsx'
-import { IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, FAMILY_COLOUR, DELIVERY, deliveryFor, SEARCH_TAGS, COLOUR_TAGS, money } from './data.js'
+import { IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, FAMILY_COLOUR, DELIVERY, deliveryFor, SEARCH_TAGS, COLOUR_TAGS, PAIRS, money } from './data.js'
 import { GUIDES, guideBySlug } from './guides.js'
 
 const PHONE = '0330 236 9227'
@@ -377,10 +377,10 @@ function Collections() {
     <>
       <section className="chapter" style={{ paddingTop: 'clamp(36px,5vw,64px)', paddingBottom: 0 }}><div className="wrap narrow"><p className="kicker">Collections</p><h2>Three editions.</h2><p className="intro">Every stone we hold, arranged by what it's for. Same shop prices — the editions are the curation, not a different price list.</p></div></section>
       {EDITIONS.map((ed, i) => (
-        <section key={ed.num} id={ed.num.split(' ')[1]} className={`chapter ${i % 2 ? 'grey' : ''}`}><div className="wrap">
-          <div className="head-row"><div><p className="kicker">{ed.num}{ed.featured ? ' · Most laid' : ''}</p><h2>{ed.name}.</h2><p className="intro">{ed.why}</p></div><span className="from" style={{ color: 'var(--ink-3)' }}>from <b style={{ fontFamily: 'Cinzel,serif', fontSize: '1.4rem', color: 'var(--ink)' }}>{money(ed.from)}</b> /m² + VAT</span></div>
-          <div className="grid">{ed.ids.map(byId).map(p => <ProductCard key={p.id} p={p} />)}</div>
-        </div></section>
+        <div key={ed.num} id={ed.num.split(' ')[1]}>
+          <section className="banner" style={{ marginTop: i === 0 ? 40 : 0 }}><img src={[SCENES[0].img, SCENES[1].img, SCENES[5].img][i]} alt="" /><div className="wrap"><p className="kicker">{ed.num}{ed.featured ? ' · Most laid' : ''}</p><h2>{ed.name}.</h2><p className="intro">{ed.why}</p><p className="from">from <b>{money(ed.from)}</b> per m² + VAT</p></div></section>
+          <section className="chapter" style={{ paddingBlock: 'clamp(36px,5vw,64px)' }}><div className="wrap"><div className="grid">{ed.ids.map(byId).map(p => <ProductCard key={p.id} p={p} />)}</div></div></section>
+        </div>
       ))}
     </>
   )
@@ -466,9 +466,11 @@ function Shop({ route }) {
   if (sort === 'high') list = [...list].sort((a, b) => (b.unit === 'per m²' ? b.price : b.price / (b.cover || 1)) - (a.unit === 'per m²' ? a.price : a.price / (a.cover || 1)))
   if (sort === 'az') list = [...list].sort((a, b) => a.name.localeCompare(b.name))
   const current = CATS.find(c => c[0] === cat)
+  const banner = { sandstone: SCENES[3].img, limestone: SCENES[0].img, outdoor: SCENES[1].img, indoor: byId('calacatta-blanco').img, cladding: SCENES[6].img }[cat] || SCENES[2].img
   return (
-    <section className="chapter" style={{ paddingTop: 'clamp(36px,5vw,64px)' }}><div className="wrap">
-      <div className="head-row"><div><p className="kicker">Shop</p><h2>{current ? current[1] : 'Every range'}</h2><p className="intro">{current ? current[2] : 'Prices per m² ex VAT, as sold at the yard. Every image is our own stock.'}</p></div></div>
+    <>
+    <section className="banner"><img src={banner} alt="" /><div className="wrap"><p className="kicker">Shop</p><h1 style={{ fontSize: 'clamp(2rem,4.6vw,3.4rem)' }}>{current ? current[1] : 'Every range'}</h1><p className="intro">{current ? current[2] : 'Prices per m² ex VAT, as sold at the yard. Every image is our own stock.'}</p></div></section>
+    <section className="chapter" style={{ paddingTop: 'clamp(28px,4vw,48px)' }}><div className="wrap">
       <div className="toolbar">
         <div className="seg" role="group" aria-label="Category">
           <button type="button" aria-pressed={cat === 'all'} onClick={() => go('shop')}>All</button>
@@ -484,6 +486,7 @@ function Shop({ route }) {
       <p className="count" style={{ marginBottom: 16 }}>{list.length} {list.length === 1 ? 'product' : 'products'}</p>
       <div className="grid">{list.map(p => <ProductCard key={p.id} p={p} />)}</div>
     </div></section>
+    </>
   )
 }
 
@@ -492,10 +495,12 @@ function Product({ route, bag }) {
   const [img, setImg] = useState(0)
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState('')
+  useEffect(() => { if (!p) return; document.body.classList.add('has-sticky'); return () => document.body.classList.remove('has-sticky') }, [p])
   if (!p) return <div className="wrap empty"><h2>Not found</h2><p style={{ marginTop: 12 }}><a className="more" href={href('shop')}>Back to the shop</a></p></div>
   const pics = [p.img, p.gallery].filter(Boolean)
   const unitPrice = lineUnitPrice(p)
   const related = PRODUCTS.filter(x => x.cat === p.cat && x.id !== p.id).slice(0, 4)
+  const pairs = (PAIRS[p.id] || []).map(byId).filter(Boolean)
   const addToBag = () => { bag.add(p.id, qty); setAdded(`Added ${qty} × ${lineUnitLabel(p)} to your bag`) }
   return (
     <>
@@ -534,6 +539,11 @@ function Product({ route, bag }) {
           </div>
         </div>
       </div>
+      {pairs.length > 0 && <section className="chapter" style={{ paddingBlock: 'clamp(40px,6vw,80px)', paddingTop: 0 }}><div className="wrap">
+        <div className="head-row"><div><p className="kicker">Pairs with</p><h2>Laid next to {p.name}.</h2></div></div>
+        <div className="pairs">{pairs.map(x => <a key={x.id} className="pair" href={href('product/' + x.id)}><img src={p.img} alt="" /><img src={x.img} alt={x.name} /><div><b>{p.name} + {x.name}</b><span>{x.cat === 'cladding' ? 'Wall behind the patio' : x.cat === p.cat ? 'Border, step or contrast band' : CAT_LABEL[x.cat] + ' · ' + money(x.price) + ' ' + x.unit}</span></div></a>)}</div>
+      </div></section>}
+      <div className="sticky-buy"><div><b>{money(unitPrice * (1 + VAT))}</b><small>{lineUnitLabel(p)} inc VAT</small></div><button className="pill" type="button" onClick={addToBag}>Add to bag</button></div>
       {p.unit !== 'per kit' && <section className="chapter grey" style={{ paddingBlock: 'clamp(40px,6vw,80px)' }}><div className="wrap">
         <div className="head-row"><div><p className="kicker">How many packs</p><h2>Price your area in {p.name}.</h2></div></div>
         <Calculator key={p.id} initial={p.id} bag={bag} compact />
@@ -660,6 +670,15 @@ function About() {
         <div className="yard-pics"><img src={IMG.yard} alt="The Nitya Stones showroom on Mark Road" /><img src={IMG.pallets} alt="Pallets in the yard" /></div>
       </div></section>
       <section className="chapter grey"><div className="wrap">
+        <div className="narrow"><p className="kicker">How we buy</p><h2>Direct, held, checked.</h2><p className="intro">Sandstone hand-split in the quarry districts of Rajasthan. Limestone sawn and honed from Sinai and Kota. Porcelain pressed in Spain and Gujarat. Bought direct, landed at Mark Road, and looked at before it goes out.</p></div>
+        <div className="media values">
+          <div className="value"><h3>Wholesale and retail</h3><p>Landscapers on account and homeowners with one patio get the same stone at the same yard. There's no trade-only counter.</p></div>
+          <div className="value"><h3>Batch-matched</h3><p>Every pallet carries its batch number. Order for one patio and we pull from one batch where we can, and tell you honestly when we can't.</p></div>
+          <div className="value"><h3>No minimum to collect</h3><p>Three slabs for a repair or thirty pallets for a development — collection is free and any quantity.</p></div>
+          <div className="value"><h3>Custom from 120 m²</h3><p>A size, colour or finish we don't hold can be run for you at 120 m² and above. Allow eight weeks.</p></div>
+        </div>
+      </div></section>
+      <section className="chapter"><div className="wrap">
         <div className="head-row"><div><p className="kicker">Sample, measure, pay, delivered</p><h2>How ordering works.</h2></div></div>
         <div className="bands" style={{ marginBottom: 26 }}>
           {DELIVERY.bands.map(b => <div key={b.key} className="band"><span>{b.name}</span><b>{money(b.perPallet)} per pallet</b><span>{b.note}{b.areas ? ' · ' + b.areas.slice(0, 6).join(', ') + (b.areas.length > 6 ? '…' : '') : ''}</span></div>)}
@@ -717,9 +736,15 @@ function Contact() {
 }
 
 /* ---------------- shell ---------------- */
+const TITLES = { home: 'Nitya Stones — Sandstone, Limestone & Porcelain Paving, Hemel Hempstead', shop: 'Shop', collections: 'Collections', build: 'Build your patio', samples: 'Samples', cart: 'Your bag', checkout: 'Checkout', about: 'About the yard', faq: 'FAQ', contact: 'Contact', guides: 'Guides' }
+
 export default function App() {
   const route = useRoute()
   const bag = useBag()
+  useEffect(() => {
+    const t = route.page === 'product' ? byId(route.id)?.name : route.page === 'guide' ? guideBySlug(route.id)?.title : TITLES[route.page]
+    document.title = route.page === 'home' || !t ? TITLES.home : `${t} — Nitya Stones`
+  }, [route])
   const [menu, setMenu] = useState(false)
   const NAV = [['shop', 'Shop'], ['collections', 'Collections'], ['build', 'Build your patio'], ['guides', 'Guides'], ['about', 'About'], ['contact', 'Contact']]
   const page = {
@@ -743,7 +768,8 @@ export default function App() {
           <div><Logo /><p style={{ marginTop: 14, maxWidth: '32ch' }}>Wholesale and retail suppliers of outdoor and indoor porcelain, sandstone, limestone and cladding. 34 Mark Road, Hemel Hempstead HP2 7BW.</p></div>
           <div><h4>Shop</h4>{CATS.map(([k, l]) => <a key={k} href={href('shop?cat=' + k)}>{l}</a>)}<a href={href('samples')}>Samples</a></div>
           <div><h4>Help</h4><a href={href('guides')}>Guides</a><a href={href('build')}>Build your patio</a><a href={href('collections')}>Collections</a><a href={href('faq')}>FAQ</a><a href={href('about')}>Ordering &amp; delivery</a><a href={href('about')}>Laying patterns</a><a href={href('contact')}>Trade accounts</a></div>
-          <div><h4>The yard</h4><a href={PHONE_HREF}>{PHONE}</a><a href="mailto:info@nityastones.co.uk">info@nityastones.co.uk</a><span style={{ display: 'block', paddingTop: 3 }}>Mon–Fri 8–6 · Sat 8–1</span></div>
+          <div><h4>The yard</h4><a href={PHONE_HREF}>{PHONE}</a><a href="mailto:info@nityastones.co.uk">info@nityastones.co.uk</a><span style={{ display: 'block', paddingTop: 3 }}>Mon–Fri 8–6 · Sat 8–1</span>
+            <div className="social"><a href="https://www.instagram.com/nityastones/" target="_blank" rel="noreferrer">Instagram</a><a href="https://www.facebook.com/NityaStones/" target="_blank" rel="noreferrer">Facebook</a><a href="https://uk.linkedin.com/company/nitya-stones-uk" target="_blank" rel="noreferrer">LinkedIn</a></div></div>
         </div>
         <div className="foot-bottom"><span>© Nitya Stones · Photography © Nitya Stones</span><img className="payments" src={IMG.payments} alt="Cards and Klarna accepted" /></div>
       </div></footer>

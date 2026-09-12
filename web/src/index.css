@@ -1,3 +1,8 @@
+/* self-hosted type — no third-party request, no flash of fallback */
+@font-face{font-family:Cinzel;font-weight:600;font-display:swap;src:url(./fonts/Cinzel-600.ttf) format("truetype")}
+@font-face{font-family:Geist;font-weight:400;font-display:swap;src:url(./fonts/Geist-400.ttf) format("truetype")}
+@font-face{font-family:Geist;font-weight:500;font-display:swap;src:url(./fonts/Geist-500.ttf) format("truetype")}
+@font-face{font-family:Geist;font-weight:600 700;font-display:swap;src:url(./fonts/Geist-700.ttf) format("truetype")}
 /* Nitya Stones — minimalist luxury on stone: off-white ground, black header,
    white cards, one warm stone accent. Painted explicitly on every surface so
    it holds on any host ground. */
@@ -649,3 +654,36 @@ footer{padding-block:64px 56px;background:#111}
   .hero-cine .hero-in{padding-top:120px}
   .chapter{padding-block:64px}
 }
+
+
+/* ---------- finish: banners, pairs, sticky buy, about ---------- */
+.banner{position:relative;min-height:clamp(260px,34vw,420px);display:grid;align-items:end;color:#fff;overflow:hidden;background:#161616;isolation:isolate}
+.banner img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1}
+.banner::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(8,8,8,.25),rgba(8,8,8,.15) 40%,rgba(8,8,8,.85))}
+.banner .wrap{padding-block:40px}
+.banner .kicker{color:var(--gold)}
+.banner h1,.banner h2{color:#fff;font-size:clamp(2rem,4.6vw,3.4rem)}
+.banner h2::after{background:var(--gold);margin-left:0}
+.banner .intro{color:rgba(255,255,255,.8);max-width:52ch;margin-top:14px}
+.banner .from{color:rgba(255,255,255,.75);font-size:.9rem;margin-top:14px}
+.banner .from b{color:#fff;font-family:Cinzel,serif;font-size:1.4rem;margin-right:6px}
+.pairs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--grey);border-radius:var(--radius);overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 1px 0 rgba(22,22,22,.04),0 10px 30px -18px rgba(22,22,22,.18)}
+.pair img{width:100%;aspect-ratio:1;object-fit:cover}
+.pair div{grid-column:span 2;padding:14px 16px 16px}
+.pair b{display:block;font-size:.95rem}
+.pair span{font-size:.82rem;color:var(--ink-3)}
+.sticky-buy{display:none}
+@media (max-width:900px){
+  .sticky-buy{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(22,22,22,.96);color:#fff;padding:12px 16px calc(12px + env(safe-area-inset-bottom));gap:12px;align-items:center;justify-content:space-between;backdrop-filter:blur(10px)}
+  .sticky-buy b{font-size:1rem;font-variant-numeric:tabular-nums}
+  .sticky-buy small{display:block;color:rgba(255,255,255,.65);font-size:.72rem}
+  .sticky-buy .pill{background:var(--gold);border-color:var(--gold);color:#161616;padding:11px 18px;font-size:.72rem}
+  body.has-sticky{padding-bottom:84px}
+}
+.values{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+.value{background:var(--grey);border-radius:var(--radius);padding:26px 24px;box-shadow:0 1px 0 rgba(22,22,22,.04),0 10px 30px -18px rgba(22,22,22,.18)}
+.value h3{font-size:1.1rem;font-family:Geist,sans-serif;font-weight:600;margin-bottom:8px}
+.value p{color:var(--ink-2);font-size:.94rem}
+.social{display:flex;gap:14px;margin-top:14px}
+.social a{display:inline-flex;align-items:center;gap:6px}

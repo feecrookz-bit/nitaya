@@ -236,3 +236,27 @@ export const COLOUR_TAGS = {
   'calacatta-blanco': 'white marble veined', 'miracle-statuario': 'white marble gloss', 'modern-statuario': 'white marble', 'saint-lawrence': 'black marble gold', 'lobbies-silver': 'grey silver', 'jiniva-natural': 'beige grey', 'brit-raven': 'charcoal dark concrete', 'aspire-grey': 'grey', 'dark-stonella': 'dark grey', 'eden-ash': 'grey ash light', 'rovero-dark-grey': 'dark grey', 'sand-grigio': 'grey sand', 'unika-gris': 'grey',
   cladding: 'grey buff mixed',
 }
+
+/* Curated pairings shown on product pages: a border, a contrast, a wall. */
+export const PAIRS = {
+  'kandla-grey': ['black-limestone', 'kandla-circle', 'cladding'],
+  'kandla-grey-900': ['black-limestone', 'kandla-grey', 'cladding'],
+  'raj-green': ['rippon-buff', 'autumn-brown', 'cladding'],
+  'rippon-buff': ['raj-green', 'fossil-mint', 'hs-beige'],
+  'autumn-brown': ['raj-green', 'black-limestone', 'copper-slate'],
+  'fossil-mint': ['rippon-buff', 'sinai-pearl', 'himalayan-white'],
+  'kandla-circle': ['kandla-grey', 'kandla-grey-900', 'black-limestone'],
+  'black-limestone': ['kandla-grey', 'bodo-white', 'sinai-pearl'],
+  'sinai-pearl': ['fossil-mint', 'calacatta-blanco', 'quartz-white'],
+  'sinai-pearl-mixed': ['sinai-pearl', 'fossil-mint', 'cladding'],
+  'bodo-white': ['black-limestone', 'calacatta-blanco', 'cladding'],
+  'himalayan-white': ['quartz-white', 'noor-grigio', 'fossil-mint'],
+  'quartz-white': ['himalayan-white', 'black-porcelain', 'calacatta-blanco'],
+  'crystal-gris': ['earthstone-grey', 'black-limestone', 'cladding'],
+  'earthstone-grey': ['crystal-gris', 'copper-slate', 'brit-raven'],
+  'kandla-porcelain': ['kandla-grey', 'black-limestone', 'cladding'],
+  'noor-grigio': ['himalayan-white', 'lobbies-silver', 'cladding'],
+  'hs-beige': ['rippon-buff', 'beige-porcelain', 'jiniva-natural'],
+  'copper-slate': ['autumn-brown', 'brit-raven', 'cladding'],
+  'cladding': ['kandla-grey', 'bodo-white', 'raj-green'],
+}
