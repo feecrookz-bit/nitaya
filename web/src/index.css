@@ -795,3 +795,6 @@ footer .logo{height:120px}
 }
 .hero-cine .hero-in .hero-mark{margin-bottom:30px}
 @media (max-width:640px){.hero-cine .hero-in .hero-mark{height:88px;margin-bottom:26px}}
+/* left-side darkening behind the hero text so the mark and headline hold on pale slides */
+.slides::after{background:linear-gradient(90deg,rgba(8,8,8,.62) 0%,rgba(8,8,8,.28) 45%,rgba(8,8,8,.05) 75%),linear-gradient(180deg,rgba(8,8,8,.30) 0%,rgba(8,8,8,.05) 30%,rgba(8,8,8,.30) 60%,rgba(8,8,8,.86) 100%)}
+@media (max-width:640px){.slides::after{background:linear-gradient(180deg,rgba(8,8,8,.45) 0%,rgba(8,8,8,.30) 30%,rgba(8,8,8,.45) 55%,rgba(8,8,8,.90) 100%)}}
