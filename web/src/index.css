@@ -793,3 +793,5 @@ footer .logo{height:120px}
   .theme-btn{min-width:44px;justify-content:center}
   .bag-btn{min-height:44px}
 }
+.hero-cine .hero-in .hero-mark{margin-bottom:30px}
+@media (max-width:640px){.hero-cine .hero-in .hero-mark{height:88px;margin-bottom:26px}}
