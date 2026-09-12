@@ -12,6 +12,9 @@
  * a lost password means republishing with a new one.
  */
 import { readFileSync, writeFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
+const LOGO = 'data:image/png;base64,' + readFileSync(join(dirname(fileURLToPath(import.meta.url)), 'logo.png')).toString('base64')
 import { pbkdf2Sync, randomBytes, createCipheriv } from 'node:crypto'
 
 const [src, dst, password] = process.argv.slice(2)
@@ -44,7 +47,7 @@ button:disabled{opacity:.6;cursor:default}
 small{color:#7E7C76;font-size:.78rem}
 </style></head><body>
 <div class="g"><div class="card">
-<div class="mark"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 40c0-16 10-28 24-28s24 12 24 28"/><path d="M8 40c-2 4-5 6-7 6M56 40c2 4 5 6 7 6"/><path d="M22 50V22l20 28V22"/></svg>NITYA STONES</div>
+<div class="mark"><img src="__LOGO__" alt="Nitya Stones" style="height:72px;width:auto"></div>
 <h1>Private preview</h1>
 <p>This site is under review. Enter the password to open it.</p>
 <form id="f"><input id="pw" type="password" autocomplete="current-password" placeholder="Password" autofocus required><button id="go" type="submit">Open the site</button><div class="err" id="err" role="alert"></div></form>
@@ -83,6 +86,6 @@ try{const s=sessionStorage.getItem('ns-preview');if(s)open(s).catch(()=>{})}catc
 </script>
 <script type="text/plain" id="ct">__CT__</script>
 </body></html>`
-const out = GATE.replace('__SALT__', salt.toString('base64')).replace('__IV__', iv.toString('base64')).replace('__ITER__', String(ITER)).replace('__CT__', ct.toString('base64'))
+const out = GATE.replace('__LOGO__', LOGO).replace('__SALT__', salt.toString('base64')).replace('__IV__', iv.toString('base64')).replace('__ITER__', String(ITER)).replace('__CT__', ct.toString('base64'))
 writeFileSync(dst, out)
 console.log(`protected ${(plain.length / 1024) | 0} KB -> ${(out.length / 1024) | 0} KB`)

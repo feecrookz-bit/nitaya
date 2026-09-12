@@ -12,6 +12,21 @@ Preview: https://feecrookz-bit.github.io/nitaya/ (password-gated)  ·  Repo: web
 - Everything runs in the browser. Nothing is charged; nothing is emailed;
   nothing is stored beyond the visitor's own device.
 
+## Needed from the store to finalise the mock-up
+
+Nothing technical — files and facts only.
+
+1. **Logo as a vector or large file** (AI/EPS/SVG/PDF, or a PNG at least 2,000 px wide). The demo uses the 226 px web logo, cleaned and upscaled; it holds at nav size but a vector is needed for print, the favicon and any large use.
+2. **Straight-down photos of four stones** — Bodo White, Fossil Mint, HS Beige, Himalayan White — one dry slab each, phone camera, daylight, from directly above. Every other range already has one.
+3. **One hosed-slab photo per sandstone** (Kandla Grey, Raj Green, Rippon Buff, Autumn Brown, Fossil Mint) — same slab, same framing as the dry one — for the wet/dry slider. Until then the wet side is simulated and labelled.
+4. **A 15–20 second phone video**, landscape: a hose running over a Raj Green slab, then a slow walk across a laid patio. This becomes the hero and beats every competitor's opener.
+5. **Any finished-garden photos** from customers, with the stone laid — for Projects.
+6. **Reviews**: a Google Business or Trustpilot link if one exists, and any written reviews with the customer's permission.
+7. **Confirmations on copy** (yes/no each): "since 2016"; "price match"; "split packs: outdoor porcelain and Kandla Grey 600×900 only"; "custom orders from 120 m², up to eight weeks"; "Klarna accepted"; sample price £5 (or free / refunded against first order?).
+8. **Delivery**: real per-pallet rates by area when convenient — the demo shows indicative bands marked as such.
+9. **Trade**: what an account actually includes (terms, pallet pricing, dedicated contact) so the Trade page states their offer rather than a typical one.
+10. **Instagram**: switch the account to a Business profile (free) if they want the feed embedded.
+
 ## What "going live" adds (the commit)
 
 | Item | What it is | Indicative cost |

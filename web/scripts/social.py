@@ -50,12 +50,15 @@ def spaced(d, xy, text, f, fill, spacing):
         d.text((x, y), ch, font=f, fill=fill); x += f.getlength(ch) + spacing
     return x
 
+LOGO = Image.open(os.path.join(HERE, 'logo.png')).convert('RGBA')
 def wordmark(d, x, y, colour=INK, size=30, gold=SAND):
-    # monogram: arch + N, single stroke, then NITYA STONES in Cinzel
-    s = size; lw = max(2, s // 12)
-    d.arc((x, y - s * 0.05, x + s, y + s * 1.25), 195, 345, fill=gold, width=lw)
-    d.line((x + s * 0.3, y + s * 0.95, x + s * 0.3, y + s * 0.3, x + s * 0.7, y + s * 0.95, x + s * 0.7, y + s * 0.3), fill=gold, width=lw, joint='curve')
-    return spaced(d, (x + s + s * 0.45, y + s * 0.18), 'NITYA STONES', CINZEL(int(s * 0.78)), colour, s * 0.16)
+    """Paste the original mark; `size` sets its height. Works on d._image."""
+    im = d._image
+    h = int(size * 2.2); w = int(LOGO.width * h / LOGO.height)
+    lg = LOGO.resize((w, h), Image.LANCZOS)
+    if im.mode != 'RGBA': base = im.convert('RGBA'); base.alpha_composite(lg, (x, y)); im.paste(base.convert('RGB'))
+    else: im.alpha_composite(lg, (x, y))
+    return x + w
 
 def wrap(d, text, f, width):
     words, lines, cur = text.split(), [], ''

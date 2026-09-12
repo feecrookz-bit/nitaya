@@ -64,10 +64,9 @@ button{font:inherit;color:inherit}
 .nav{position:sticky;top:0;z-index:60;background:var(--black);color:var(--on-black)}
 .nav-in{display:flex;align-items:center;gap:26px;height:60px}
 .brand{text-decoration:none;margin-right:auto;display:flex;align-items:center}
-.logo{display:inline-flex;align-items:center;gap:10px;line-height:1}
-.logo-word{display:grid;gap:3px}
-.logo-word b{font-family:Cinzel,serif;font-weight:600;font-size:1rem;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap}
-.logo-word small{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.logo{display:block;height:54px;width:auto}
+.logo.compact{height:46px}
+footer .logo{height:82px}
 .links{display:flex;gap:24px}
 .links a,.links button{text-decoration:none;font-size:.86rem;color:var(--on-black-2);background:none;border:0;padding:0;cursor:pointer}
 .links a:hover,.links button:hover,.links .active{color:var(--on-black)}
@@ -560,9 +559,7 @@ h1,h2,h3{color:var(--ink);letter-spacing:.015em}
 .links a,.links button{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(245,243,240,.72);padding-bottom:4px;border-bottom:1px solid transparent}
 .links a:hover,.links .active{color:#fff;border-bottom-color:var(--gold)}
 .bag-btn{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;border-color:rgba(255,255,255,.28)}
-.logo-word b{font-size:1.05rem;letter-spacing:.22em}
-.logo-word small{display:none}
-footer .logo-word small{display:block}
+
 
 /* hero: taller, quieter, a gold rule, film grain */
 .hero-cine{min-height:min(92vh,880px)}

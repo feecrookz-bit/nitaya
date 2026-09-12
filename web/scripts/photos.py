@@ -134,45 +134,18 @@ def crop_aspect(im, aspect):
     return im.crop((0, y, w, y + nh))
 
 
-def watermark(im, opacity=0.68):
-    """Modernised mark — monogram under an arch, NITYA STONES in Cinzel —
-    drawn bottom-right at ~16% of the image width, white with a soft shadow."""
-    from PIL import ImageFont
+def watermark(im, opacity=0.72):
+    """The original Nitya Stones mark, bottom-right, ~15% of the image width."""
+    logo = Image.open(os.path.join(HERE, 'logo.png')).convert('RGBA')
     W, H = im.size
-    scale = max(120, int(W * 0.16)) / 100  # design unit: 100 = mark width
-    font = ImageFont.truetype(FONT, int(11 * scale))
-    text = 'NITYA STONES'
-    tw = int(font.getlength(text) + 0.16 * 11 * scale * (len(text) - 1))
-    mono = int(22 * scale)
-    mw = mono + int(6 * scale) + tw
-    mh = mono
-    layer = Image.new('RGBA', (mw + 8, mh + 8), (0, 0, 0, 0))
-    d = ImageDraw.Draw(layer)
-    lw = max(1, int(1.1 * scale))
-    x0, y0 = 4, 4
-    # arch with tails
-    d.arc((x0, y0, x0 + mono, y0 + mono * 1.35), 195, 345, fill=(255, 255, 255, 255), width=lw)
-    d.line((x0, y0 + mono * 0.62, x0 - lw * 1.5, y0 + mono * 0.75), fill=(255, 255, 255, 255), width=lw)
-    d.line((x0 + mono, y0 + mono * 0.62, x0 + mono + lw * 1.5, y0 + mono * 0.75), fill=(255, 255, 255, 255), width=lw)
-    # N
-    nx = x0 + mono * 0.3; ny = y0 + mono * 0.3; nh = mono * 0.65; nw = mono * 0.4
-    d.line((nx, ny + nh, nx, ny, nx + nw, ny + nh, nx + nw, ny), fill=(255, 255, 255, 255), width=lw, joint='curve')
-    # wordmark, letter-spaced
-    tx = x0 + mono + int(6 * scale)
-    ty = y0 + (mono - font.size) // 2 - int(1 * scale)
-    sp = 0.16 * 11 * scale
-    for ch in text:
-        d.text((tx, ty), ch, font=font, fill=(255, 255, 255, 255))
-        tx += font.getlength(ch) + sp
-    shadow = layer.split()[3].filter(ImageFilter.GaussianBlur(max(1, int(1.5 * scale))))
-    shadow_img = Image.new('RGBA', layer.size, (0, 0, 0, 0))
-    shadow_img.putalpha(shadow.point(lambda a: int(a * 0.55)))
-    out = im.convert('RGBA')
-    margin = int(W * 0.025)
-    pos = (W - layer.width - margin, H - layer.height - margin)
-    out.alpha_composite(shadow_img, (pos[0] + int(1 * scale), pos[1] + int(1 * scale)))
-    stamped = layer.copy()
-    stamped.putalpha(layer.split()[3].point(lambda a: int(a * opacity)))
+    tw = max(120, int(W * 0.15)); th = int(logo.height * tw / logo.width)
+    logo = logo.resize((tw, th), Image.LANCZOS)
+    a = logo.split()[3].point(lambda v: int(v * opacity))
+    shadow = Image.new('RGBA', logo.size, (0, 0, 0, 0)); shadow.putalpha(a.filter(ImageFilter.GaussianBlur(3)).point(lambda v: int(v * 0.6)))
+    out = im.convert('RGBA'); margin = int(W * 0.025)
+    pos = (W - tw - margin, H - th - margin)
+    out.alpha_composite(shadow, (pos[0] + 2, pos[1] + 2))
+    stamped = logo.copy(); stamped.putalpha(a)
     out.alpha_composite(stamped, pos)
     return out.convert('RGB')
 
