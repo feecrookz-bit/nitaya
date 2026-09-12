@@ -67,10 +67,14 @@ function Price({ p, big }) {
     </div>
   )
 }
+const saving = (p) => p.was ? Math.round((1 - p.price / p.was) * 100) : 0
+
 function ProductCard({ p }) {
+  const pct = saving(p)
   return (
     <a className="product" href={href('product/' + p.id)} style={{ '--fc': FAMILY_COLOUR[p.cat].c, '--tc': p.tag === 'Splits' ? 'var(--green)' : p.tag === 'Pallet deal' ? 'var(--rust)' : 'var(--gold-2)' }}>
       <img src={p.img} alt={p.name} loading="lazy" />
+      {pct >= 10 && <span className="save">Save {pct}%</span>}
       <div className="product-body">
         {p.tag && <span className="tag">{p.tag}</span>}
         <span className="fam">{CAT_LABEL[p.cat]}</span>
@@ -250,7 +254,7 @@ function Home({ bag }) {
         <div><b><CountUp to={2016} plain /></b>Trading from the same Hemel Hempstead yard.</div>
         <div><b><CountUp to={36} /></b>Ranges in stock — sandstone, limestone, porcelain, cladding.</div>
         <div><b>3–4 days</b>Working days from cleared payment. We call on the day.</div>
-        <div><b>£0 minimum</b>Collect from HP2 7BW, any quantity. Price match on all of it.</div>
+        <div><b>Trade</b>Accounts, pallet pricing and site delivery for landscapers and builders. <a className="more" href={href('trade')} style={{ fontSize: '.84rem' }}>Open an account</a></div>
       </div>
 
       <section className="slab-moment" data-reveal>
@@ -273,6 +277,11 @@ function Home({ bag }) {
       <section className="chapter sand" data-reveal><div className="wrap">
         <div className="head-row"><div><p className="kicker">This season</p><h2>{SEASON.title}.</h2><p className="intro">Four stones that suit the light this time of year: the warm sandstones that come up richer wet, and the dark ones that hide leaf litter.</p></div><a className="more" href={href('shop')}>All 36 stones</a></div>
         <div className="grid">{season.map(p => <ProductCard key={p.id} p={p} />)}</div>
+      </div></section>
+
+      <section className="chapter" data-reveal><div className="wrap">
+        <div className="head-row"><div><p className="kicker">Offers</p><h2>Below list this month.</h2><p className="intro">The shop's current was/now prices, in one place. Same pallets, same yard.</p></div><a className="more" href={href('shop?cat=offers')}>All offers</a></div>
+        <div className="grid">{PRODUCTS.filter(p => saving(p) >= 15).slice(0, 4).map(p => <ProductCard key={p.id} p={p} />)}</div>
       </div></section>
 
       <section className="chapter" data-reveal><div className="wrap builder-teaser">
@@ -372,6 +381,60 @@ function Guide({ route }) {
   )
 }
 
+function Projects() {
+  return (
+    <>
+      <section className="banner"><img src={SCENES[1].img} alt="" /><div className="wrap"><p className="kicker">Projects</p><h1 style={{ fontSize: 'clamp(2rem,4.6vw,3.4rem)' }}>Gardens laid with Mark Road stone.</h1><p className="intro">Customers' patios, terraces and pool surrounds. Every one left the yard on a pallet; tap a project to shop the stone.</p></div></section>
+      <section className="chapter" style={{ paddingTop: 'clamp(28px,4vw,48px)' }}><div className="wrap">
+        <div className="scenes">
+          {SCENES.map(sc => { const p = byId(sc.product); return <a key={sc.title} className="scene" href={href('product/' + sc.product)}><img src={sc.img} alt={sc.title} loading="lazy" /><figcaption><b>{sc.title}</b><span>{sc.sub}</span>{p && <span style={{ color: 'var(--gold)', marginTop: 4 }}>{p.name} · {money(p.price)} {p.unit} + VAT</span>}</figcaption></a> })}
+        </div>
+        <div className="narrow" style={{ marginTop: 56 }}><p className="kicker">Your garden here</p><h2>Send us the finished job.</h2><p className="intro">Every project on this page came from a customer's phone. Send yours to info@nityastones.co.uk with the stone you laid and we'll add it — and put a sample pack of your choice in the post as a thank-you.</p></div>
+      </div></section>
+    </>
+  )
+}
+
+function Trade() {
+  const [f, setF] = useState({ company: '', name: '', phone: '', email: '', type: 'Landscaper', volume: 'Under 100 m² a year', msg: '' })
+  const [copied, setCopied] = useState('')
+  const set = (k) => (e) => setF({ ...f, [k]: e.target.value })
+  const text = `NITYA STONES — TRADE ACCOUNT\n\nCompany:  ${f.company || '—'}\nName:     ${f.name || '—'}\nPhone:    ${f.phone || '—'}\nEmail:    ${f.email || '—'}\nTrade:    ${f.type}\nVolume:   ${f.volume}\n\n${f.msg || '(current jobs, stones you use most, where you deliver)'}`
+  const copy = async () => { try { await navigator.clipboard.writeText(text); setCopied('Copied — email it to info@nityastones.co.uk or ring the yard') } catch { setCopied('Select the text and copy it') } }
+  return (
+    <>
+      <section className="banner"><img src={IMG.pallets} alt="" /><div className="wrap"><p className="kicker">Trade</p><h1 style={{ fontSize: 'clamp(2rem,4.6vw,3.4rem)' }}>Wholesale from the same yard.</h1><p className="intro">Landscapers, builders and developers buy the same stone from the same pallets — on account, by the load, with a name at the yard who knows your jobs.</p></div></section>
+      <section className="chapter" style={{ paddingTop: 'clamp(28px,4vw,48px)' }}><div className="wrap">
+        <div className="values">
+          <div className="value"><h3>Account terms</h3><p>Open an account and order by phone or email against it. Ask the yard about terms — card, bank transfer and Klarna are all taken.</p></div>
+          <div className="value"><h3>Pallet and load pricing</h3><p>Multi-pallet and full-load prices on every range. Ask for the trade sheet — it's the shop price list with the volume column filled in.</p></div>
+          <div className="value"><h3>Site delivery</h3><p>Kerbside on a tail-lift, 3–4 working days from payment, 8am–6pm, with a call on the day. Multiple drops on one job by arrangement.</p></div>
+          <div className="value"><h3>Samples for your client</h3><p>Sample boards and 100×100 pieces for client sign-off, posted to you or to them.</p></div>
+          <div className="value"><h3>Custom from 120 m²</h3><p>A size, colour or finish we don't hold, run for your project. Allow eight weeks.</p></div>
+          <div className="value"><h3>Collect any time</h3><p>Mon–Fri 8–6, Sat 8–1 from 34 Mark Road. No minimum, forked onto your vehicle.</p></div>
+        </div>
+      </div></section>
+      <section className="chapter grey"><div className="wrap contact-grid">
+        <div><p className="kicker">Apply</p><h2>Open a trade account.</h2><p className="intro">Fill this in and send it over, or ring {PHONE} and we'll set it up on the call.</p>
+          <div className="form">
+            <div className="two"><div className="field"><label htmlFor="tCo">Company</label><input id="tCo" autoComplete="organization" value={f.company} onChange={set('company')} /></div><div className="field"><label htmlFor="tName">Your name</label><input id="tName" autoComplete="name" value={f.name} onChange={set('name')} /></div></div>
+            <div className="two"><div className="field"><label htmlFor="tPhone">Phone</label><input id="tPhone" type="tel" autoComplete="tel" value={f.phone} onChange={set('phone')} /></div><div className="field"><label htmlFor="tEmail">Email</label><input id="tEmail" type="email" autoComplete="email" value={f.email} onChange={set('email')} /></div></div>
+            <div className="two">
+              <div className="field"><label htmlFor="tType">Trade</label><select id="tType" value={f.type} onChange={set('type')}>{['Landscaper', 'Builder', 'Developer', 'Garden designer', 'Tiler', 'Merchant'].map(o => <option key={o}>{o}</option>)}</select></div>
+              <div className="field"><label htmlFor="tVol">Volume</label><select id="tVol" value={f.volume} onChange={set('volume')}>{['Under 100 m² a year', '100–500 m² a year', '500–2,000 m² a year', 'Over 2,000 m² a year'].map(o => <option key={o}>{o}</option>)}</select></div>
+            </div>
+            <div className="field"><label htmlFor="tMsg">About your work</label><textarea id="tMsg" value={f.msg} onChange={set('msg')} placeholder="Current jobs, the stones you use most, where you deliver" /></div>
+            <div className="buy-actions"><button className="pill" type="button" onClick={copy}>Copy application</button><a className="pill ghost" href={PHONE_HREF}>Call {PHONE}</a><span className="copied" role="status" aria-live="polite">{copied}</span></div>
+          </div>
+        </div>
+        <div><p className="kicker">Most laid by trade</p><h2>The four that go on every van.</h2>
+          <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', marginTop: 22 }}>{['kandla-grey', 'bodo-white', 'raj-green', 'black-limestone'].map(byId).map(p => <ProductCard key={p.id} p={p} />)}</div>
+        </div>
+      </div></section>
+    </>
+  )
+}
+
 function Collections() {
   return (
     <>
@@ -460,12 +523,12 @@ function Shop({ route }) {
   const cat = route.q.get('cat') || 'all'
   const [q, setQ] = useState(route.q.get('q') || '')
   const [sort, setSort] = useState('featured')
-  let list = PRODUCTS.filter(p => cat === 'all' || p.cat === cat)
+  let list = PRODUCTS.filter(p => cat === 'all' || (cat === 'offers' ? saving(p) >= 10 : p.cat === cat))
   if (q.trim()) { const words = q.trim().toLowerCase().split(/\s+/); list = list.filter(p => { const hay = (p.name + ' ' + CAT_LABEL[p.cat] + ' ' + SEARCH_TAGS[p.cat] + ' ' + (COLOUR_TAGS[p.id] || '') + ' ' + p.size + ' ' + p.thick + ' ' + p.finish + ' ' + p.origin + ' ' + p.blurb).toLowerCase(); return words.every(w => hay.includes(w)) }) }
   if (sort === 'low') list = [...list].sort((a, b) => (a.unit === 'per m²' ? a.price : a.price / (a.cover || 1)) - (b.unit === 'per m²' ? b.price : b.price / (b.cover || 1)))
   if (sort === 'high') list = [...list].sort((a, b) => (b.unit === 'per m²' ? b.price : b.price / (b.cover || 1)) - (a.unit === 'per m²' ? a.price : a.price / (a.cover || 1)))
   if (sort === 'az') list = [...list].sort((a, b) => a.name.localeCompare(b.name))
-  const current = CATS.find(c => c[0] === cat)
+  const current = cat === 'offers' ? ['offers', 'Offers', 'Everything currently below its list price. Same stone, same yard — the price has moved, not the quality.'] : CATS.find(c => c[0] === cat)
   const banner = { sandstone: SCENES[3].img, limestone: SCENES[0].img, outdoor: SCENES[1].img, indoor: byId('calacatta-blanco').img, cladding: SCENES[6].img }[cat] || SCENES[2].img
   return (
     <>
@@ -475,6 +538,7 @@ function Shop({ route }) {
         <div className="seg" role="group" aria-label="Category">
           <button type="button" aria-pressed={cat === 'all'} onClick={() => go('shop')}>All</button>
           {CATS.map(([k, l]) => <button key={k} type="button" aria-pressed={cat === k} onClick={() => go('shop?cat=' + k)}>{l}</button>)}
+          <button type="button" className="offers-seg" aria-pressed={cat === 'offers'} onClick={() => go('shop?cat=offers')}>Offers</button>
         </div>
         <div className="search">
           <input id="shopSearch" type="search" placeholder="Search ranges" value={q} onChange={e => setQ(e.target.value)} aria-label="Search ranges" />
@@ -768,10 +832,10 @@ export default function App() {
     document.title = route.page === 'home' || !t ? TITLES.home : `${t} — Nitya Stones`
   }, [route])
   const [menu, setMenu] = useState(false)
-  const NAV = [['shop', 'Shop'], ['collections', 'Collections'], ['build', 'Build your patio'], ['guides', 'Guides'], ['about', 'About'], ['contact', 'Contact']]
+  const NAV = [['shop', 'Shop'], ['collections', 'Collections'], ['build', 'Build your patio'], ['projects', 'Projects'], ['guides', 'Guides'], ['trade', 'Trade'], ['contact', 'Contact']]
   const page = {
     home: <Home bag={bag} />, shop: <Shop key={route.q.toString()} route={route} />, product: <Product key={route.id} route={route} bag={bag} />, samples: <Samples bag={bag} />,
-    cart: <Bag bag={bag} />, checkout: <Checkout bag={bag} />, about: <About />, faq: <Faq />, contact: <Contact />, collections: <Collections />, build: <Build bag={bag} />, guides: <Guides />, guide: <Guide key={route.id} route={route} />,
+    cart: <Bag bag={bag} />, checkout: <Checkout bag={bag} />, about: <About />, faq: <Faq />, contact: <Contact />, collections: <Collections />, build: <Build bag={bag} />, guides: <Guides />, guide: <Guide key={route.id} route={route} />, projects: <Projects />, trade: <Trade />,
   }[route.page] || <Home bag={bag} />
   return (
     <>
@@ -789,8 +853,8 @@ export default function App() {
       <footer><div className="wrap">
         <div className="foot">
           <div><Logo /><p style={{ marginTop: 14, maxWidth: '32ch' }}>Wholesale and retail suppliers of outdoor and indoor porcelain, sandstone, limestone and cladding. 34 Mark Road, Hemel Hempstead HP2 7BW.</p></div>
-          <div><h4>Shop</h4>{CATS.map(([k, l]) => <a key={k} href={href('shop?cat=' + k)}>{l}</a>)}<a href={href('samples')}>Samples</a></div>
-          <div><h4>Help</h4><a href={href('guides')}>Guides</a><a href={href('build')}>Build your patio</a><a href={href('collections')}>Collections</a><a href={href('faq')}>FAQ</a><a href={href('about')}>Ordering &amp; delivery</a><a href={href('about')}>Laying patterns</a><a href={href('contact')}>Trade accounts</a></div>
+          <div><h4>Shop</h4>{CATS.map(([k, l]) => <a key={k} href={href('shop?cat=' + k)}>{l}</a>)}<a href={href('shop?cat=offers')}>Offers</a><a href={href('samples')}>Samples</a></div>
+          <div><h4>Help</h4><a href={href('trade')}>Trade accounts</a><a href={href('projects')}>Projects</a><a href={href('about')}>About the yard</a><a href={href('guides')}>Guides</a><a href={href('build')}>Build your patio</a><a href={href('collections')}>Collections</a><a href={href('faq')}>FAQ</a><a href={href('about')}>Ordering &amp; delivery</a><a href={href('about')}>Laying patterns</a><a href={href('contact')}>Contact</a></div>
           <div><h4>The yard</h4><a href={PHONE_HREF}>{PHONE}</a><a href="mailto:info@nityastones.co.uk">info@nityastones.co.uk</a><span style={{ display: 'block', paddingTop: 3 }}>Mon–Fri 8–6 · Sat 8–1</span>
             <div className="social"><a href="https://www.instagram.com/nityastones/" target="_blank" rel="noreferrer">Instagram</a><a href="https://www.facebook.com/NityaStones/" target="_blank" rel="noreferrer">Facebook</a><a href="https://uk.linkedin.com/company/nitya-stones-uk" target="_blank" rel="noreferrer">LinkedIn</a></div></div>
         </div>
