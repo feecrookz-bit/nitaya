@@ -265,7 +265,7 @@ function Home({ bag }) {
         <Marquee items={PRODUCTS.slice(18).map(p => ({ img: p.img, name: p.name, href: href('product/' + p.id) }))} speed={80} reverse />
       </section>
 
-      <section className="chapter editions" data-reveal><div className="wrap">
+      <section className="chapter dark-collections" data-reveal><div className="wrap">
         <div className="narrow"><p className="kicker">The collections</p><h2>Three editions. One yard.</h2><p className="intro">Every stone we hold, arranged by what it's for rather than what it's called. Same shop prices — the editions are the curation.</p></div>
         <div className="media"><Editions /></div>
       </div></section>

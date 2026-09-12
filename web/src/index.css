@@ -598,21 +598,21 @@ footer .logo-word small{display:block}
 .edition{border-top:2px solid var(--ed,var(--gold));padding:30px 30px 32px}
 
 /* editions chapter: charcoal, gold numerals */
-.chapter.editions{background:#161616;color:#F5F3F0}
-.chapter.editions .kicker{color:var(--gold)}
-.chapter.editions h2,.chapter.editions h3{color:#F5F3F0}
-.chapter.editions .intro{color:rgba(245,243,240,.72)}
-.chapter.editions .edition{background:#1F1F1F;box-shadow:none;border-top:2px solid var(--ed,var(--gold))}
-.chapter.editions .edition .why,.chapter.editions .edition .from,.chapter.editions .edition li span{color:rgba(245,243,240,.66)}
-.chapter.editions .edition li{border-bottom-color:rgba(255,255,255,.08)}
-.chapter.editions .edition li a{color:#F5F3F0}
-.chapter.editions .edition .from b{color:#F5F3F0}
-.chapter.editions .edition .num{color:var(--gold)}
-.chapter.editions .edition.featured{border:1px solid var(--gold);border-top:2px solid var(--gold)}
-.chapter.editions .edition .badge{background:var(--gold);color:#161616}
-.chapter.editions .pill.ghost{color:#F5F3F0;border-color:rgba(255,255,255,.3)}
-.chapter.editions .pill.ghost:hover{border-color:#fff;color:#fff}
-.chapter.editions .pill.accent{background:var(--gold);color:#161616}
+.chapter.dark-collections{background:#161616;color:#F5F3F0}
+.chapter.dark-collections .kicker{color:var(--gold)}
+.chapter.dark-collections h2,.chapter.dark-collections h3{color:#F5F3F0}
+.chapter.dark-collections .intro{color:rgba(245,243,240,.72)}
+.chapter.dark-collections .edition{background:#1F1F1F;box-shadow:none;border-top:2px solid var(--ed,var(--gold))}
+.chapter.dark-collections .edition .why,.chapter.dark-collections .edition .from,.chapter.dark-collections .edition li span{color:rgba(245,243,240,.66)}
+.chapter.dark-collections .edition li{border-bottom-color:rgba(255,255,255,.08)}
+.chapter.dark-collections .edition li a{color:#F5F3F0}
+.chapter.dark-collections .edition .from b{color:#F5F3F0}
+.chapter.dark-collections .edition .num{color:var(--gold)}
+.chapter.dark-collections .edition.featured{border:1px solid var(--gold);border-top:2px solid var(--gold)}
+.chapter.dark-collections .edition .badge{background:var(--gold);color:#161616}
+.chapter.dark-collections .pill.ghost{color:#F5F3F0;border-color:rgba(255,255,255,.3)}
+.chapter.dark-collections .pill.ghost:hover{border-color:#fff;color:#fff}
+.chapter.dark-collections .pill.accent{background:var(--gold);color:#161616}
 
 /* quieter tints */
 .chapter.sand{background:#F3EEE6}
