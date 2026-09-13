@@ -6,6 +6,8 @@ const reduced = () => typeof window !== 'undefined' && window.matchMedia('(prefe
    length of its turn; the next fades over the top. Reads like footage, made
    from the yard's own stills. The first slide is visible immediately. */
 export function HeroSlides({ slides, interval = 6500 }) {
+  // The first slide is the largest paint on the page: ask for it early.
+  useEffect(() => { const l = document.createElement('link'); l.rel = 'preload'; l.as = 'image'; l.href = slides[0].src; document.head.appendChild(l); return () => l.remove() }, [slides])
   const [i, setI] = useState(0)
   useEffect(() => {
     if (reduced() || slides.length < 2) return
@@ -30,7 +32,7 @@ export function Marquee({ items, reverse = false, speed = 60 }) {
       <div className="marquee-track">
         {[...items, ...items].map((it, n) => (
           <a key={n} className="marquee-tile" href={it.href} tabIndex={n < items.length ? 0 : -1} aria-hidden={n >= items.length}>
-            <img src={it.img} alt={n < items.length ? it.name : ''} />
+            <img src={it.img} alt="" />
             <span>{it.name}</span>
           </a>
         ))}

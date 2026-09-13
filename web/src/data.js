@@ -29,6 +29,26 @@ const gallery = (id) => Object.keys(GALLERY)
   .sort((a, b) => parseInt(a.match(/-(\d+)\.jpg$/)[1]) - parseInt(b.match(/-(\d+)\.jpg$/)[1]))
   .map(k => GALLERY[k])
 
+// The business, once. Header, footer, Contact, About, Checkout, the order
+// confirmation and the LocalBusiness structured data all read from here, so
+// a detail can only ever be right or wrong in one place.
+export const BUSINESS = {
+  name: 'Nitya Stones',
+  legal: 'Nitya Stones, 34 Mark Road, Hemel Hempstead HP2 7BW',
+  phone: '0330 236 9227', phoneHref: 'tel:03302369227',
+  mobile: '07932 009870', mobileHref: 'tel:07932009870',
+  whatsapp: 'https://wa.me/447932009870',
+  email: 'info@nityastones.co.uk',
+  address: ['34 Mark Road', 'Hemel Hempstead', 'HP2 7BW'],
+  postcode: 'HP2 7BW',
+  maps: 'https://www.google.com/maps/search/?api=1&query=Nitya+Stones+34+Mark+Road+Hemel+Hempstead+HP2+7BW',
+  hours: [['Mon–Fri', '08:00 – 18:00'], ['Saturday', '08:00 – 13:00'], ['Sunday', 'Closed']],
+  hoursShort: 'Mon–Fri 8–6 · Sat 8–1',
+  since: 2016,
+  socials: [['Instagram', 'https://www.instagram.com/nityastones/'], ['Facebook', 'https://www.facebook.com/NityaStones'], ['WhatsApp', 'https://wa.me/447932009870']],
+  site: 'https://nityastones.co.uk',
+}
+
 export const IMG = { hero, yard, pallets, slabTexture, payments, logoOriginal }
 
 export const CATS = [
@@ -52,7 +72,7 @@ const sand = (slug, id, name, size, pack, cover, was, extra = {}) => add({
 sand('kandla-grey-22mm-sandstone-mixed', 'kandla-grey', 'Kandla Grey', 'Mixed patio pack', '18.19 m² per pack', 18.19, 22.2,
   { feature: 'The calm grey for white render and grey frames', blurb: 'Kandla Grey is the calm one: light-to-mid grey with occasional buff undertones, and the sandstone most often laid around white render and grey window frames. Mixed patio pack of four sizes, laid random.' })
 sand('kandla-grey-22mm-sandstone-900', 'kandla-grey-900', 'Kandla Grey 900×600', '900 × 600 mm', '18.90 m² per pack', 18.9, 22.2,
-  { tag: 'Splits', blurb: 'The same Kandla Grey in a single 900×600 size for a half-bond or stack-bond lay. This is one of the two packs we\'ll split.' })
+  { tag: 'Splits', blurb: 'The same Kandla Grey in a single 900×600 size for a half-bond or stack-bond lay. This is one of the two packs we’ll split.' })
 sand('raj-green', 'raj-green', 'Raj Green', 'Mixed patio pack', '18.19 m² per pack', 18.19, 22.2,
   { feature: 'The classic English-garden sandstone', blurb: 'Raj Green is a multicolour: greens, browns, greys and the occasional buff in one pack, and it comes up richer every time it rains. The classic English-garden sandstone.' })
 sand('rippon-buff', 'rippon-buff', 'Rippon Buff', 'Mixed patio pack', '18.19 m² per pack', 18.19, 22.2,
@@ -79,7 +99,7 @@ const out900 = (slug, id, name, cover, was = 25.5, finish = 'Matt, R11', blurb) 
   slug, id, name, cat: 'outdoor', origin: 'Vitrified porcelain', size: '600 × 900 mm', thick: '20 mm',
   pack: `${cover.toFixed(2)} m² per pallet`, cover, finish, price: 19.5, was, blurb,
 })
-out900('bodo-white', 'bodo-white', 'Bodo White', 28.08, 25.5, 'Matt, R11', 'Bodo White is a bright, marble-veined 20 mm porcelain. It\'s the slab in most of the modern extensions we supply: pale, rectified, and it stays that colour.')
+out900('bodo-white', 'bodo-white', 'Bodo White', 28.08, 25.5, 'Matt, R11', 'Bodo White is a bright, marble-veined 20 mm porcelain. It’s the slab in most of the modern extensions we supply: pale, rectified, and it stays that colour.')
 out900('himalayan-white', 'himalayan-white', 'Himalayan White', 21.6, 25.5, 'Matt, R11', 'Himalayan White blends pale greys and off-whites like a light natural stone, without the maintenance.')
 out900('quartz-white', 'quartz-white', 'Quartz White', 21.6, 25.5, 'Matt, R11', 'Quartz White is the cleanest of the whites: a fine, even grain and very little movement across the slab.')
 out900('crystal-gris', 'crystal-gris', 'Crystal Gris', 21.6, 25.5, 'Matt, R11', 'Crystal Gris is a mid-grey with a soft stone texture. The safe choice next to grey composite decking and anthracite frames.')
@@ -133,7 +153,7 @@ export const SCENES = [
   { img: sceneCircle, title: 'Kandla Grey circle kit', sub: '2.85 m feature circle set into a straight field of the same stone.', product: 'kandla-circle' },
   { img: sceneRajWet, title: 'Raj Green, wet', sub: 'Riven Indian sandstone straight after rain — greens, browns and rust come up together.', product: 'raj-green' },
   { img: sceneHimalayan, title: 'Himalayan White terrace', sub: '600×900 porcelain with a fenced boundary and lawn edge.', product: 'himalayan-white' },
-  { img: scenePool, title: 'Poolside in porcelain', sub: 'R11 slip-rated, hoses clean, doesn\'t hold algae.', product: 'quartz-white' },
+  { img: scenePool, title: 'Poolside in porcelain', sub: 'R11 slip-rated, hoses clean, doesn’t hold algae.', product: 'quartz-white' },
   { img: sceneCopper, title: 'Copper Slate, riven-effect', sub: 'Porcelain that reads as slate — laid on a full bed, pointed dark.', product: 'copper-slate' },
 ]
 
@@ -146,14 +166,14 @@ export const PATTERNS = [
 ]
 
 export const FAQ = [
-  ['Are your sandstone slabs calibrated?', 'Yes. Every slab is machine-calibrated to 22 mm after it\'s split, so the pack lays evenly on a full wet bed. The riven face still varies a few millimetres, as natural stone should; the 20 mm outdoor porcelain is dead flat, if that\'s what you\'d rather lay.'],
-  ['Why are some of my slabs slightly different shades?', 'Because they\'re natural stone. Depending on the batch number there can be a slight difference in shade between pallets. It\'s not a fault, and it\'s the reason experienced layers mix from three or four packs at once rather than working through one pallet at a time.'],
-  ['Do you split packs?', 'We split outdoor porcelain packs and Kandla Grey 600×900 packs. Mixed sandstone patio packs can\'t be split — the four sizes come banded as a set.'],
-  ['How long does delivery take, and what happens on the day?', 'Three to four working days once payment has been received. Delivery lands between 8am and 6pm, we call you on the day, and someone needs to be there to sign for it.'],
-  ['Is there a minimum order?', 'No minimum if you\'re collecting from the warehouse. There is a minimum for delivery — it depends on quantity and where you are, so ring and we\'ll tell you straight away.'],
-  ['Can I order and pay over the phone?', 'Yes. Call 0330 236 9227 during yard hours and we\'ll take the order and the payment on the same call.'],
+  ['Are your sandstone slabs calibrated?', 'Yes. Every slab is machine-calibrated to 22 mm after it’s split, so the pack lays evenly on a full wet bed. The riven face still varies a few millimetres, as natural stone should; the 20 mm outdoor porcelain is dead flat, if that’s what you’d rather lay.'],
+  ['Why are some of my slabs slightly different shades?', 'Because they’re natural stone. Depending on the batch number there can be a slight difference in shade between pallets. It’s not a fault, and it’s the reason experienced layers mix from three or four packs at once rather than working through one pallet at a time.'],
+  ['Do you split packs?', 'We split outdoor porcelain packs and Kandla Grey 600×900 packs. Mixed sandstone patio packs can’t be split — the four sizes come banded as a set.'],
+  ['How long does delivery take, and what happens on the day?', 'Three to five working days once payment has been received. Delivery lands between 8am and 6pm, we call you on the day, and someone needs to be there to sign for it.'],
+  ['Is there a minimum order?', 'No minimum if you’re collecting from the warehouse. There is a minimum for delivery — it depends on quantity and where you are, so ring and we’ll tell you straight away.'],
+  ['Can I order and pay over the phone?', 'Yes. Call 0330 236 9227 during yard hours and we’ll take the order and the payment on the same call.'],
   ['Can we make custom orders?', 'Yes, at 120 m² and above we can customise size, colour or finish. Allow up to eight weeks for production and delivery.'],
-  ['Are your indoor tiles slip resistant, and what finishes are there?', 'Yes, they are. Standard stock comes matt or gloss. On a custom order you choose the finish, subject to the 120 m² minimum.'],
+  ['Are your indoor tiles slip resistant, and what finishes are there?', 'Yes, they are. Standard stock comes matt, satin or polished. On a custom order you choose the finish, subject to the 120 m² minimum.'],
 ]
 
 export const REVIEWS = [
@@ -168,7 +188,7 @@ export const money = (n) => '£' + n.toLocaleString('en-GB', { minimumFractionDi
 // Three tiers. Every product here is real stock at the shop price; the tiers
 // are the curation, not a different price list.
 export const EDITIONS = [
-  { num: 'Edition I', name: 'Essentials', why: 'The stones most patios in Hertfordshire are laid in. Riven sandstone and honed limestone at the yard\'s straightest price.',
+  { num: 'Edition I', name: 'Essentials', why: 'The everyday stones. Riven sandstone and honed limestone at the yard’s straightest price.',
     ids: ['kandla-grey', 'raj-green', 'rippon-buff', 'autumn-brown', 'fossil-mint', 'black-limestone'], from: 19.5 },
   { num: 'Edition II', name: 'Premium Select', why: '20 mm vitrified porcelain: calibrated, R11, frost-proof, and it stays the colour you chose. The most-laid tier this season.',
     ids: ['bodo-white', 'himalayan-white', 'copper-slate', 'crystal-gris', 'earthstone-grey', 'quartz-white'], from: 19.5, featured: true },
@@ -188,7 +208,7 @@ export const FAMILIES = [
     text: 'Fine-grained and dense enough to saw and hone flat. Black Limestone is near-black wet and charcoal dry; Sinai Pearl carries fossil detail in a pale ground.',
     note: '20 mm · riven or honed · hand-dressed edges' },
   { key: 'outdoor', name: 'Vitrified porcelain', lat: 'Spain & Gujarat · fired at 1,200 °C', cat: 'outdoor',
-    text: 'Pressed clay fired until it turns glassy: near-zero absorption, so it doesn\'t stain, freeze or grow algae. Calibrated, so it lays flat off a thin bed.',
+    text: 'Pressed clay fired until it turns glassy: near-zero absorption, so it doesn’t stain, freeze or grow algae. Calibrated, so it lays flat off a thin bed.',
     note: '20 mm R11 outside · 8 mm rectified inside' },
   { key: 'cladding', name: 'Split-face stone', lat: 'Mixed quarries · cleft', cat: 'cladding',
     text: 'Strips cleft from sandstone and quartzite blocks so each face breaks differently. Laid in a running bond it reads as a dry-stone wall.',
@@ -214,7 +234,7 @@ export const FAMILY_COLOUR = {
 export const DELIVERY = {
   bands: [
     { key: 'local', name: 'Local', areas: ['HP', 'AL', 'WD', 'LU', 'SG', 'MK'], perPallet: 45, note: 'Herts, Beds, Bucks and around the yard' },
-    { key: 'london', name: 'London & M25', areas: ['EN', 'HA', 'UB', 'NW', 'N', 'W', 'WC', 'EC', 'E', 'SE', 'SW', 'TW', 'KT', 'SM', 'CR', 'BR', 'DA', 'RM', 'IG', 'SL', 'RG', 'OX', 'CB', 'CM', 'SS'], perPallet: 65, note: 'Inside and around the M25' },
+    { key: 'london', name: 'London & M25', areas: ['EN', 'HA', 'UB', 'NW', 'N', 'W', 'WC', 'EC', 'E', 'SE', 'SW', 'TW', 'KT', 'SM', 'CR', 'BR', 'DA', 'RM', 'IG', 'SL', 'RG', 'OX', 'CB', 'CM', 'SS'], perPallet: 65, note: 'Inside and around the M25 · orders over £500 travel free' },
     { key: 'national', name: 'England & Wales', areas: null, perPallet: 95, note: 'Mainland, kerbside' },
   ],
   ask: ['AB', 'IV', 'KW', 'PH', 'PA', 'HS', 'ZE', 'KA', 'DG', 'TD', 'EH', 'G', 'ML', 'FK', 'KY', 'DD', 'TR', 'PL', 'BT', 'IM', 'JE', 'GY', 'PO30', 'PO31', 'PO32', 'PO33', 'PO34', 'PO35', 'PO36', 'PO37', 'PO38', 'PO39', 'PO40', 'PO41'],

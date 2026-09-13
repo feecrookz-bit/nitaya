@@ -6,14 +6,32 @@ import { GUIDE_DIAGRAM } from './Diagrams.jsx'
 import Logo from './Logo.jsx'
 import logoPng from './assets/logo.png'
 import { HeroSlides, Marquee, CountUp, useReveal, Parallax } from './Motion.jsx'
-import { IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, FAMILY_COLOUR, DELIVERY, deliveryFor, SEARCH_TAGS, COLOUR_TAGS, PAIRS, money } from './data.js'
+import { BUSINESS, IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, FAMILY_COLOUR, DELIVERY, deliveryFor, SEARCH_TAGS, COLOUR_TAGS, PAIRS, money } from './data.js'
 import { GUIDES, guideBySlug } from './guides.js'
 
-const PHONE = '0330 236 9227'
-const PHONE_HREF = 'tel:03302369227'
+const PHONE = BUSINESS.phone
+const PHONE_HREF = BUSINESS.phoneHref
 const VAT = 0.2
 
 /* ---------------- tiny hash router ---------------- */
+function useStructuredData() {
+  useEffect(() => {
+    const el = document.createElement('script'); el.type = 'application/ld+json'
+    el.textContent = JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'HomeAndConstructionBusiness', name: BUSINESS.name, url: BUSINESS.site,
+      telephone: '+44 ' + BUSINESS.phone.slice(1), email: BUSINESS.email, foundingDate: String(BUSINESS.since),
+      address: { '@type': 'PostalAddress', streetAddress: BUSINESS.address[0], addressLocality: BUSINESS.address[1], postalCode: BUSINESS.postcode, addressCountry: 'GB' },
+      openingHoursSpecification: [
+        { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '08:00', closes: '18:00' },
+        { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Saturday', opens: '08:00', closes: '13:00' },
+      ],
+      sameAs: BUSINESS.socials.filter(([n]) => n !== 'WhatsApp').map(([, u]) => u),
+    })
+    document.head.appendChild(el)
+    return () => el.remove()
+  }, [])
+}
+
 function useRoute() {
   const parse = () => {
     const raw = window.location.hash.replace(/^#\/?/, '')
@@ -80,7 +98,7 @@ function ProductCard({ p, featured = false }) {
         : <img src={p.img} alt={p.name} loading="lazy" />}
       {pct >= 10 && <span className="save">Save {pct}%</span>}
       <div className="product-body">
-        {feature && <span className="kicker">Editor's pick</span>}
+        {feature && <span className="kicker">Editor’s pick</span>}
         {p.tag && <span className="tag">{p.tag}</span>}
         <span className="fam">{CAT_LABEL[p.cat]}</span>
         <h3>{p.name}</h3>
@@ -174,9 +192,9 @@ function DeliveryEstimate({ pallets = 1, compact = false }) {
       </div>
       <p className="deliv-out">
         {!pc ? <>Enter a postcode for an indicative delivery cost, or <b>collect free from Mark Road</b>.</>
-          : !r ? <>That doesn't look like a UK postcode yet.</>
+          : !r ? <>That doesn’t look like a UK postcode yet.</>
           : r.ask ? <>We deliver there but price it by the job — <b>ring {PHONE}</b> for a quote, or collect free.</>
-          : <>Indicative delivery to <b>{pc.toUpperCase()}</b> ({r.band.name}): <b>{money(r.band.perPallet)} per pallet</b>{pallets > 1 ? <> · {pallets} pallets ≈ <b>{money(r.band.perPallet * pallets)}</b></> : null}. Confirmed by phone before you pay. Collection from HP2 7BW is free.</>}
+          : <>Indicative delivery to <b>{pc.toUpperCase()}</b> ({r.band.name}): <b>{money(r.band.perPallet)} per pallet</b>{pallets > 1 ? <> · {pallets} pallets ≈ <b>{money(r.band.perPallet * pallets)}</b></> : null}.{r.band.key === 'london' ? <> Orders over £500 inside the M25 travel free.</> : null} Confirmed by phone before you pay. Collection from HP2 7BW is free.</>}
       </p>
     </div>
   )
@@ -188,7 +206,7 @@ function Newsletter() {
   return (
     <div className="newsletter">
       <div><p className="kicker" style={{ color: 'var(--gold)' }}>Early access</p><h2>New pallets, first.</h2><p>When a range lands, a finish changes or a pallet deal opens up, you hear before it goes on the site. One email a month, from the yard.</p></div>
-      <form onSubmit={e => { e.preventDefault(); if (email.includes('@')) { setOk('You\'re on the list. First email when the next pallets land.'); setEmail('') } }}>
+      <form onSubmit={e => { e.preventDefault(); if (email.includes('@')) { setOk('You’re on the list. First email when the next pallets land.'); setEmail('') } }}>
         <input id="nlEmail" type="email" placeholder="you@example.co.uk" value={email} onChange={e => setEmail(e.target.value)} aria-label="Email address" />
         <button className="pill" type="submit">Join</button>
         {ok && <span className="ok" role="status">{ok}</span>}
@@ -248,10 +266,10 @@ function Home({ bag }) {
         ]} interval={7500} />
         <div className="wrap"><div className="hero-in">
           <img className="hero-mark" src={logoPng} alt="" aria-hidden="true" />
-          <div className="trust"><span><b>Since 2016</b> · Mark Road, Hemel Hempstead</span><span className="dot">·</span><span><b>36 stones</b> on the ground</span><span className="dot">·</span><span><b>3–4 working days</b> to your drive</span></div>
+          <div className="trust"><span><b>Since 2016</b> · Mark Road, Hemel Hempstead</span><span className="dot">·</span><span><b>36 stones</b> on the ground</span><span className="dot">·</span><span><b>3–5 working days</b> to your drive</span></div>
           <h1>Natural stone, sourced direct.<span>Hand-picked from the quarries we buy from, held at our own yard, priced straight. Every garden in these pictures left Mark Road on a pallet.</span></h1>
           <div className="actions">
-            <a className="pill" href={href('shop')}>Shop this season's palette</a>
+            <a className="pill" href={href('shop')}>Shop this season’s palette</a>
             <a className="pill ghost" href={href('build')}>Build your patio</a>
           </div>
         </div></div>
@@ -260,12 +278,12 @@ function Home({ bag }) {
       <div className="hero-strip">
         <div><b><CountUp to={2016} plain /></b>Trading from the same Hemel Hempstead yard.</div>
         <div><b><CountUp to={36} /></b>Ranges in stock — sandstone, limestone, porcelain, cladding.</div>
-        <div><b>3–4 days</b>Working days from cleared payment. We call on the day.</div>
+        <div><b>3–5 days</b>Working days from cleared payment. We call on the day.</div>
         <div><b>Trade</b>Accounts, pallet pricing and site delivery for landscapers and builders. <a className="more" href={href('trade')} style={{ fontSize: '.84rem' }}>Open an account</a></div>
       </div>
 
       <section className="slab-moment" data-reveal>
-        <div className="wrap narrow"><p className="kicker">Turn it over</p><h2>Split, not sawn.</h2><p className="intro">Drag it. Raj Green from the yard, cleft along its bedding the way the stone wants to break, so no two faces match and the surface still grips when it's wet. Calibrated to 22 mm underneath.</p></div>
+        <div className="wrap narrow"><p className="kicker">Turn it over</p><h2>Split, not sawn.</h2><p className="intro">Drag it. Raj Green from the yard, cleft along its bedding the way the stone wants to break, so no two faces match and the surface still grips when it’s wet. Calibrated to 22 mm underneath.</p></div>
         <div className="wrap"><Suspense fallback={<div className="hero-3d" aria-hidden="true" />}><StoneScene texture={IMG.slabTexture} /></Suspense><div className="hero-static"><img src={byId('raj-green').img} alt="Raj Green riven sandstone slab" /></div><p className="slab-hint">Drag to rotate</p></div>
       </section>
 
@@ -277,7 +295,7 @@ function Home({ bag }) {
       </section>
 
       <section className="chapter dark-collections" data-reveal><div className="wrap">
-        <div className="narrow"><p className="kicker">The collections</p><h2>Three editions. One yard.</h2><p className="intro">Every stone we hold, arranged by what it's for rather than what it's called. Same shop prices — the editions are the curation.</p></div>
+        <div className="narrow"><p className="kicker">The collections</p><h2>Three editions. One yard.</h2><p className="intro">Every stone we hold, arranged by what it’s for rather than what it’s called. Same shop prices — the editions are the curation.</p></div>
         <div className="media"><Editions /></div>
       </div></section>
 
@@ -287,7 +305,7 @@ function Home({ bag }) {
       </div></section>
 
       <section className="chapter" data-reveal><div className="wrap">
-        <div className="head-row"><div><p className="kicker">Offers</p><h2>Below list this month.</h2><p className="intro">The shop's current was/now prices, in one place. Same pallets, same yard.</p></div><a className="more" href={href('shop?cat=offers')}>All offers</a></div>
+        <div className="head-row"><div><p className="kicker">Offers</p><h2>Below list this month.</h2><p className="intro">The shop’s current was/now prices, in one place. Same pallets, same yard.</p></div><a className="more" href={href('shop?cat=offers')}>All offers</a></div>
         <div className="grid">{PRODUCTS.filter(p => saving(p) >= 15).slice(0, 4).map(p => <ProductCard key={p.id} p={p} />)}</div>
       </div></section>
 
@@ -297,12 +315,12 @@ function Home({ bag }) {
       </div></section>
 
       <section className="chapter sage" data-reveal><div className="wrap">
-        <div className="narrow"><p className="kicker">Stone families</p><h2>Know what you're laying.</h2><p className="intro">Four materials, four geologies, four ways of behaving in a Hertfordshire winter.</p></div>
+        <div className="narrow"><p className="kicker">Stone families</p><h2>Know what you’re laying.</h2><p className="intro">Four materials, four geologies, four ways of behaving in a Hertfordshire winter.</p></div>
         <div className="media"><Atlas /></div>
       </div></section>
 
       <section className="chapter" data-reveal><div className="wrap">
-        <div className="narrow"><p className="kicker">Customers' gardens</p><h2>Laid, not stacked.</h2><p className="intro">Every one of these left Mark Road on a pallet. Tap a garden to shop the stone in it.</p></div>
+        <div className="narrow"><p className="kicker">Customers’ gardens</p><h2>Laid, not stacked.</h2><p className="intro">Every one of these left Mark Road on a pallet. Tap a garden to shop the stone in it.</p></div>
         <div className="media scenes">
           {SCENES.map(s => <a key={s.title} className="scene" href={href('product/' + s.product)}><img src={s.img} alt={s.title} loading="lazy" /><figcaption><b>{s.title}</b><span>{s.sub}</span></figcaption></a>)}
         </div>
@@ -314,7 +332,7 @@ function Home({ bag }) {
         <div className="creed">
           <div><b>Bought direct.</b><p>Sandstone hand-split in the quarry districts of Rajasthan. Limestone sawn and honed from Sinai. Porcelain pressed in Spain and Gujarat. No middlemen, so the price on the slab is the price of the slab.</p></div>
           <div><b>Held on our ground.</b><p>Every range is on pallets at Mark Road, not in a catalogue. Come and stand on it, hose it, take a piece home. What you see in the yard is what arrives.</p></div>
-          <div><b>Looked at before it leaves.</b><p>Each pallet is checked in and checked out by the same people who opened the yard in 2016. If it isn't right, it doesn't leave.</p></div>
+          <div><b>Looked at before it leaves.</b><p>Each pallet is checked in and checked out by the same people who opened the yard in 2016. If it isn’t right, it doesn’t leave.</p></div>
         </div>
         <Parallax amount={0.06}><div className="yard-pics wide"><img src={IMG.yard} alt="The Nitya Stones showroom on Mark Road" loading="lazy" /><img src={IMG.pallets} alt="Pallets of paving in the Nitya Stones yard" loading="lazy" /></div></Parallax>
         <div className="stats"><div className="stat"><b><CountUp to={2016} plain /></b><span>Same yard, same people</span></div><div className="stat"><b><CountUp to={36} /></b><span>Stones in stock today</span></div><div className="stat"><b><CountUp to={120} suffix=" m²" /></b><span>Custom finishes from</span></div></div>
@@ -358,8 +376,8 @@ function GuideCard({ g }) {
 function Guides() {
   return (
     <section className="chapter" style={{ paddingTop: 'clamp(36px,5vw,64px)' }}><div className="wrap">
-      <div className="narrow"><p className="kicker">Guides</p><h2>Know before you lay.</h2><p className="intro">What we tell customers across the counter, written down. Choosing, laying, sealing, cleaning and what happens on delivery day.</p></div>
-      <div className="media guides">{GUIDES.map(g => <GuideCard key={g.slug} g={g} />)}</div>
+      <div className="narrow"><p className="kicker">Guides</p><h1 className="pg">Know before you lay.</h1><p className="intro">What we tell customers across the counter, written down. Choosing, laying, sealing, cleaning and what happens on delivery day.</p></div>
+      <h2 className="sr-only">All guides</h2><div className="media guides">{GUIDES.map(g => <GuideCard key={g.slug} g={g} />)}</div>
     </div></section>
   )
 }
@@ -383,7 +401,7 @@ function Guide({ route }) {
         </div>
         <div className="related">
           <p className="kicker">More guides</p>
-          <div className="guides">{others.map(x => <GuideCard key={x.slug} g={x} />)}</div>
+          <h2 className="sr-only">All guides</h2><div className="guides">{others.map(x => <GuideCard key={x.slug} g={x} />)}</div>
         </div>
       </article>
     </div>
@@ -393,12 +411,12 @@ function Guide({ route }) {
 function Projects() {
   return (
     <>
-      <section className="banner"><img src={SCENES[1].img} alt="" /><div className="wrap"><p className="kicker">Projects</p><h1 style={{ fontSize: 'clamp(2rem,4.6vw,3.4rem)' }}>Gardens laid with Mark Road stone.</h1><p className="intro">Customers' patios, terraces and pool surrounds. Every one left the yard on a pallet; tap a project to shop the stone.</p></div></section>
+      <section className="banner"><img src={SCENES[1].img} alt="" /><div className="wrap"><p className="kicker">Projects</p><h1 style={{ fontSize: 'clamp(2rem,4.6vw,3.4rem)' }}>Gardens laid with Mark Road stone.</h1><p className="intro">Customers’ patios, terraces and pool surrounds. Every one left the yard on a pallet; tap a project to shop the stone.</p></div></section>
       <section className="chapter" style={{ paddingTop: 'clamp(28px,4vw,48px)' }}><div className="wrap">
         <div className="scenes">
           {SCENES.map(sc => { const p = byId(sc.product); return <a key={sc.title} className="scene" href={href('product/' + sc.product)}><img src={sc.img} alt={sc.title} loading="lazy" /><figcaption><b>{sc.title}</b><span>{sc.sub}</span>{p && <span style={{ color: 'var(--gold)', marginTop: 4 }}>{p.name} · {money(p.price)} {p.unit} + VAT</span>}</figcaption></a> })}
         </div>
-        <div className="narrow" style={{ marginTop: 56 }}><p className="kicker">Your garden here</p><h2>Send us the finished job.</h2><p className="intro">Every project on this page came from a customer's phone. Send yours to info@nityastones.co.uk with the stone you laid and we'll add it — and put a sample pack of your choice in the post as a thank-you.</p></div>
+        <div className="narrow" style={{ marginTop: 56 }}><p className="kicker">Your garden here</p><h2>Send us the finished job.</h2><p className="intro">Every project on this page came from a customer’s phone. Send yours to info@nityastones.co.uk with the stone you laid and we’ll add it — and put a sample pack of your choice in the post as a thank-you.</p></div>
       </div></section>
     </>
   )
@@ -414,12 +432,12 @@ function Trade() {
     <>
       <section className="banner"><img src={IMG.pallets} alt="" /><div className="wrap"><p className="kicker">Trade</p><h1 style={{ fontSize: 'clamp(2rem,4.6vw,3.4rem)' }}>Wholesale from the same yard.</h1><p className="intro">Landscapers, builders and developers buy the same stone from the same pallets — on account, by the load, with a name at the yard who knows your jobs.</p></div></section>
       <section className="chapter" style={{ paddingTop: 'clamp(28px,4vw,48px)' }}><div className="wrap">
-        <div className="values">
+        <h2 className="sr-only">What a trade account includes</h2><div className="values">
           <div className="value"><h3>Account terms</h3><p>Open an account and order by phone or email against it. Ask the yard about terms — card, bank transfer and Klarna are all taken.</p></div>
-          <div className="value"><h3>Pallet and load pricing</h3><p>Multi-pallet and full-load prices on every range. Ask for the trade sheet — it's the shop price list with the volume column filled in.</p></div>
-          <div className="value"><h3>Site delivery</h3><p>Kerbside on a tail-lift, 3–4 working days from payment, 8am–6pm, with a call on the day. Multiple drops on one job by arrangement.</p></div>
+          <div className="value"><h3>Pallet and load pricing</h3><p>Multi-pallet and full-load prices on every range. Ask for the trade sheet — it’s the shop price list with the volume column filled in.</p></div>
+          <div className="value"><h3>Site delivery</h3><p>Kerbside on a tail-lift, 3–5 working days from payment, 8am–6pm, with a call on the day. Multiple drops on one job by arrangement.</p></div>
           <div className="value"><h3>Samples for your client</h3><p>Sample boards and 100×100 pieces for client sign-off, posted to you or to them.</p></div>
-          <div className="value"><h3>Custom from 120 m²</h3><p>A size, colour or finish we don't hold, run for your project. Allow eight weeks.</p></div>
+          <div className="value"><h3>Custom from 120 m²</h3><p>A size, colour or finish we don’t hold, run for your project. Allow eight weeks.</p></div>
           <div className="value"><h3>Collect any time</h3><p>Mon–Fri 8–6, Sat 8–1 from 34 Mark Road. No minimum, forked onto your vehicle.</p></div>
         </div>
       </div></section>
@@ -447,7 +465,7 @@ function Trade() {
 function Collections() {
   return (
     <>
-      <section className="chapter" style={{ paddingTop: 'clamp(36px,5vw,64px)', paddingBottom: 0 }}><div className="wrap narrow"><p className="kicker">Collections</p><h2>Three editions.</h2><p className="intro">Every stone we hold, arranged by what it's for. Same shop prices — the editions are the curation, not a different price list.</p></div></section>
+      <section className="chapter" style={{ paddingTop: 'clamp(36px,5vw,64px)', paddingBottom: 0 }}><div className="wrap narrow"><p className="kicker">Collections</p><h1 className="pg">Three editions.</h1><p className="intro">Every stone we hold, arranged by what it’s for. Same shop prices — the editions are the curation, not a different price list.</p></div></section>
       {EDITIONS.map((ed, i) => (
         <div key={ed.num} id={ed.num.split(' ')[1]}>
           <section className="banner" style={{ marginTop: i === 0 ? 40 : 0 }}><img src={[SCENES[0].img, SCENES[1].img, SCENES[5].img][i]} alt="" /><div className="wrap"><p className="kicker">{ed.num}{ed.featured ? ' · Most laid' : ''}</p><h2>{ed.name}.</h2><p className="intro">{ed.why}</p><p className="from">from <b>{money(ed.from)}</b> per m² + VAT</p></div></section>
@@ -482,13 +500,13 @@ function Build({ bag }) {
   const patterns = p.size.includes('Mixed') ? [PATTERNS[0]] : p.cat === 'cladding' ? [PATTERNS[3]] : p.size.includes('600 × 600') ? [PATTERNS[2], PATTERNS[1]] : [PATTERNS[1], PATTERNS[2]]
   const pattern = patterns[Math.min(pat, patterns.length - 1)]
   const persist = (list) => { setSaved(list); try { localStorage.setItem('nitya-designs', JSON.stringify(list)) } catch { /* private mode */ } }
-  const save = () => { const d = { id: Date.now(), pid, len, wid, waste, pattern: pattern.title, packs, ex }; persist([d, ...saved].slice(0, 8)); setMsg('Design saved — it\'s on this device to come back to or reorder from.') }
+  const save = () => { const d = { id: Date.now(), pid, len, wid, waste, pattern: pattern.title, packs, ex }; persist([d, ...saved].slice(0, 8)); setMsg('Design saved — it’s on this device to come back to or reorder from.') }
   const load = (d) => { setPid(d.pid); setLen(d.len); setWid(d.wid); setWaste(d.waste); setPat(0); window.scrollTo({ top: 0 }) }
   const byFamily = CATS.map(([k, l]) => [l, PRODUCTS.filter(x => x.cat === k && x.unit !== 'per kit')])
   return (
     <section className="chapter" style={{ paddingTop: 'clamp(36px,5vw,64px)' }}><div className="wrap">
-      <div className="head-row"><div><p className="kicker">Build your patio</p><h2>Pick the stone. Draw the area. Get the packs.</h2><p className="intro">36 stones on the ground. Choose one, put in the dimensions, pick how it lays, and the design on the right is what leaves the yard.</p></div></div>
-      <div className="builder">
+      <div className="head-row"><div><p className="kicker">Build your patio</p><h1 className="pg">Pick the stone. Draw the area. Get the packs.</h1><p className="intro">36 stones on the ground. Choose one, put in the dimensions, pick how it lays, and the design on the right is what leaves the yard.</p></div></div>
+      <h2 className="sr-only">Choose the stone and the area</h2><div className="builder">
         <div>
           <div className="bstep"><h3><i>I</i> Choose the stone</h3>
             {byFamily.map(([label, list]) => <div key={label}><p className="note" style={{ marginBottom: 8, fontWeight: 500, color: 'var(--ink-2)' }}>{label}</p>
@@ -557,7 +575,7 @@ function Shop({ route }) {
         </div>
       </div>
       <p className="count" style={{ marginBottom: 16 }}>{list.length} {list.length === 1 ? 'product' : 'products'}</p>
-      <div className="grid">{list.map(p => <ProductCard key={p.id} p={p} featured={sort === 'featured' && !q} />)}</div>
+      <h2 className="sr-only">Products</h2><div className="grid">{list.map(p => <ProductCard key={p.id} p={p} featured={sort === 'featured' && !q} />)}</div>
     </div></section>
     </>
   )
@@ -593,7 +611,7 @@ function Gallery({ p }) {
   return (
     <div className="gallery">
       {frame(false)}
-      {pics.length > 1 && <div className="thumbs" role="tablist" aria-label="Photos">{pics.map((x, k) => <button key={k} type="button" role="tab" aria-selected={i === k} aria-pressed={i === k} aria-label={x.alt} onClick={() => setI(k)}><img src={x.src} alt="" loading="lazy" /></button>)}</div>}
+      {pics.length > 1 && <div className="thumbs" aria-label="Photos">{pics.map((x, k) => <button key={k} type="button" aria-pressed={i === k} aria-label={x.alt} onClick={() => setI(k)}><img src={x.src} alt="" loading="lazy" /></button>)}</div>}
       {open && createPortal(<div className="lightbox" role="dialog" aria-modal="true" aria-label={`${p.name} photos`} onClick={() => setOpen(false)}>
         <button type="button" className="lb-close" aria-label="Close" onClick={() => setOpen(false)}>×</button>
         <div onClick={(e) => e.stopPropagation()}>{frame(true)}<p className="lb-cap">{pics[i].alt} · {p.name}</p></div>
@@ -618,13 +636,13 @@ function ProductStory({ p }) {
           {c.note && <p className="story-note">{c.note}</p>}
         </div>
         <aside className="story-side">
-          {c.pack && <div className="panel"><h3>What's in the pack</h3>
+          {c.pack && <div className="panel"><h3>What’s in the pack</h3>
             <table className="pack-table"><tbody>{c.pack.map(([size, q]) => <tr key={size}><td>{size}</td><td>{q}</td></tr>)}<tr className="tot"><td>{packTotal} slabs</td><td>{p.cover ? p.cover.toFixed(2) + ' m²' : ''}</td></tr></tbody></table>
             <p className="panel-note">Laid random from the four sizes. Sizes are nominal; the riven face varies a few millimetres.</p></div>}
           {c.details && <div className="panel"><h3>Specification</h3>
             <dl className="details">{c.details.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl></div>}
           <div className="panel"><h3>Delivery and collection</h3>
-            <p className="panel-note">Kerbside pallet delivery in 3–4 working days, quoted by postcode before anything is charged. Free collection from 34 Mark Road, Hemel Hempstead HP2 7BW, Mon–Fri 8–6, Sat 8–1.</p>
+            <p className="panel-note">Kerbside pallet delivery in 3–5 working days, quoted by postcode before anything is charged. Free collection from 34 Mark Road, Hemel Hempstead HP2 7BW, Mon–Fri 8–6, Sat 8–1.</p>
             <a className="more" href={href('about#delivery')}>Delivery details</a></div>
         </aside>
       </div>
@@ -647,7 +665,7 @@ function Product({ route, bag }) {
       <div className="wrap pdp">
         <div className="gallery-col">
           <Gallery key={p.id} p={p} />
-          {(p.cat === 'sandstone' || p.cat === 'limestone') && p.unit !== 'per kit' && <div style={{ marginTop: 14 }}><WetDry dry={p.img} wet={p.wet} name={p.name} /><p className="wetdry-note">Drag to compare. {p.wet ? 'Both photos are the same slab, hosed and dry.' : 'The wet side is simulated from the dry photo until we\'ve shot the slab hosed — natural stone comes up darker and richer than any screen shows.'}</p></div>}
+          {(p.cat === 'sandstone' || p.cat === 'limestone') && p.unit !== 'per kit' && <div style={{ marginTop: 14 }}><WetDry dry={p.img} wet={p.wet} name={p.name} /><p className="wetdry-note">Drag to compare. {p.wet ? 'Both photos are the same slab, hosed and dry.' : 'The wet side is simulated from the dry photo until we’ve shot the slab hosed — natural stone comes up darker and richer than any screen shows.'}</p></div>}
         </div>
         <div>
           <nav className="crumbs" aria-label="Breadcrumb"><a href={href('shop')}>Shop</a><span>/</span><a href={href('shop?cat=' + p.cat)}>{CAT_LABEL[p.cat]}</a><span>/</span><span>{p.name}</span></nav>
@@ -662,7 +680,7 @@ function Product({ route, bag }) {
             <div><dt>Thickness</dt><dd>{p.thick}</dd></div>
             <div><dt>Finish</dt><dd>{p.finish}</dd></div>
             <div><dt>Sold as</dt><dd>{p.pack}</dd></div>
-            <div><dt>Delivery</dt><dd>3–4 working days, quoted by postcode · free collection from HP2 7BW</dd></div>
+            <div><dt>Delivery</dt><dd>3–5 working days, quoted by postcode · free collection from HP2 7BW</dd></div>
             <div><dt>Split packs</dt><dd>{p.tag === 'Splits' || (p.cat === 'outdoor' && p.thick === '20 mm') ? 'Yes' : 'No — sold as a full ' + (p.unit === 'per pallet' ? 'pallet' : 'pack')}</dd></div>
           </dl>
           <div className="buy">
@@ -701,8 +719,8 @@ function Samples({ bag }) {
   const [added, setAdded] = useState('')
   return (
     <section className="chapter" style={{ paddingTop: 'clamp(36px,5vw,64px)' }}><div className="wrap">
-      <div className="narrow"><p className="kicker">Samples · £5 each</p><h2>Look before you lay.</h2><p className="intro">100×100 mm pieces of the real stone, posted out or collected from the counter. Put one where the patio's going, look at it wet and dry, then order the pallets.</p><p className="added" style={{ marginTop: 14 }} role="status" aria-live="polite">{added}</p></div>
-      <div className="media grid">
+      <div className="narrow"><p className="kicker">Samples · £5 each</p><h1 className="pg">Look before you lay.</h1><p className="intro">100×100 mm pieces of the real stone, posted out or collected from the counter. Put one where the patio’s going, look at it wet and dry, then order the pallets.</p><p className="added" style={{ marginTop: 14 }} role="status" aria-live="polite">{added}</p></div>
+      <h2 className="sr-only">Samples by range</h2><div className="media grid">
         {PRODUCTS.filter(p => p.unit !== 'per kit').map(p => (
           <div key={p.id} className="product">
             <img src={p.img} alt={p.name} loading="lazy" />
@@ -719,11 +737,11 @@ function Samples({ bag }) {
 function Bag({ bag }) {
   const items = bag.lines.map(l => ({ ...l, p: lineProduct(l.id) })).filter(l => l.p)
   const ex = items.reduce((s, l) => s + lineUnitPrice(l.p) * l.qty, 0)
-  if (!items.length) return <div className="wrap empty"><h2>Your bag is empty.</h2><p style={{ marginTop: 12 }}><a className="more" href={href('shop')}>Shop the ranges</a></p></div>
+  if (!items.length) return <div className="wrap empty"><h1 className="pg">Your bag is empty.</h1><p style={{ marginTop: 12 }}><a className="more" href={href('shop')}>Shop the ranges</a></p></div>
   return (
     <div className="wrap bag">
       <div>
-        <p className="kicker">Your bag</p><h2 style={{ marginBottom: 24 }}>{bag.count} {bag.count === 1 ? 'item' : 'items'}</h2>
+        <p className="kicker">Your bag</p><h1 className="pg" style={{ marginBottom: 24 }}>{bag.count} {bag.count === 1 ? 'item' : 'items'}</h1>
         <div className="lines">
           {items.map(l => (
             <div key={l.id} className="line">
@@ -735,7 +753,7 @@ function Bag({ bag }) {
           ))}
         </div>
       </div>
-      <aside className="summary">
+      <h2 className="sr-only">Order summary</h2><aside className="summary">
         <h3>Summary</h3>
         <div className="row"><span className="k">Goods, ex VAT</span><span className="v">{money(ex)}</span></div>
         <div className="row"><span className="k">VAT at 20%</span><span className="v">{money(ex * VAT)}</span></div>
@@ -756,40 +774,40 @@ function Checkout({ bag }) {
   const [order, setOrder] = useState(null)
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value })
   const ok = f.name && f.phone && (f.method === 'collection' || (f.line1 && f.postcode))
-  if (order) return <div className="wrap done"><p className="kicker">Order received</p><h2>Thank you, {order.name.split(' ')[0]}.</h2><p className="intro">{order.method === 'collection' ? 'We\'ll ring when it\'s ready to collect from Mark Road — usually the same day.' : 'We\'ll confirm the delivery cost by phone before anything is charged, then it\'s 3–4 working days.'}</p><p className="num">Order {order.ref} · {money(order.total)} inc VAT{order.method === 'delivery' ? ' + delivery' : ''}</p><p className="note" style={{ marginTop: 22 }}>Demo checkout — no payment has been taken. The live store connects this to WooCommerce.</p><div className="actions"><a className="pill ghost" href={href('shop')}>Back to the shop</a></div></div>
-  if (!items.length) return <div className="wrap empty"><h2>Nothing to check out.</h2><p style={{ marginTop: 12 }}><a className="more" href={href('shop')}>Shop the ranges</a></p></div>
+  if (order) return <div className="wrap done"><p className="kicker">Order received</p><h1 className="pg">Thank you, {order.name.split(' ')[0]}.</h1><p className="intro">{order.method === 'collection' ? 'We’ll ring when it’s ready to collect from Mark Road — usually the same day.' : 'We’ll confirm the delivery cost by phone before anything is charged, then it’s 3–5 working days.'}</p><p className="num">Order {order.ref} · {money(order.total)} inc VAT{order.method === 'delivery' ? ' + delivery' : ''}</p><p className="note" style={{ marginTop: 22 }}>Demo checkout — no payment has been taken. The live store connects this to WooCommerce.</p><div className="actions"><a className="pill ghost" href={href('shop')}>Back to the shop</a></div></div>
+  if (!items.length) return <div className="wrap empty"><h1 className="pg">Nothing to check out.</h1><p style={{ marginTop: 12 }}><a className="more" href={href('shop')}>Shop the ranges</a></p></div>
   return (
     <div className="wrap checkout">
       <div style={{ display: 'grid', gap: 18 }}>
-        <p className="kicker">Checkout</p>
-        <div className="panel"><h3>Contact</h3>
+        <p className="kicker">Checkout</p><h1 className="pg" style={{ fontSize: 'clamp(1.6rem,3vw,2.2rem)' }}>Your order.</h1>
+        <h2 className="sr-only">Your details</h2><div className="panel"><h3>Contact</h3>
           <div className="two"><div className="field"><label htmlFor="coName">Name</label><input id="coName" autoComplete="name" value={f.name} onChange={set('name')} /></div><div className="field"><label htmlFor="coPhone">Phone</label><input id="coPhone" type="tel" autoComplete="tel" value={f.phone} onChange={set('phone')} /></div></div>
           <div className="field"><label htmlFor="coEmail">Email</label><input id="coEmail" type="email" autoComplete="email" value={f.email} onChange={set('email')} /></div>
         </div>
         <div className="panel"><h3>Delivery or collection</h3>
           <div className="choice">
-            <label><input type="radio" name="method" checked={f.method === 'delivery'} onChange={() => setF({ ...f, method: 'delivery' })} /><div><b>Deliver it</b><span>3–4 working days from payment, 8am–6pm, we call on the day. Cost confirmed by phone before you're charged.</span></div></label>
-            <label><input type="radio" name="method" checked={f.method === 'collection'} onChange={() => setF({ ...f, method: 'collection' })} /><div><b>Collect from Mark Road</b><span>Free, no minimum. 34 Mark Road, Hemel Hempstead HP2 7BW. Mon–Fri 8–6, Sat 8–1.</span></div></label>
+            <label><input type="radio" name="method" checked={f.method === 'delivery'} onChange={() => setF({ ...f, method: 'delivery' })} /><div><b>Deliver it</b><span>3–5 working days from payment, 8am–6pm, we call on the day. Cost confirmed by phone before you’re charged.</span></div></label>
+            <label><input type="radio" name="method" checked={f.method === 'collection'} onChange={() => setF({ ...f, method: 'collection' })} /><div><b>Collect from Mark Road</b><span>Free, no minimum. {BUSINESS.address.join(', ')}. {BUSINESS.hoursShort.replace(' · ', ', ')}.</span></div></label>
           </div>
           {f.method === 'delivery' && <>
             <div className="field"><label htmlFor="coLine1">Address</label><input id="coLine1" autoComplete="address-line1" value={f.line1} onChange={set('line1')} /></div>
             <div className="two"><div className="field"><label htmlFor="coTown">Town</label><input id="coTown" autoComplete="address-level2" value={f.town} onChange={set('town')} /></div><div className="field"><label htmlFor="coPost">Postcode</label><input id="coPost" autoComplete="postal-code" value={f.postcode} onChange={set('postcode')} /></div></div>
-            {f.postcode && (() => { const r = deliveryFor(f.postcode); const pallets = items.reduce((n, l) => n + (l.p.cover ? l.qty : 0), 0) || 1; return <p className="deliv-out">{!r ? 'Check the postcode.' : r.ask ? <>Priced by the job for this postcode — we'll ring you with the cost.</> : <>Indicative: <b>{money(r.band.perPallet)} per pallet</b> × {pallets} = <b>{money(r.band.perPallet * pallets)}</b> ({r.band.name}). Confirmed by phone before payment.</>}</p> })()}
+            {f.postcode && (() => { const r = deliveryFor(f.postcode); const pallets = items.reduce((n, l) => n + (l.p.cover ? l.qty : 0), 0) || 1; return <p className="deliv-out">{!r ? 'Check the postcode.' : r.ask ? <>Priced by the job for this postcode — we’ll ring you with the cost.</> : <>Indicative: <b>{money(r.band.perPallet)} per pallet</b> × {pallets} = <b>{money(r.band.perPallet * pallets)}</b> ({r.band.name}). Confirmed by phone before payment.</>}</p> })()}
             <div className="field"><label htmlFor="coNotes">Access notes</label><input id="coNotes" placeholder="Narrow drive, no kerb, leave on the lawn…" value={f.notes} onChange={set('notes')} /></div>
           </>}
         </div>
         <div className="panel"><h3>Payment</h3>
           <div className="choice">
-            <label><input type="radio" name="pay" checked={f.pay === 'card'} onChange={() => setF({ ...f, pay: 'card' })} /><div><b>Card</b><span>Visa, Mastercard, Maestro, Visa Electron.</span></div></label>
+            <label><input type="radio" name="pay" checked={f.pay === 'card'} onChange={() => setF({ ...f, pay: 'card' })} /><div><b>Card</b><span>Visa, Mastercard, Maestro.</span></div></label>
             <label><input type="radio" name="pay" checked={f.pay === 'klarna'} onChange={() => setF({ ...f, pay: 'klarna' })} /><div><b>Klarna</b><span>Pay in 3, interest free.</span></div></label>
             <label><input type="radio" name="pay" checked={f.pay === 'phone'} onChange={() => setF({ ...f, pay: 'phone' })} /><div><b>Pay by phone</b><span>We'll ring you on {PHONE} to take payment and confirm delivery.</span></div></label>
           </div>
-          <img className="payments" src={IMG.payments} alt="Mastercard, Maestro, Visa, Visa Electron and Klarna accepted" />
+          <img className="payments" src={IMG.payments} alt="Mastercard, Maestro, Visa and Klarna accepted" />
         </div>
         <button className="pill" type="button" disabled={!ok} onClick={() => { setOrder({ name: f.name, method: f.method, total: ex * (1 + VAT), ref: 'NS-' + Date.now().toString(36).toUpperCase().slice(-6) }); bag.clear() }}>Place order · {money(ex * (1 + VAT))} inc VAT</button>
         <p className="note">Demo checkout — nothing is charged. In the live store this step hands off to WooCommerce with the same fields.</p>
       </div>
-      <aside className="summary">
+      <h2 className="sr-only">Order summary</h2><aside className="summary">
         <h3>{bag.count} {bag.count === 1 ? 'item' : 'items'}</h3>
         {items.map(l => <div key={l.id} className="row"><span className="k">{l.qty} × {l.p.name}</span><span className="v">{money(lineUnitPrice(l.p) * l.qty)}</span></div>)}
         <div className="row"><span className="k">VAT at 20%</span><span className="v">{money(ex * VAT)}</span></div>
@@ -804,7 +822,7 @@ function About() {
     <>
       <section className="chapter" style={{ paddingTop: 'clamp(36px,5vw,64px)' }}><div className="wrap yard">
         <div>
-          <p className="kicker">About</p><h2>A yard, not a website with a warehouse somewhere.</h2>
+          <p className="kicker">About</p><h1 className="pg">A yard, not a website with a warehouse somewhere.</h1>
           <p className="intro">Nitya Stones has supplied Indian sandstone, limestone and porcelain from 34 Mark Road, Hemel Hempstead since 2016 — wholesale to landscapers and builders, retail to anyone with a patio to lay. We buy from quarries and manufacturers we know, hold the stock ourselves and check every pallet in before it goes out.</p>
           <div className="stats"><div className="stat"><b>2016</b><span>Trading from Mark Road</span></div><div className="stat"><b>36</b><span>Ranges on the ground</span></div><div className="stat"><b>120 m²</b><span>Custom orders from</span></div></div>
         </div>
@@ -813,10 +831,10 @@ function About() {
       <section className="chapter grey"><div className="wrap">
         <div className="narrow"><p className="kicker">How we buy</p><h2>Direct, held, checked.</h2><p className="intro">Sandstone hand-split in the quarry districts of Rajasthan. Limestone sawn and honed from Sinai and Kota. Porcelain pressed in Spain and Gujarat. Bought direct, landed at Mark Road, and looked at before it goes out.</p></div>
         <div className="media values">
-          <div className="value"><h3>Wholesale and retail</h3><p>Landscapers on account and homeowners with one patio get the same stone at the same yard. There's no trade-only counter.</p></div>
-          <div className="value"><h3>Batch-matched</h3><p>Every pallet carries its batch number. Order for one patio and we pull from one batch where we can, and tell you honestly when we can't.</p></div>
+          <div className="value"><h3>Wholesale and retail</h3><p>Landscapers on account and homeowners with one patio get the same stone at the same yard. There’s no trade-only counter.</p></div>
+          <div className="value"><h3>Batch-matched</h3><p>Every pallet carries its batch number. Order for one patio and we pull from one batch where we can, and tell you honestly when we can’t.</p></div>
           <div className="value"><h3>No minimum to collect</h3><p>Three slabs for a repair or thirty pallets for a development — collection is free and any quantity.</p></div>
-          <div className="value"><h3>Custom from 120 m²</h3><p>A size, colour or finish we don't hold can be run for you at 120 m² and above. Allow eight weeks.</p></div>
+          <div className="value"><h3>Custom from 120 m²</h3><p>A size, colour or finish we don’t hold can be run for you at 120 m² and above. Allow eight weeks.</p></div>
         </div>
       </div></section>
       <section className="chapter" id="delivery"><div className="wrap">
@@ -827,10 +845,10 @@ function About() {
         </div>
         <p className="note" style={{ marginBottom: 26 }}>Delivery figures are indicative, kerbside on a tail-lift, and confirmed by phone before you pay. Scotland, the far South West, islands and Northern Ireland are priced by the job.</p>
         <div className="steps">
-          <div className="step"><span className="num">I</span><h3>Take a sample</h3><p>100×100 mm, £5, posted. Look at it wet and dry, in daylight, where it's going.</p></div>
+          <div className="step"><span className="num">I</span><h3>Take a sample</h3><p>100×100 mm, £5, posted. Look at it wet and dry, in daylight, where it’s going.</p></div>
           <div className="step"><span className="num">II</span><h3>Measure the area</h3><p>Length × width, plus 10% for cuts. The calculator rounds it to whole packs.</p></div>
           <div className="step"><span className="num">III</span><h3>Pay</h3><p>Card or Klarna online, or ring {PHONE}. Delivery cost is confirmed before you pay.</p></div>
-          <div className="step"><span className="num">IV</span><h3>Delivered or collected</h3><p>3–4 working days from payment, 8am–6pm, we call on the day. Or collect from HP2 7BW, free.</p></div>
+          <div className="step"><span className="num">IV</span><h3>Delivered or collected</h3><p>3–5 working days from payment, 8am–6pm, we call on the day. Or collect from HP2 7BW, free.</p></div>
         </div>
       </div></section>
       <section className="chapter"><div className="wrap">
@@ -843,8 +861,8 @@ function About() {
 
 function Faq() {
   return <section className="chapter" style={{ paddingTop: 'clamp(36px,5vw,64px)' }}><div className="wrap">
-    <div className="narrow"><p className="kicker">Asked most often</p><h2>Straight answers.</h2></div>
-    <div className="media faq">{FAQ.map(([q, a], i) => <details key={q} open={i === 0}><summary>{q}</summary><p>{a}</p></details>)}</div>
+    <div className="narrow"><p className="kicker">Asked most often</p><h1 className="pg">Straight answers.</h1></div>
+    <h2 className="sr-only">Questions</h2><div className="media faq">{FAQ.map(([q, a], i) => <details key={q} open={i === 0}><summary>{q}</summary><p>{a}</p></details>)}</div>
   </div></section>
 }
 
@@ -854,7 +872,7 @@ function Contact() {
   const text = `NITYA STONES — ENQUIRY\n\nName:    ${f.name || '—'}\nPhone:   ${f.phone || '—'}\nEnquiry: ${f.want}\n\n${f.msg || '(what you need, area in m², postcode)'}`
   const copy = async () => { try { await navigator.clipboard.writeText(text); setCopied('Copied — paste it into an email to info@nityastones.co.uk') } catch { setCopied('Select the text and copy it') } }
   return <section className="chapter" style={{ paddingTop: 'clamp(36px,5vw,64px)' }}><div className="wrap contact-grid">
-    <div><p className="kicker">Contact</p><h2>Talk to the yard.</h2><p className="intro">Trade accounts, custom orders from 120 m², or a straight quote — ring, or write it here and send it over.</p>
+    <div><p className="kicker">Contact</p><h1 className="pg">Talk to the yard.</h1><p className="intro">Trade accounts, custom orders from 120 m², or a straight quote — ring, or write it here and send it over.</p>
       <div className="form">
         <div className="two"><div className="field"><label htmlFor="cName">Name</label><input id="cName" autoComplete="name" value={f.name} onChange={e => setF({ ...f, name: e.target.value })} /></div><div className="field"><label htmlFor="cPhone">Phone</label><input id="cPhone" type="tel" autoComplete="tel" value={f.phone} onChange={e => setF({ ...f, phone: e.target.value })} /></div></div>
         <div className="field"><label htmlFor="cWant">What do you need</label><select id="cWant" value={f.want} onChange={e => setF({ ...f, want: e.target.value })}>{['A quote for a patio', 'Samples', 'Trade account / repeat supply', 'Custom order, 120 m²+', 'Checking stock for collection'].map(o => <option key={o}>{o}</option>)}</select></div>
@@ -864,20 +882,18 @@ function Contact() {
     </div>
     <div><p className="kicker">The yard</p><h2>Mark Road.</h2>
       <dl className="detail-list">
-        <div className="detail"><dt className="k">Address</dt><dd className="v">34 Mark Road<br />Hemel Hempstead<br />HP2 7BW</dd></div>
-        <div className="detail"><dt className="k">Phone</dt><dd className="v"><a href={PHONE_HREF}>{PHONE}</a><br /><a href="tel:07932009870">07932 009870</a></dd></div>
-        <div className="detail"><dt className="k">Email</dt><dd className="v"><a href="mailto:info@nityastones.co.uk">info@nityastones.co.uk</a></dd></div>
-        <div className="detail"><dt className="k">Mon–Fri</dt><dd className="v">08:00 – 18:00</dd></div>
-        <div className="detail"><dt className="k">Saturday</dt><dd className="v">08:00 – 13:00</dd></div>
-        <div className="detail"><dt className="k">Sunday</dt><dd className="v">Closed</dd></div>
+        <div className="detail"><dt className="k">Address</dt><dd className="v">{BUSINESS.address.map((l, i) => <span key={l}>{l}{i < BUSINESS.address.length - 1 && <br />}</span>)}<br /><a className="more" href={BUSINESS.maps} target="_blank" rel="noreferrer">Open in Google Maps</a></dd></div>
+        <div className="detail"><dt className="k">Phone</dt><dd className="v"><a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a><br /><a href={BUSINESS.mobileHref}>{BUSINESS.mobile}</a> · <a href={BUSINESS.whatsapp} target="_blank" rel="noreferrer">WhatsApp</a></dd></div>
+        <div className="detail"><dt className="k">Email</dt><dd className="v"><a href={'mailto:' + BUSINESS.email}>{BUSINESS.email}</a></dd></div>
+        {BUSINESS.hours.map(([d, h]) => <div className="detail" key={d}><dt className="k">{d}</dt><dd className="v">{h}</dd></div>)}
       </dl>
-      <img className="payments" style={{ marginTop: 22 }} src={IMG.payments} alt="Mastercard, Maestro, Visa, Visa Electron and Klarna accepted" />
+      <img className="payments" style={{ marginTop: 22 }} src={IMG.payments} alt="Mastercard, Maestro, Visa and Klarna accepted" />
     </div>
   </div></section>
 }
 
 /* ---------------- shell ---------------- */
-const TITLES = { home: 'Nitya Stones — Sandstone, Limestone & Porcelain Paving, Hemel Hempstead', shop: 'Shop', collections: 'Collections', build: 'Build your patio', samples: 'Samples', cart: 'Your bag', checkout: 'Checkout', about: 'About the yard', faq: 'FAQ', contact: 'Contact', guides: 'Guides' }
+const TITLES = { home: 'Nitya Stones — Sandstone, Limestone & Porcelain Paving, Hemel Hempstead', shop: 'Shop', collections: 'Collections', build: 'Build your patio', samples: 'Samples', cart: 'Your bag', checkout: 'Checkout', about: 'About the yard', faq: 'FAQ', contact: 'Contact', guides: 'Guides', projects: 'Projects', trade: 'Trade accounts', notfound: 'Page not found' }
 
 function useTheme() {
   const [theme, setTheme] = useState(() => { try { return localStorage.getItem('nitya-theme') || 'dark' } catch { return 'dark' } })
@@ -902,18 +918,20 @@ function ThemeButton({ theme, toggle }) {
 
 export default function App() {
   const route = useRoute()
+  useStructuredData()
   const bag = useBag()
   const [theme, toggleTheme] = useTheme()
   useEffect(() => {
-    const t = route.page === 'product' ? byId(route.id)?.name : route.page === 'guide' ? guideBySlug(route.id)?.title : TITLES[route.page]
+    const t = route.page === 'product' ? (byId(route.id)?.name || TITLES.notfound) : route.page === 'guide' ? (guideBySlug(route.id)?.title || TITLES.notfound) : (TITLES[route.page] || TITLES.notfound)
     document.title = route.page === 'home' || !t ? TITLES.home : `${t} — Nitya Stones`
   }, [route])
   const [menu, setMenu] = useState(false)
+  useEffect(() => { if (!menu) return; const key = (e) => { if (e.key === 'Escape') setMenu(false) }; window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key) }, [menu])
   const NAV = [['shop', 'Shop'], ['collections', 'Collections'], ['build', 'Build your patio'], ['projects', 'Projects'], ['guides', 'Guides'], ['trade', 'Trade'], ['contact', 'Contact']]
   const page = {
     home: <Home bag={bag} />, shop: <Shop key={route.q.toString()} route={route} />, product: <Product key={route.id} route={route} bag={bag} />, samples: <Samples bag={bag} />,
     cart: <Bag bag={bag} />, checkout: <Checkout bag={bag} />, about: <About />, faq: <Faq />, contact: <Contact />, collections: <Collections />, build: <Build bag={bag} />, guides: <Guides />, guide: <Guide key={route.id} route={route} />, projects: <Projects />, trade: <Trade />,
-  }[route.page] || <Home bag={bag} />
+  }[route.page] || <div className="wrap empty"><h1 className="pg">Not found</h1><p style={{ marginTop: 12 }}>That page isn’t here. <a className="more" href={href('')}>Back to the start</a> or <a className="more" href={href('shop')}>shop the ranges</a>.</p></div>
   return (
     <>
       <header className="nav"><div className="wrap">
@@ -929,11 +947,11 @@ export default function App() {
       <main>{page}</main>
       <footer><div className="wrap">
         <div className="foot">
-          <div><Logo /><p style={{ marginTop: 14, maxWidth: '32ch' }}>Wholesale and retail suppliers of outdoor and indoor porcelain, sandstone, limestone and cladding. 34 Mark Road, Hemel Hempstead HP2 7BW.</p></div>
-          <div><h4>Shop</h4>{CATS.map(([k, l]) => <a key={k} href={href('shop?cat=' + k)}>{l}</a>)}<a href={href('shop?cat=offers')}>Offers</a><a href={href('samples')}>Samples</a></div>
-          <div><h4>Help</h4><a href={href('trade')}>Trade accounts</a><a href={href('projects')}>Projects</a><a href={href('about')}>About the yard</a><a href={href('guides')}>Guides</a><a href={href('build')}>Build your patio</a><a href={href('collections')}>Collections</a><a href={href('faq')}>FAQ</a><a href={href('about')}>Ordering &amp; delivery</a><a href={href('about')}>Laying patterns</a><a href={href('contact')}>Contact</a></div>
-          <div><h4>The yard</h4><a href={PHONE_HREF}>{PHONE}</a><a href="mailto:info@nityastones.co.uk">info@nityastones.co.uk</a><span style={{ display: 'block', paddingTop: 3 }}>Mon–Fri 8–6 · Sat 8–1</span>
-            <div className="social"><a href="https://www.instagram.com/nityastones/" target="_blank" rel="noreferrer">Instagram</a><a href="https://www.facebook.com/NityaStones/" target="_blank" rel="noreferrer">Facebook</a><a href="https://uk.linkedin.com/company/nitya-stones-uk" target="_blank" rel="noreferrer">LinkedIn</a></div></div>
+          <div><Logo /><p style={{ marginTop: 14, maxWidth: '32ch' }}>Wholesale and retail suppliers of outdoor and indoor porcelain, sandstone, limestone and cladding. {BUSINESS.address.join(', ')}.</p></div>
+          <div><h3 className="foot-h">Shop</h3>{CATS.map(([k, l]) => <a key={k} href={href('shop?cat=' + k)}>{l}</a>)}<a href={href('shop?cat=offers')}>Offers</a><a href={href('samples')}>Samples</a></div>
+          <div><h3 className="foot-h">Help</h3><a href={href('trade')}>Trade accounts</a><a href={href('projects')}>Projects</a><a href={href('about')}>About the yard</a><a href={href('guides')}>Guides</a><a href={href('build')}>Build your patio</a><a href={href('collections')}>Collections</a><a href={href('faq')}>FAQ</a><a href={href('about')}>Ordering &amp; delivery</a><a href={href('about')}>Laying patterns</a><a href={href('contact')}>Contact</a></div>
+          <div><h3 className="foot-h">The yard</h3><a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a><a href={BUSINESS.mobileHref}>{BUSINESS.mobile}</a><a href={'mailto:' + BUSINESS.email}>{BUSINESS.email}</a><a href={BUSINESS.maps} target="_blank" rel="noreferrer">{BUSINESS.address.join(', ')}</a><span style={{ display: 'block', paddingTop: 3 }}>{BUSINESS.hoursShort}</span>
+            <div className="social">{BUSINESS.socials.map(([n, u]) => <a key={n} href={u} target="_blank" rel="noreferrer">{n}</a>)}</div></div>
         </div>
         <div className="foot-bottom"><span>© Nitya Stones · Photography © Nitya Stones</span><img className="payments" src={IMG.payments} alt="Cards and Klarna accepted" /></div>
       </div></footer>

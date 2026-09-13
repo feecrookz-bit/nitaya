@@ -14,7 +14,9 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
-const LOGO = 'data:image/png;base64,' + readFileSync(join(dirname(fileURLToPath(import.meta.url)), 'logo.png')).toString('base64')
+const HERE = dirname(fileURLToPath(import.meta.url))
+const LOGO = 'data:image/png;base64,' + readFileSync(join(HERE, 'logo.png')).toString('base64')
+const font = (f) => 'data:font/ttf;base64,' + readFileSync(join(HERE, '..', 'src', 'fonts', f)).toString('base64')
 import { pbkdf2Sync, randomBytes, createCipheriv } from 'node:crypto'
 
 const [src, dst, password] = process.argv.slice(2)
@@ -30,8 +32,12 @@ const GATE = String.raw`<!doctype html>
 <html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>Nitya Stones — private preview</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Geist:wght@400;500&display=swap">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Nitya Stones"><meta property="og:title" content="Nitya Stones — private preview"><meta property="og:description" content="A private preview of the new Nitya Stones website. Password required."><meta name="twitter:card" content="summary">
+<link rel="icon" type="image/png" href="favicon.png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
+@font-face{font-family:Cinzel;font-weight:600;src:url(__CINZEL__) format("truetype")}
+@font-face{font-family:Geist;font-weight:400;src:url(__GEIST4__) format("truetype")}
+@font-face{font-family:Geist;font-weight:500;src:url(__GEIST5__) format("truetype")}
 html,body{margin:0;min-height:100%;background:#1A1A1A;color:#F5F3F0;font-family:Geist,-apple-system,"Helvetica Neue",Arial,sans-serif}
 .g{min-height:100vh;display:grid;place-items:center;padding:24px;box-sizing:border-box}
 .card{width:100%;max-width:400px;display:grid;gap:18px;text-align:center}
@@ -85,6 +91,6 @@ try{const s=sessionStorage.getItem('ns-preview');if(s)open(s).catch(()=>{})}catc
 </script>
 <script type="text/plain" id="ct">__CT__</script>
 </body></html>`
-const out = GATE.replace('__LOGO__', LOGO).replace('__SALT__', salt.toString('base64')).replace('__IV__', iv.toString('base64')).replace('__ITER__', String(ITER)).replace('__CT__', ct.toString('base64'))
+const out = GATE.replace('__CINZEL__', font('Cinzel-600.ttf')).replace('__GEIST4__', font('Geist-400.ttf')).replace('__GEIST5__', font('Geist-500.ttf')).replace('__LOGO__', LOGO).replace('__SALT__', salt.toString('base64')).replace('__IV__', iv.toString('base64')).replace('__ITER__', String(ITER)).replace('__CT__', ct.toString('base64'))
 writeFileSync(dst, out)
 console.log(`protected ${(plain.length / 1024) | 0} KB -> ${(out.length / 1024) | 0} KB`)
