@@ -71,16 +71,20 @@ function Price({ p, big }) {
 }
 const saving = (p) => p.was ? Math.round((1 - p.price / p.was) * 100) : 0
 
-function ProductCard({ p }) {
+function ProductCard({ p, featured = false }) {
   const pct = saving(p)
+  const feature = featured && p.feature && p.gallery[0]
   return (
-    <a className="product" href={href('product/' + p.id)} style={{ '--fc': FAMILY_COLOUR[p.cat].c, '--tc': p.tag === 'Splits' ? 'var(--green)' : p.tag === 'Pallet deal' ? 'var(--rust)' : 'var(--gold-2)' }}>
-      <img src={p.img} alt={p.name} loading="lazy" />
+    <a className={feature ? 'product feature' : 'product'} href={href('product/' + p.id)} style={{ '--fc': FAMILY_COLOUR[p.cat].c, '--tc': p.tag === 'Splits' ? 'var(--green)' : p.tag === 'Pallet deal' ? 'var(--rust)' : 'var(--gold-2)' }}>
+      {feature ? <div className="feature-pic"><img src={p.gallery[0]} alt={`${p.name} laid in a customer's garden`} loading="lazy" /><img className="inset" src={p.img} alt="" loading="lazy" /></div>
+        : <img src={p.img} alt={p.name} loading="lazy" />}
       {pct >= 10 && <span className="save">Save {pct}%</span>}
       <div className="product-body">
+        {feature && <span className="kicker">Editor's pick</span>}
         {p.tag && <span className="tag">{p.tag}</span>}
         <span className="fam">{CAT_LABEL[p.cat]}</span>
         <h3>{p.name}</h3>
+        {feature && <p className="why">{p.feature}</p>}
         <span className="spec">{p.size} · {p.thick}</span>
         <Price p={p} />
       </div>
@@ -261,7 +265,7 @@ function Home({ bag }) {
       </div>
 
       <section className="slab-moment" data-reveal>
-        <div className="wrap narrow"><p className="kicker">Turn it over</p><h2>Riven, hand-split, 22 mm.</h2><p className="intro">Drag the slab. This is Raj Green from the yard, cleft along its bedding so no two faces match.</p></div>
+        <div className="wrap narrow"><p className="kicker">Turn it over</p><h2>Split, not sawn.</h2><p className="intro">Drag it. Raj Green from the yard, cleft along its bedding the way the stone wants to break, so no two faces match and the surface still grips when it's wet. Calibrated to 22 mm underneath.</p></div>
         <div className="wrap"><Suspense fallback={<div className="hero-3d" aria-hidden="true" />}><StoneScene texture={IMG.slabTexture} /></Suspense><div className="hero-static"><img src={byId('raj-green').img} alt="Raj Green riven sandstone slab" /></div><p className="slab-hint">Drag to rotate</p></div>
       </section>
 
@@ -304,15 +308,17 @@ function Home({ bag }) {
         </div>
       </div></section>
 
-      <section className="chapter grey" data-reveal><div className="wrap yard">
-        <Parallax amount={0.08}><div className="yard-pics"><img src={IMG.yard} alt="The Nitya Stones showroom on Mark Road" loading="lazy" /><img src={IMG.pallets} alt="Pallets of paving in the Nitya Stones yard" loading="lazy" /></div></Parallax>
-        <div>
-          <p className="kicker">Sourcing</p>
-          <h2>From the quarry to Mark Road.</h2>
-          <p className="intro">We opened the yard in 2016 to sell the stone we'd buy ourselves. Sandstone comes hand-split from the quarry districts of Rajasthan, limestone sawn and honed from Sinai, porcelain pressed in Spain and Gujarat. It's bought direct, held on our own ground, and checked in before it goes out — if it isn't right, it doesn't leave.</p>
-          <div className="stats"><div className="stat"><b><CountUp to={2016} plain /></b><span>Same yard, same people</span></div><div className="stat"><b><CountUp to={36} /></b><span>Stones in stock today</span></div><div className="stat"><b><CountUp to={120} suffix=" m²" /></b><span>Custom finishes from</span></div></div>
-          <div className="actions" style={{ justifyContent: 'flex-start' }}><a className="more" href={href('about')}>About the yard</a></div>
+      <section className="chapter manifesto" data-reveal><div className="wrap">
+        <p className="kicker">Sourcing</p>
+        <h2 className="manifesto-h">From the quarry<br />to Mark Road.</h2>
+        <div className="creed">
+          <div><b>Bought direct.</b><p>Sandstone hand-split in the quarry districts of Rajasthan. Limestone sawn and honed from Sinai. Porcelain pressed in Spain and Gujarat. No middlemen, so the price on the slab is the price of the slab.</p></div>
+          <div><b>Held on our ground.</b><p>Every range is on pallets at Mark Road, not in a catalogue. Come and stand on it, hose it, take a piece home. What you see in the yard is what arrives.</p></div>
+          <div><b>Looked at before it leaves.</b><p>Each pallet is checked in and checked out by the same people who opened the yard in 2016. If it isn't right, it doesn't leave.</p></div>
         </div>
+        <Parallax amount={0.06}><div className="yard-pics wide"><img src={IMG.yard} alt="The Nitya Stones showroom on Mark Road" loading="lazy" /><img src={IMG.pallets} alt="Pallets of paving in the Nitya Stones yard" loading="lazy" /></div></Parallax>
+        <div className="stats"><div className="stat"><b><CountUp to={2016} plain /></b><span>Same yard, same people</span></div><div className="stat"><b><CountUp to={36} /></b><span>Stones in stock today</span></div><div className="stat"><b><CountUp to={120} suffix=" m²" /></b><span>Custom finishes from</span></div></div>
+        <div className="actions" style={{ justifyContent: 'flex-start' }}><a className="more" href={href('about')}>About the yard</a></div>
       </div></section>
 
       <section className="chapter" id="calculator" data-reveal><div className="wrap">
@@ -551,7 +557,7 @@ function Shop({ route }) {
         </div>
       </div>
       <p className="count" style={{ marginBottom: 16 }}>{list.length} {list.length === 1 ? 'product' : 'products'}</p>
-      <div className="grid">{list.map(p => <ProductCard key={p.id} p={p} />)}</div>
+      <div className="grid">{list.map(p => <ProductCard key={p.id} p={p} featured={sort === 'featured' && !q} />)}</div>
     </div></section>
     </>
   )

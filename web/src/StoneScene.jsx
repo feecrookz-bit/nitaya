@@ -163,7 +163,7 @@ export default function StoneScene({ texture }) {
         onCreated={({ gl }) => { gl.domElement.addEventListener('webglcontextlost', () => setFailed(true)) }}
         shadows
         frameloop={active && !reduced ? 'always' : 'demand'}
-        camera={{ position: [0, 1.7, 8.2], fov: 26, near: 0.1, far: 50 }}
+        camera={{ position: [0, 1.5, 6.6], fov: 26, near: 0.1, far: 50 }}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
         style={{ position: 'absolute', inset: 0 }}
       >

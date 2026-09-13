@@ -32,7 +32,7 @@ const gallery = (id) => Object.keys(GALLERY)
 export const IMG = { hero, yard, pallets, slabTexture, payments, logoOriginal }
 
 export const CATS = [
-  ['sandstone', 'Sandstone', 'Riven Indian sandstone, 22 mm, hand-split. Sold in mixed patio packs and single sizes.'],
+  ['sandstone', 'Sandstone', 'Split the way stone naturally breaks. Riven Indian sandstone, calibrated to 22 mm, hand-dressed edges. Mixed patio packs and single sizes.'],
   ['limestone', 'Limestone', 'Limestone at 20 mm: riven Black Limestone and honed Egyptian Sinai Pearl.'],
   ['outdoor', 'Outdoor porcelain', 'Vitrified 20 mm and 16 mm porcelain, R11, frost-proof, calibrated. Hoses clean.'],
   ['indoor', 'Indoor porcelain', '8 mm rectified porcelain, matt or gloss, slip resistant. Marble, stone and concrete effects.'],
@@ -47,14 +47,14 @@ const add = (o) => { P.push({ gallery: gallery(o.id), img: studio(o.slug), unit:
 const sand = (slug, id, name, size, pack, cover, was, extra = {}) => add({
   slug, id, name, cat: 'sandstone', origin: 'Indian sandstone', size, thick: '22 mm, calibrated', pack, cover,
   finish: 'Riven, hand-cut edges', price: 19.5, was, ...extra,
-  blurb: `${name} is hand-split Indian sandstone with the riven face and hand-dressed edges the stone is known for, calibrated to 22 mm so it lays evenly on a full wet bed.`,
+  blurb: `${name} is Indian sandstone split the way stone naturally breaks: along its bed, so every face is riven and no two slabs match. Calibrated to 22 mm underneath, hand-dressed at the edges, and richer every time it rains.`,
 })
 sand('kandla-grey-22mm-sandstone-mixed', 'kandla-grey', 'Kandla Grey', 'Mixed patio pack', '18.19 m² per pack', 18.19, 22.2,
-  { blurb: 'Kandla Grey is the calm one: light-to-mid grey with occasional buff undertones, and the sandstone most often laid around white render and grey window frames. Mixed patio pack of four sizes, laid random.' })
+  { feature: 'The calm grey for white render and grey frames', blurb: 'Kandla Grey is the calm one: light-to-mid grey with occasional buff undertones, and the sandstone most often laid around white render and grey window frames. Mixed patio pack of four sizes, laid random.' })
 sand('kandla-grey-22mm-sandstone-900', 'kandla-grey-900', 'Kandla Grey 900×600', '900 × 600 mm', '18.90 m² per pack', 18.9, 22.2,
   { tag: 'Splits', blurb: 'The same Kandla Grey in a single 900×600 size for a half-bond or stack-bond lay. This is one of the two packs we\'ll split.' })
 sand('raj-green', 'raj-green', 'Raj Green', 'Mixed patio pack', '18.19 m² per pack', 18.19, 22.2,
-  { blurb: 'Raj Green is a multicolour: greens, browns, greys and the occasional buff in one pack, and it comes up richer every time it rains. The classic English-garden sandstone.' })
+  { feature: 'The classic English-garden sandstone', blurb: 'Raj Green is a multicolour: greens, browns, greys and the occasional buff in one pack, and it comes up richer every time it rains. The classic English-garden sandstone.' })
 sand('rippon-buff', 'rippon-buff', 'Rippon Buff', 'Mixed patio pack', '18.19 m² per pack', 18.19, 22.2,
   { blurb: 'Rippon Buff runs from pale cream through honey to light brown. Warm against red brick and old stone.' })
 sand('autumn-brown', 'autumn-brown', 'Autumn Brown', 'Mixed patio pack', '18.19 m² per pack', 18.19, 24.2,
@@ -118,6 +118,10 @@ add({ slug: 'stone-cladding', id: 'cladding', name: 'Stone Cladding', cat: 'clad
   size: '600 × 150 mm', thick: '8–10 mm strips, split face', pack: 'Sold by the m²', cover: null, finish: 'Split face, running bond', price: 28.8, was: null,
   blurb: 'Split-face natural stone strips in mixed greys and buffs, laid in a running bond. Garden walls, fireplaces, the wall behind the TV.' })
 
+// Editorial picks: these four break the shop grid with a wider card and a
+// real garden photo. One per family that sells on looks.
+P.find(x => x.id === 'bodo-white').feature = 'Bright, veined 20 mm porcelain for modern extensions'
+P.find(x => x.id === 'quartz-white').feature = 'The brightest porcelain in the yard'
 export const PRODUCTS = P
 export const byId = (id) => PRODUCTS.find(p => p.id === id)
 
@@ -178,7 +182,7 @@ export const SEASON = { title: 'Autumn palette', ids: ['autumn-brown', 'raj-gree
 // Stone families: where each material actually comes from and how it behaves.
 export const FAMILIES = [
   { key: 'sandstone', name: 'Indian sandstone', lat: 'Rajasthan · sedimentary', cat: 'sandstone',
-    text: 'Quarried and hand-split along its bedding planes, which is why the face is riven and no two slabs match. Kandla, Raj, Rippon, Autumn and Fossil are quarry districts, not brands.',
+    text: 'Split along its bedding planes, the way the stone wants to break, so every face is riven and no two slabs match. It comes up richer wet than dry. Kandla, Raj, Rippon, Autumn and Fossil are quarry districts, not brands.',
     note: '22 mm · calibrated · seal it or let it weather' },
   { key: 'limestone', name: 'Limestone', lat: 'Sinai & Kota · sedimentary', cat: 'limestone',
     text: 'Fine-grained and dense enough to saw and hone flat. Black Limestone is near-black wet and charcoal dry; Sinai Pearl carries fossil detail in a pale ground.',
