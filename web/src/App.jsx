@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 const StoneScene = lazy(() => import('./StoneScene.jsx'))
 import WetDry from './WetDry.jsx'
 import { GUIDE_DIAGRAM } from './Diagrams.jsx'
@@ -587,10 +588,10 @@ function Gallery({ p }) {
     <div className="gallery">
       {frame(false)}
       {pics.length > 1 && <div className="thumbs" role="tablist" aria-label="Photos">{pics.map((x, k) => <button key={k} type="button" role="tab" aria-selected={i === k} aria-pressed={i === k} aria-label={x.alt} onClick={() => setI(k)}><img src={x.src} alt="" loading="lazy" /></button>)}</div>}
-      {open && <div className="lightbox" role="dialog" aria-modal="true" aria-label={`${p.name} photos`} onClick={() => setOpen(false)}>
+      {open && createPortal(<div className="lightbox" role="dialog" aria-modal="true" aria-label={`${p.name} photos`} onClick={() => setOpen(false)}>
         <button type="button" className="lb-close" aria-label="Close" onClick={() => setOpen(false)}>×</button>
         <div onClick={(e) => e.stopPropagation()}>{frame(true)}<p className="lb-cap">{pics[i].alt} · {p.name}</p></div>
-      </div>}
+      </div>, document.body)}
     </div>
   )
 }
