@@ -341,6 +341,94 @@ def sheet():
     print(p)
 
 
+# ---------------------------------------------------------------- galleries
+# Every photo the shop shows for a product (scripts/gallery.json, keyed by
+# our product id) becomes a graded 4:3 gallery frame: src/assets/g-<id>-<n>.jpg.
+# Near-duplicate uploads (the shop repeats the same file at several sizes and
+# re-uploads the same shot) are dropped by perceptual hash so a gallery never
+# shows the same frame twice.
+GALLERY = json.load(open(os.path.join(HERE, 'gallery.json')))
+GAL_ORIG = os.path.join(ORIG, 'gallery')
+
+
+def dhash(im, size=8):
+    g = im.convert('L').resize((size + 1, size), Image.LANCZOS)
+    px = list(g.get_flattened_data()) if hasattr(g, 'get_flattened_data') else list(g.getdata())
+    bits = 0
+    for r in range(size):
+        for c in range(size):
+            bits = (bits << 1) | (px[r * (size + 1) + c] > px[r * (size + 1) + c + 1])
+    return bits
+
+
+def hamming(a, b):
+    return bin(a ^ b).count('1')
+
+
+def gallery_fetch():
+    os.makedirs(GAL_ORIG, exist_ok=True)
+    for pid, urls in GALLERY.items():
+        for i, e in enumerate(urls):
+            u = e['src'] if isinstance(e, dict) else e
+            dst = os.path.join(GAL_ORIG, f'{pid}-{i}{os.path.splitext(u)[1].lower()}')
+            if os.path.exists(dst) and os.path.getsize(dst) > 1000:
+                continue
+            req = urllib.request.Request(u, headers={'User-Agent': UA})
+            with urllib.request.urlopen(req, timeout=60) as r, open(dst, 'wb') as f:
+                f.write(r.read())
+            print('fetched', os.path.basename(dst))
+
+
+def gallery():
+    """Grade every product photo into a gallery frame. Plain tile-on-floor
+    shots are cropped to the tile and left unstamped; garden and room shots
+    get the scene grade and the watermark, exactly like the scene photography."""
+    gallery_fetch()
+    os.makedirs(OUT, exist_ok=True)
+    for f in os.listdir(OUT):
+        if f.startswith('g-'):
+            os.remove(os.path.join(OUT, f))
+    total = 0
+    for pid, urls in GALLERY.items():
+        seen = []
+        n = 0
+        for i, e in enumerate(urls):
+            spec = e if isinstance(e, dict) else {'src': e}
+            if spec.get('skip'):  # a re-crop of a frame already in the set
+                continue
+            src = os.path.join(GAL_ORIG, f'{pid}-{i}{os.path.splitext(spec["src"])[1].lower()}')
+            im = ImageOps.exif_transpose(Image.open(src).convert('RGB'))
+            if spec.get('trim_bottom'):  # a caption baked into the upload
+                im = im.crop((0, 0, im.width, int(im.height * (1 - spec['trim_bottom']))))
+            h = dhash(im)
+            if any(hamming(h, s) <= 6 for s in seen):
+                continue
+            seen.append(h)
+            plain = is_plain_ground(im)
+            if plain:
+                box = content_box(im)
+                if box:
+                    pad = int(0.04 * max(im.size))
+                    im = im.crop((max(0, box[0] - pad), max(0, box[1] - pad), min(im.width, box[2] + pad), min(im.height, box[3] + pad)))
+            im = white_balance(im)
+            if not plain:
+                im = auto_levels(im)
+                im = s_curve(im)
+                im = ImageEnhance.Color(im).enhance(1.05)
+            im = crop_aspect(im, '4:3')
+            if im.width > 960:
+                im = im.resize((960, int(im.height * 960 / im.width)), Image.LANCZOS)
+            im = im.filter(ImageFilter.UnsharpMask(radius=1.2, percent=55, threshold=3))
+            if not plain:
+                im = watermark(im)
+            out = os.path.join(OUT, f'g-{pid}-{n}.jpg')
+            im.save(out, quality=68, optimize=True, progressive=True)
+            n += 1
+            total += 1
+        print(f'{pid}: {n} frames')
+    print('gallery frames:', total)
+
+
 if __name__ == '__main__':
     cmd = sys.argv[1] if len(sys.argv) > 1 else 'grade'
-    {'fetch': fetch, 'grade': grade, 'sheet': sheet}[cmd]()
+    {'fetch': fetch, 'grade': grade, 'sheet': sheet, 'gallery': gallery}[cmd]()

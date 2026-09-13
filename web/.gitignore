@@ -27,3 +27,5 @@ scripts/originals
 scripts/before-after.jpg
 social/
 publish/
+dist-artifact
+scripts/__pycache__

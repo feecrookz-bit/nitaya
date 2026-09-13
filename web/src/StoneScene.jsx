@@ -2,7 +2,6 @@ import { Component, Suspense, useEffect, useMemo, useRef, useState } from 'react
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Float, OrbitControls, ContactShadows, useTexture } from '@react-three/drei'
 import * as THREE from 'three'
-import textureUrl from './assets/slab-texture.jpg'
 
 /*
  * A single riven Raj Green slab (textured with the yard's own product photo) — 900 × 600 × 22 mm scaled to scene units —
@@ -63,10 +62,10 @@ function useRivenGeometry() {
   }, [])
 }
 
-function Slab({ spin }) {
+function Slab({ spin, texture }) {
   const group = useRef()
   const geometry = useRivenGeometry()
-  const map = useTexture(textureUrl, (t) => {
+  const map = useTexture(texture, (t) => {
     t.colorSpace = THREE.SRGBColorSpace
     t.wrapS = t.wrapT = THREE.RepeatWrapping
     t.anisotropy = 4
@@ -85,7 +84,7 @@ function Slab({ spin }) {
   )
 }
 
-function Scene({ reduced }) {
+function Scene({ reduced, texture }) {
   return (
     <>
       {/* fill */}
@@ -105,7 +104,7 @@ function Scene({ reduced }) {
 
       <Suspense fallback={null}>
         <Float speed={reduced ? 0 : 1.1} rotationIntensity={reduced ? 0 : 0.25} floatIntensity={reduced ? 0 : 0.5} floatingRange={[-0.08, 0.12]}>
-          <Slab spin={!reduced} />
+          <Slab spin={!reduced} texture={texture} />
         </Float>
       </Suspense>
 
@@ -133,7 +132,9 @@ class Boundary extends Component {
   render() { return this.state.failed ? null : this.props.children }
 }
 
-export default function StoneScene() {
+// `texture` is passed in by the app so this lazy chunk shares nothing with
+// the app chunk (which the gated build folds into the page).
+export default function StoneScene({ texture }) {
   const wrap = useRef()
   const [active, setActive] = useState(true)
   const [reduced, setReduced] = useState(false)
@@ -166,7 +167,7 @@ export default function StoneScene() {
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
         style={{ position: 'absolute', inset: 0 }}
       >
-        <Scene reduced={reduced} />
+        <Scene reduced={reduced} texture={texture} />
       </Canvas></Boundary>}
     </div>
   )

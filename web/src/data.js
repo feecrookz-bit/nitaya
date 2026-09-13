@@ -4,6 +4,7 @@ import pallets from './assets/pallets.jpg'
 import slabTexture from './assets/slab-texture.jpg'
 import payments from './assets/payments.png'
 import logoOriginal from './assets/logo-original.png'
+import { contentFor } from './content.js'
 import sceneAutumn from './assets/scene-autumn.jpg'
 import scenePool from './assets/scene-pool.jpg'
 import sceneHimalayan from './assets/scene-himalayan.jpg'
@@ -21,13 +22,18 @@ const find = (map, prefix) => {
   return key ? map[key] : null
 }
 const studio = (p) => { const s = find(STUDIO, 'p-' + p); if (!s) throw new Error('no render for ' + p); return s }
-const gallery = (p) => find(GALLERY, 'g-' + p)
+// Every photo the shop shows for the product (scripts/gallery.json), graded
+// into g-<id>-<n>.jpg by scripts/photos.py gallery. Ordered as the shop orders them.
+const gallery = (id) => Object.keys(GALLERY)
+  .filter(k => new RegExp(`^\\./assets/g-${id}-\\d+\\.jpg$`).test(k))
+  .sort((a, b) => parseInt(a.match(/-(\d+)\.jpg$/)[1]) - parseInt(b.match(/-(\d+)\.jpg$/)[1]))
+  .map(k => GALLERY[k])
 
 export const IMG = { hero, yard, pallets, slabTexture, payments, logoOriginal }
 
 export const CATS = [
   ['sandstone', 'Sandstone', 'Riven Indian sandstone, 22 mm, hand-split. Sold in mixed patio packs and single sizes.'],
-  ['limestone', 'Limestone', 'Honed limestone, 20 mm, sawn edges. Black Limestone and Egyptian Sinai Pearl.'],
+  ['limestone', 'Limestone', 'Limestone at 20 mm: riven Black Limestone and honed Egyptian Sinai Pearl.'],
   ['outdoor', 'Outdoor porcelain', 'Vitrified 20 mm and 16 mm porcelain, R11, frost-proof, calibrated. Hoses clean.'],
   ['indoor', 'Indoor porcelain', '8 mm rectified porcelain, matt or gloss, slip resistant. Marble, stone and concrete effects.'],
   ['cladding', 'Cladding', 'Split-face natural stone strips for garden walls, fireplaces and feature walls.'],
@@ -36,12 +42,12 @@ export const CAT_LABEL = Object.fromEntries(CATS.map(([k, l]) => [k, l]))
 
 /* Prices per m² ex VAT unless `unit` says otherwise, exactly as listed on the shop. */
 const P = []
-const add = (o) => { P.push({ gallery: gallery(o.slug), img: studio(o.slug), unit: 'per m²', ...o }) }
+const add = (o) => { P.push({ gallery: gallery(o.id), img: studio(o.slug), unit: 'per m²', content: contentFor(o.id), ...o }) }
 
 const sand = (slug, id, name, size, pack, cover, was, extra = {}) => add({
-  slug, id, name, cat: 'sandstone', origin: 'Indian sandstone', size, thick: '22 mm, uncalibrated', pack, cover,
-  finish: 'Riven, natural', price: 19.5, was, ...extra,
-  blurb: `${name} is hand-split Indian sandstone with the riven face and hand-dressed edges the stone is known for. Uncalibrated, so lay it on a full wet bed and work to the top face.`,
+  slug, id, name, cat: 'sandstone', origin: 'Indian sandstone', size, thick: '22 mm, calibrated', pack, cover,
+  finish: 'Riven, hand-cut edges', price: 19.5, was, ...extra,
+  blurb: `${name} is hand-split Indian sandstone with the riven face and hand-dressed edges the stone is known for, calibrated to 22 mm so it lays evenly on a full wet bed.`,
 })
 sand('kandla-grey-22mm-sandstone-mixed', 'kandla-grey', 'Kandla Grey', 'Mixed patio pack', '18.19 m² per pack', 18.19, 22.2,
   { blurb: 'Kandla Grey is the calm one: light-to-mid grey with occasional buff undertones, and the sandstone most often laid around white render and grey window frames. Mixed patio pack of four sizes, laid random.' })
@@ -56,12 +62,12 @@ sand('autumn-brown', 'autumn-brown', 'Autumn Brown', 'Mixed patio pack', '18.19 
 sand('fossil-mint', 'fossil-mint', 'Fossil Mint', 'Mixed patio pack', '18.19 m² per pack', 18.19, 22.2,
   { blurb: 'Fossil Mint is pale cream and beige with fossil marks and mint-green veining through some slabs. Light, bright and the sandstone most often chosen for south-facing patios.' })
 add({ slug: 'kandla-grey-circle', id: 'kandla-circle', name: 'Kandla Grey Circle Kit', cat: 'sandstone', origin: 'Indian sandstone',
-  size: '2.85 m diameter', thick: '22 mm, uncalibrated', pack: 'Complete kit', cover: null, finish: 'Riven, natural', price: 400, was: 450, unit: 'per kit', tag: 'Was £450',
+  size: '2.85 m diameter', thick: '22 mm, calibrated', pack: 'Complete kit', cover: null, finish: 'Riven, natural', price: 400, was: 450, unit: 'per kit', tag: 'Was £450',
   blurb: 'A complete 2.85 m feature circle in Kandla Grey: centre stone, two rings and the squaring-off pieces to set it into a straight field of the same stone.' })
 
 add({ slug: 'black-limestone', id: 'black-limestone', name: 'Black Limestone', cat: 'limestone', origin: 'Limestone',
-  size: '600 × 600 mm', thick: '20 mm', pack: '18.00 m² per pack', cover: 18, finish: 'Honed, sawn edge', price: 19.5, was: 22.5,
-  blurb: 'Black Limestone is a honed, sawn-edge 600×600 that lays flat and tight. Charcoal when dry, near-black wet. Seal it and it stays that way.' })
+  size: '600 × 600 mm', thick: '20 mm', pack: '18.00 m² per pack', cover: 18, finish: 'Riven, hand-dressed edges', price: 19.5, was: 22.5,
+  blurb: 'Black Limestone is a riven, hand-dressed 600×600 that lays in a tight grid. Charcoal when dry, near-black wet. Seal it and it stays that way.' })
 add({ slug: 'egyptian-sinai-pearl-600', id: 'sinai-pearl', name: 'Egyptian Sinai Pearl', cat: 'limestone', origin: 'Egyptian limestone',
   size: '600 × 600 mm', thick: '20 mm', pack: '18.00 m² per pack', cover: 18, finish: 'Honed', price: 26, was: 28,
   blurb: 'Sinai Pearl is a pale, honed Egyptian limestone with fine fossil detail. Cool, even and quietly expensive-looking.' })
@@ -90,26 +96,26 @@ out600('beige-porcelain', 'beige-porcelain', 'Beige Porcelain', 'A plain, even b
 out600('light-grey-porcelain', 'light-grey-porcelain', 'Light Grey Porcelain', 'A plain light grey 600×600 in 16 mm, sold by the pallet. £17.50 per m² at pallet price.')
 out600('black-porcelain', 'black-porcelain', 'Black Porcelain', 'A plain black 600×600 in 16 mm, sold by the pallet. £17.50 per m² at pallet price.')
 
-const indoor = (slug, id, name, size, blurb, was = null) => add({
+const indoor = (slug, id, name, size, blurb, finish = 'Matt') => add({
   slug, id, name, cat: 'indoor', origin: 'Indoor porcelain', size, thick: '8 mm', pack: 'Sold by the m²', cover: null,
-  finish: 'Matt or gloss, slip resistant', price: 22.8, was, blurb,
+  finish, price: 22.8, was: null, blurb,
 })
-indoor('calacatta-blanco', 'calacatta-blanco', 'Calacatta Blanco', '600 × 1200 mm', 'Calacatta Blanco brings the veined white marble look at 600×1200 in an 8 mm rectified tile.')
-indoor('miracle-statuario', 'miracle-statuario', 'Miracle Statuario', '600 × 1200 mm', 'Miracle Statuario has the bold grey veining of the real thing with a high-gloss finish.', 24.8)
-indoor('modern-statuario', 'modern-statuario', 'Modern Statuario', '600 × 1200 mm', 'Modern Statuario is a quieter white marble effect with fine, widely spaced veins.')
-indoor('saint-lawrence', 'saint-lawrence', 'Saint Lawrence Black Diamond', '600 × 1200 mm', 'A black marble effect with white and gold veins. Made for a statement floor.')
-indoor('lobbies-silver', 'lobbies-silver', 'Lobbies Silver', '600 × 1200 mm', 'Lobbies Silver is a cool grey with a subtle texture. Metropolitan, hard-wearing.')
+indoor('calacatta-blanco', 'calacatta-blanco', 'Calacatta Blanco', '600 × 1200 mm', 'Calacatta Blanco brings the veined white marble look at 600×1200 in an 8 mm rectified tile.', 'Matt / satin')
+indoor('miracle-statuario', 'miracle-statuario', 'Miracle Statuario', '600 × 1200 mm', 'Miracle Statuario has the bold grey veining of the real thing with a polished finish.', 'Polished')
+indoor('modern-statuario', 'modern-statuario', 'Modern Statuario', '600 × 1200 mm', 'Modern Statuario is a quieter white marble effect with fine, widely spaced veins.', 'Polished')
+indoor('saint-lawrence', 'saint-lawrence', 'Saint Lawrence Black Diamond', '600 × 1200 mm', 'A black marble effect with white and gold veins. Made for a statement floor.', 'Polished')
+indoor('lobbies-silver', 'lobbies-silver', 'Lobbies Silver', '600 × 1200 mm', 'Lobbies Silver is a cool grey with a subtle texture. Metropolitan, hard-wearing.', 'Smooth, subtle sheen')
 indoor('jiniva-natural', 'jiniva-natural', 'Jiniva Natural', '600 × 1200 mm', 'Jiniva Natural is a soft grey-beige stone effect that works with almost anything.')
 indoor('brit-raven', 'brit-raven', 'Brit Raven', '600 × 600 mm', 'Brit Raven is a deep charcoal 600×600 with a matt concrete finish.')
 indoor('aspire-grey', 'aspire-grey', 'Aspire Grey', '300 × 600 mm', 'Aspire Grey is a subtle stone-effect grey in a 300×600 format.')
-indoor('dark-stonella', 'dark-stonella', 'Dark Stonella', '300 × 600 mm', 'Dark Stonella is a rich dark grey with a fine speckle.')
+indoor('dark-stonella', 'dark-stonella', 'Dark Stonella', '300 × 600 mm', 'Dark Stonella is a rich dark grey with a fine speckle. R11 rated, so it goes in wet rooms.')
 indoor('eden-ash', 'eden-ash', 'Eden Ash', '300 × 600 mm', 'Eden Ash is a pale, brushed-concrete grey.')
 indoor('rovero-dark-grey', 'rovero-dark-grey', 'Rovero Dark Grey', '300 × 600 mm', 'Rovero Dark Grey is a deep matt grey with subtle texture.')
 indoor('sand-grigio', 'sand-grigio', 'Sand Grigio', '300 × 600 mm', 'Sand Grigio is a soft grey with a sandy grain.')
 indoor('unika-gris', 'unika-gris', 'Unika Gris', '300 × 600 mm', 'Unika Gris is a smooth, even grey. Timeless.')
 
 add({ slug: 'stone-cladding', id: 'cladding', name: 'Stone Cladding', cat: 'cladding', origin: 'Natural stone',
-  size: '600 × 150 mm', thick: '22 mm, split face', pack: 'Sold by the m²', cover: null, finish: 'Split face, running bond', price: 28.8, was: null,
+  size: '600 × 150 mm', thick: '8–10 mm strips, split face', pack: 'Sold by the m²', cover: null, finish: 'Split face, running bond', price: 28.8, was: null,
   blurb: 'Split-face natural stone strips in mixed greys and buffs, laid in a running bond. Garden walls, fireplaces, the wall behind the TV.' })
 
 export const PRODUCTS = P
@@ -136,7 +142,7 @@ export const PATTERNS = [
 ]
 
 export const FAQ = [
-  ['Are your outdoor slabs calibrated or uncalibrated?', 'Uncalibrated. Thickness varies across the pack, so lay them on a full wet bed and work to the top face, not the bottom. Our 20 mm outdoor porcelain is the opposite — dead consistent, if that\'s what you\'d rather lay.'],
+  ['Are your sandstone slabs calibrated?', 'Yes. Every slab is machine-calibrated to 22 mm after it\'s split, so the pack lays evenly on a full wet bed. The riven face still varies a few millimetres, as natural stone should; the 20 mm outdoor porcelain is dead flat, if that\'s what you\'d rather lay.'],
   ['Why are some of my slabs slightly different shades?', 'Because they\'re natural stone. Depending on the batch number there can be a slight difference in shade between pallets. It\'s not a fault, and it\'s the reason experienced layers mix from three or four packs at once rather than working through one pallet at a time.'],
   ['Do you split packs?', 'We split outdoor porcelain packs and Kandla Grey 600×900 packs. Mixed sandstone patio packs can\'t be split — the four sizes come banded as a set.'],
   ['How long does delivery take, and what happens on the day?', 'Three to four working days once payment has been received. Delivery lands between 8am and 6pm, we call you on the day, and someone needs to be there to sign for it.'],
@@ -173,10 +179,10 @@ export const SEASON = { title: 'Autumn palette', ids: ['autumn-brown', 'raj-gree
 export const FAMILIES = [
   { key: 'sandstone', name: 'Indian sandstone', lat: 'Rajasthan · sedimentary', cat: 'sandstone',
     text: 'Quarried and hand-split along its bedding planes, which is why the face is riven and no two slabs match. Kandla, Raj, Rippon, Autumn and Fossil are quarry districts, not brands.',
-    note: '22 mm · uncalibrated · seal it or let it weather' },
+    note: '22 mm · calibrated · seal it or let it weather' },
   { key: 'limestone', name: 'Limestone', lat: 'Sinai & Kota · sedimentary', cat: 'limestone',
     text: 'Fine-grained and dense enough to saw and hone flat. Black Limestone is near-black wet and charcoal dry; Sinai Pearl carries fossil detail in a pale ground.',
-    note: '20 mm · honed · sawn edges' },
+    note: '20 mm · riven or honed · hand-dressed edges' },
   { key: 'outdoor', name: 'Vitrified porcelain', lat: 'Spain & Gujarat · fired at 1,200 °C', cat: 'outdoor',
     text: 'Pressed clay fired until it turns glassy: near-zero absorption, so it doesn\'t stain, freeze or grow algae. Calibrated, so it lays flat off a thin bed.',
     note: '20 mm R11 outside · 8 mm rectified inside' },

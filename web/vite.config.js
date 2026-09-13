@@ -12,8 +12,12 @@ export default defineConfig({
   base: single ? './' : (process.env.BASE_PATH || '/'),
   plugins: [react(), ...(single ? [viteSingleFile()] : [])],
   build: {
-    outDir: single ? 'dist-single' : 'dist',
+    outDir: single ? 'dist-single' : (process.env.OUT_DIR || 'dist'),
     assetsInlineLimit: single ? () => true : 4096,
     cssCodeSplit: false,
+    // Libraries in their own chunk so the app chunk can be folded into the
+    // gated page (scripts/inline.mjs) while the lazy 3D chunk still finds
+    // React and Three as plain files.
+    rollupOptions: single ? {} : { output: { advancedChunks: { groups: [{ name: 'vendor', test: /node_modules/ }] } } },
   },
 })

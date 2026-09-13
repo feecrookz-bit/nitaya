@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 const StoneScene = lazy(() => import('./StoneScene.jsx'))
 import WetDry from './WetDry.jsx'
 import { GUIDE_DIAGRAM } from './Diagrams.jsx'
@@ -215,7 +215,7 @@ function Editions() {
 }
 
 function Atlas() {
-  const pic = { sandstone: byId('raj-green').gallery || byId('raj-green').img, limestone: byId('black-limestone').img, outdoor: byId('bodo-white').gallery || byId('bodo-white').img, cladding: byId('cladding').img }
+  const pic = { sandstone: byId('raj-green').gallery[0] || byId('raj-green').img, limestone: byId('black-limestone').img, outdoor: byId('bodo-white').gallery[0] || byId('bodo-white').img, cladding: byId('cladding').img }
   return (
     <div className="atlas">
       {FAMILIES.map(f => (
@@ -261,7 +261,7 @@ function Home({ bag }) {
 
       <section className="slab-moment" data-reveal>
         <div className="wrap narrow"><p className="kicker">Turn it over</p><h2>Riven, hand-split, 22 mm.</h2><p className="intro">Drag the slab. This is Raj Green from the yard, cleft along its bedding so no two faces match.</p></div>
-        <div className="wrap"><Suspense fallback={<div className="hero-3d" aria-hidden="true" />}><StoneScene /></Suspense><div className="hero-static"><img src={byId('raj-green').img} alt="Raj Green riven sandstone slab" /></div><p className="slab-hint">Drag to rotate</p></div>
+        <div className="wrap"><Suspense fallback={<div className="hero-3d" aria-hidden="true" />}><StoneScene texture={IMG.slabTexture} /></Suspense><div className="hero-static"><img src={byId('raj-green').img} alt="Raj Green riven sandstone slab" /></div><p className="slab-hint">Drag to rotate</p></div>
       </section>
 
       <section className="chapter" style={{ paddingBottom: 0 }} data-reveal><div className="wrap">
@@ -556,14 +556,81 @@ function Shop({ route }) {
   )
 }
 
+function Gallery({ p }) {
+  const pics = [{ src: p.img, alt: `${p.name} studio render` }, ...p.gallery.map((src, i) => ({ src, alt: `${p.name} photo ${i + 1}` }))]
+  const [i, setI] = useState(0)
+  const [open, setOpen] = useState(false)
+  const touch = useRef(null)
+  const go = (d) => setI(n => (n + d + pics.length) % pics.length)
+  useEffect(() => {
+    if (!open) return
+    const key = (e) => { if (e.key === 'Escape') setOpen(false); if (e.key === 'ArrowRight') go(1); if (e.key === 'ArrowLeft') go(-1) }
+    window.addEventListener('keydown', key); document.body.style.overflow = 'hidden'
+    return () => { window.removeEventListener('keydown', key); document.body.style.overflow = '' }
+  }, [open])
+  const swipe = {
+    onTouchStart: (e) => { touch.current = e.touches[0].clientX },
+    onTouchEnd: (e) => { if (touch.current == null) return; const dx = e.changedTouches[0].clientX - touch.current; touch.current = null; if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1) },
+  }
+  const frame = (big) => (
+    <div className={big ? 'lb-main' : 'main'} {...swipe}>
+      <img src={pics[i].src} alt={pics[i].alt} onClick={() => !big && setOpen(true)} />
+      {pics.length > 1 && <>
+        <button type="button" className="g-nav prev" aria-label="Previous photo" onClick={(e) => { e.stopPropagation(); go(-1) }}>‹</button>
+        <button type="button" className="g-nav next" aria-label="Next photo" onClick={(e) => { e.stopPropagation(); go(1) }}>›</button>
+        <span className="g-count">{i + 1} / {pics.length}</span>
+      </>}
+      {!big && <span className="g-zoom" aria-hidden="true">Tap to enlarge</span>}
+    </div>
+  )
+  return (
+    <div className="gallery">
+      {frame(false)}
+      {pics.length > 1 && <div className="thumbs" role="tablist" aria-label="Photos">{pics.map((x, k) => <button key={k} type="button" role="tab" aria-selected={i === k} aria-pressed={i === k} aria-label={x.alt} onClick={() => setI(k)}><img src={x.src} alt="" loading="lazy" /></button>)}</div>}
+      {open && <div className="lightbox" role="dialog" aria-modal="true" aria-label={`${p.name} photos`} onClick={() => setOpen(false)}>
+        <button type="button" className="lb-close" aria-label="Close" onClick={() => setOpen(false)}>×</button>
+        <div onClick={(e) => e.stopPropagation()}>{frame(true)}<p className="lb-cap">{pics[i].alt} · {p.name}</p></div>
+      </div>}
+    </div>
+  )
+}
+
+function ProductStory({ p }) {
+  const c = p.content
+  if (!c) return null
+  const packTotal = c.pack ? c.pack.reduce((n, [, q]) => n + q, 0) : 0
+  return (
+    <section className="chapter story"><div className="wrap">
+      <div className="story-grid">
+        <div className="story-main">
+          <p className="kicker">About the stone</p>
+          <h2>{p.name}, in detail.</h2>
+          {c.body.map((t, i) => <p key={i} className="story-p">{t}</p>)}
+          {c.features && <ul className="features" aria-label="Features">{c.features.map(f => <li key={f}>{f}</li>)}</ul>}
+          {c.laying && <><p className="kicker" style={{ marginTop: 34 }}>Laying and care</p><ol className="laying">{c.laying.map((t, i) => <li key={i}>{t}</li>)}</ol></>}
+          {c.note && <p className="story-note">{c.note}</p>}
+        </div>
+        <aside className="story-side">
+          {c.pack && <div className="panel"><h3>What's in the pack</h3>
+            <table className="pack-table"><tbody>{c.pack.map(([size, q]) => <tr key={size}><td>{size}</td><td>{q}</td></tr>)}<tr className="tot"><td>{packTotal} slabs</td><td>{p.cover ? p.cover.toFixed(2) + ' m²' : ''}</td></tr></tbody></table>
+            <p className="panel-note">Laid random from the four sizes. Sizes are nominal; the riven face varies a few millimetres.</p></div>}
+          {c.details && <div className="panel"><h3>Specification</h3>
+            <dl className="details">{c.details.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl></div>}
+          <div className="panel"><h3>Delivery and collection</h3>
+            <p className="panel-note">Kerbside pallet delivery in 3–4 working days, quoted by postcode before anything is charged. Free collection from 34 Mark Road, Hemel Hempstead HP2 7BW, Mon–Fri 8–6, Sat 8–1.</p>
+            <a className="more" href={href('about#delivery')}>Delivery details</a></div>
+        </aside>
+      </div>
+    </div></section>
+  )
+}
+
 function Product({ route, bag }) {
   const p = byId(route.id)
-  const [img, setImg] = useState(0)
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState('')
   useEffect(() => { if (!p) return; document.body.classList.add('has-sticky'); return () => document.body.classList.remove('has-sticky') }, [p])
   if (!p) return <div className="wrap empty"><h2>Not found</h2><p style={{ marginTop: 12 }}><a className="more" href={href('shop')}>Back to the shop</a></p></div>
-  const pics = [p.img, p.gallery].filter(Boolean)
   const unitPrice = lineUnitPrice(p)
   const related = PRODUCTS.filter(x => x.cat === p.cat && x.id !== p.id).slice(0, 4)
   const pairs = (PAIRS[p.id] || []).map(byId).filter(Boolean)
@@ -571,10 +638,9 @@ function Product({ route, bag }) {
   return (
     <>
       <div className="wrap pdp">
-        <div className="gallery">
-          <div className="main"><img src={pics[img]} alt={p.name} /></div>
-          {(p.cat === 'sandstone' || p.cat === 'limestone') && p.unit !== 'per kit' && <div><WetDry dry={p.img} wet={p.wet} name={p.name} /><p className="wetdry-note">Drag to compare. {p.wet ? 'Both photos are the same slab, hosed and dry.' : 'The wet side is simulated from the dry photo until we\'ve shot the slab hosed — natural stone comes up darker and richer than any screen shows.'}</p></div>}
-          {pics.length > 1 && <div className="thumbs">{pics.map((src, i) => <button key={i} type="button" aria-pressed={img === i} aria-label={i === 0 ? `${p.name} studio render` : `${p.name} in a customer's garden`} onClick={() => setImg(i)}><img src={src} alt="" /></button>)}</div>}
+        <div className="gallery-col">
+          <Gallery key={p.id} p={p} />
+          {(p.cat === 'sandstone' || p.cat === 'limestone') && p.unit !== 'per kit' && <div style={{ marginTop: 14 }}><WetDry dry={p.img} wet={p.wet} name={p.name} /><p className="wetdry-note">Drag to compare. {p.wet ? 'Both photos are the same slab, hosed and dry.' : 'The wet side is simulated from the dry photo until we\'ve shot the slab hosed — natural stone comes up darker and richer than any screen shows.'}</p></div>}
         </div>
         <div>
           <nav className="crumbs" aria-label="Breadcrumb"><a href={href('shop')}>Shop</a><span>/</span><a href={href('shop?cat=' + p.cat)}>{CAT_LABEL[p.cat]}</a><span>/</span><span>{p.name}</span></nav>
@@ -583,6 +649,7 @@ function Product({ route, bag }) {
           <p className="origin">{p.origin} · {p.size} · {p.thick}</p>
           <Price p={p} big />
           <p className="blurb">{p.blurb}</p>
+          {p.content?.features && <ul className="ticks" aria-label="Key features">{p.content.features.slice(0, 5).map(f => <li key={f}>{f}</li>)}</ul>}
           <dl className="spec-table">
             <div><dt>Size</dt><dd>{p.size}</dd></div>
             <div><dt>Thickness</dt><dd>{p.thick}</dd></div>
@@ -605,6 +672,7 @@ function Product({ route, bag }) {
           </div>
         </div>
       </div>
+      <ProductStory p={p} />
       {pairs.length > 0 && <section className="chapter" style={{ paddingBlock: 'clamp(40px,6vw,80px)', paddingTop: 0 }}><div className="wrap">
         <div className="head-row"><div><p className="kicker">Pairs with</p><h2>Laid next to {p.name}.</h2></div></div>
         <div className="pairs">{pairs.map(x => <a key={x.id} className="pair" href={href('product/' + x.id)}><img src={p.img} alt="" /><img src={x.img} alt={x.name} /><div><b>{p.name} + {x.name}</b><span>{x.cat === 'cladding' ? 'Wall behind the patio' : x.cat === p.cat ? 'Border, step or contrast band' : CAT_LABEL[x.cat] + ' · ' + money(x.price) + ' ' + x.unit}</span></div></a>)}</div>
@@ -744,7 +812,7 @@ function About() {
           <div className="value"><h3>Custom from 120 m²</h3><p>A size, colour or finish we don't hold can be run for you at 120 m² and above. Allow eight weeks.</p></div>
         </div>
       </div></section>
-      <section className="chapter"><div className="wrap">
+      <section className="chapter" id="delivery"><div className="wrap">
         <div className="head-row"><div><p className="kicker">Sample, measure, pay, delivered</p><h2>How ordering works.</h2></div></div>
         <div className="bands" style={{ marginBottom: 26 }}>
           {DELIVERY.bands.map(b => <div key={b.key} className="band"><span>{b.name}</span><b>{money(b.perPallet)} per pallet</b><span>{b.note}{b.areas ? ' · ' + b.areas.slice(0, 6).join(', ') + (b.areas.length > 6 ? '…' : '') : ''}</span></div>)}

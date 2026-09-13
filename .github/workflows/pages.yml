@@ -37,9 +37,14 @@ jobs:
         run: |
           mkdir -p publish
           if [ -n "$SITE_PASSWORD" ]; then
-            SINGLE=1 npm run build
-            node scripts/protect.mjs dist-single/index.html publish/index.html "$SITE_PASSWORD"
-            cp public/favicon.png public/apple-touch-icon.png publish/
+            # Markup, script and stylesheet are folded into one file and
+            # encrypted; images, fonts and lazy chunks stay as hashed files
+            # under assets/ so the unlock is light on a phone.
+            BASE_PATH=/nitaya/ npm run build
+            node scripts/inline.mjs dist dist/page.html
+            node scripts/protect.mjs dist/page.html publish/index.html "$SITE_PASSWORD"
+            rm dist/page.html dist/index.html
+            cp -r dist/. publish/
           elif [ "$PUBLIC_PREVIEW" = "true" ]; then
             BASE_PATH=/nitaya/ npm run build
             cp -r dist/. publish/
