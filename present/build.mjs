@@ -180,5 +180,8 @@ td:first-child{color:var(--ink);font-weight:600;width:34%}
   <div class="foot"><span>Prepared for the owner of Nitya Stones · ${esc(C.META.date)}</span><span>Private. Please don’t forward the password.</span></div>
 </div></section>
 `
-writeFileSync(join(HERE, 'index.html'), html)
+// Every non-ASCII character becomes a numeric entity, so the page reads
+// correctly however the host declares (or fails to declare) its charset.
+const safe = html.replace(/[^\x00-\x7f]/g, (c) => `&#${c.codePointAt(0)};`)
+writeFileSync(join(HERE, 'index.html'), safe)
 console.log(`present/index.html ${(html.length / 1024 / 1024).toFixed(1)} MB${missing.length ? ' · missing shots: ' + missing.join(', ') : ''}`)
