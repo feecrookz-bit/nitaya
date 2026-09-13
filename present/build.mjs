@@ -51,7 +51,7 @@ section:first-of-type{border-top:0}
 .cover h1{color:#fff;max-width:14ch}
 .cover .sub{color:rgba(255,255,255,.78);max-width:60ch;font-size:1.1rem;margin-top:18px}
 .cover .meta{display:flex;flex-wrap:wrap;gap:12px 32px;margin-top:32px;font-size:.95rem;color:rgba(255,255,255,.85)}
-.cover .meta b{display:block;color:var(--gold-2);font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:4px;font-weight:600}
+.cover .meta b{display:block;color:var(--gold-2);font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:4px;font-weight:600}
 .cover a{color:#fff}
 .cover code{font-family:ui-monospace,Menlo,Consolas,monospace;background:rgba(255,255,255,.1);padding:3px 8px;border-radius:6px;font-size:.95rem}
 .three{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
@@ -64,7 +64,7 @@ section:first-of-type{border-top:0}
 .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0}
 .pair.phone{grid-template-columns:1fr 1fr;max-width:640px}
 .side{position:relative}
-.lbl{position:absolute;top:10px;left:10px;z-index:1;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.lbl{position:absolute;top:10px;left:10px;z-index:1;font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.15)}
 .lbl.new{background:var(--gold-2);color:#161616}
 .shot{border:1px solid var(--hair);border-radius:10px;overflow:hidden;background:var(--card);box-shadow:0 12px 32px rgba(0,0,0,.08)}
 .shot img{display:block;width:100%;height:auto}
@@ -74,7 +74,7 @@ section:first-of-type{border-top:0}
 .newgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}
 .newgrid .shot img{max-height:520px;object-fit:cover;object-position:top}
 .newgrid p{color:var(--ink-2);font-size:.98rem}
-.badge{display:inline-block;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--gold-2);color:#161616;margin-bottom:10px}
+.badge{display:inline-block;font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--gold-2);color:#161616;margin-bottom:10px}
 ul.plain{list-style:none;padding:0;margin:0;display:grid;gap:10px}
 ul.plain li{position:relative;padding-left:26px;color:var(--ink-2)}
 ul.plain li::before{content:"";position:absolute;left:2px;top:.55em;width:12px;height:7px;border-left:2px solid var(--gold-2);border-bottom:2px solid var(--gold-2);transform:rotate(-45deg)}
@@ -87,8 +87,9 @@ td:first-child{color:var(--ink);font-weight:600;width:34%}
 .decisions li::before{content:"";position:absolute;left:0;top:.15em;width:18px;height:18px;border:1.5px solid var(--ink-3);border-radius:4px}
 .steps{display:grid;gap:12px}
 .step{display:grid;grid-template-columns:90px 1fr;gap:16px;align-items:start;padding:14px 0;border-bottom:1px solid var(--hair)}
-.who{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:5px 0;color:var(--gold)}
+.who{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:5px 0;color:var(--gold)}
 .note{background:var(--card);border-left:2px solid var(--gold-2);padding:14px 18px;color:var(--ink-2);font-size:.95rem;margin-top:18px}
+.biz{margin-top:36px;padding-top:24px;border-top:1px solid var(--hair);display:flex;flex-wrap:wrap;gap:8px 22px;font-size:.95rem;color:var(--ink-2)}.biz b{color:var(--ink);font-family:Cinzel,serif;letter-spacing:.06em}.biz a{color:var(--ink-2)}
 .foot{padding-top:32px;color:var(--ink-3);font-size:.85rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 @media (max-width:860px){.three,.mobiles,.newgrid{grid-template-columns:1fr}.pairhead{grid-template-columns:1fr}.pair{grid-template-columns:1fr}.pair.phone{grid-template-columns:1fr 1fr}.step{grid-template-columns:1fr}.who{padding:0}td:first-child{width:40%}}
 @media print{body{padding:0;background:#fff}.cover{background:#fff;color:#111}.cover h1,.cover a{color:#111}.cover .sub,.cover .meta{color:#333}.shot{box-shadow:none;break-inside:avoid}section{break-inside:auto}h2,h3{break-after:avoid}.pair,.decisions>div,.step{break-inside:avoid}}
@@ -177,6 +178,7 @@ td:first-child{color:var(--ink);font-weight:600;width:34%}
   <h2>The preview.</h2>
   <ul class="plain" style="margin-top:20px">${C.HOW_TO_VIEW.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
   <p style="margin-top:24px"><a href="${C.META.link}" style="color:var(--gold);font-weight:600">${esc(C.META.link)}</a> · password <code style="font-family:ui-monospace,Menlo,Consolas,monospace">${esc(C.META.password)}</code></p>
+  <div class="biz"><b>Nitya Stones</b><span>34 Mark Road, Hemel Hempstead HP2 7BW</span><span><a href="tel:03302369227">0330 236 9227</a> · <a href="tel:07932009870">07932 009870</a></span><span><a href="mailto:info@nityastones.co.uk">info@nityastones.co.uk</a></span><span>Mon–Fri 08:00–18:00 · Sat 08:00–13:00</span></div>
   <div class="foot"><span>Prepared for the owner of Nitya Stones · ${esc(C.META.date)}</span><span>Private. Please don’t forward the password.</span></div>
 </div></section>
 `
