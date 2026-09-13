@@ -1,0 +1,161 @@
+// All the words in the owner pack live here. build.mjs turns this into
+// present/index.html. No figures anywhere by design: costs are for the
+// conversation, not the page.
+
+export const META = {
+  title: 'Nitya Stones Upgrade Pack',
+  heading: 'The website upgrade',
+  sub: 'A working demonstration of the new nityastones.co.uk, built before any backend is connected, so the decision can be made on the real thing.',
+  link: 'https://feecrookz-bit.github.io/nitaya/',
+  password: 'nitya2026!!',
+  date: 'September 2026',
+}
+
+export const ONE_MINUTE = [
+  ['What it is', 'Every product, price, sale price and photograph from the current store, in a new front end built for phones as much as desktops. Thirty-six ranges with the store’s own photographs and a studio render of each slab, the two customer reviews the store already shows, and the original logo. Nothing has been invented: where the demo states a fact, it comes from the current site or from you.'],
+  ['What it isn’t yet', 'It takes no payments and sends no emails. The bag and checkout are real screens that stop at the last step with a note saying so. Nothing a visitor does is stored anywhere but their own phone. The store’s blog posts, legal pages and account area are not in it yet; what happens to each is set out below.'],
+  ['What we need from you', 'A handful of decisions, most of them yes or no, and about half a day at the yard with a phone for photographs. The lists are at the end. Nothing technical.'],
+]
+
+// Before/after pairs. `orig` and `neu` are the shot names from shoot.mjs.
+export const PAIRS = [
+  { key: 'home', title: 'Home', orig: 'orig-d-home', neu: 'new-d-home', points: [
+    'One full-width photograph of a real customer’s garden opens the site, with the logo on it, instead of a slider of promotions.',
+    'The four things a visitor wants first are on the first screen: what you sell, since when, how quickly it arrives, and trade.',
+    'A drag-to-turn slab of Raj Green, the three curated editions, this season’s picks, current offers, the patio builder, the stone families, customers’ gardens, how you buy, the price calculator, reviews and guides follow in that order.',
+  ], note: 'The current site’s opening slider is script-driven and did not render in the capture tool, which is why its top band shows blank here; in a browser it shows promotional slides.' },
+  { key: 'shop', title: 'Shop', orig: 'orig-d-shop', neu: 'new-d-shop', points: [
+    'One shop, filtered by family: sandstone, limestone, outdoor porcelain, indoor porcelain, cladding, and an Offers tab that collects everything below list price.',
+    'Search across every range, and sort by price or name.',
+    'Four editor’s picks (Kandla Grey, Raj Green, Bodo White, Quartz White) get a wider card with a real garden photograph; the rest sit in a clean grid with the render, size, thickness and the was/now price.',
+  ] },
+  { key: 'product', title: 'Product page', orig: 'orig-d-product', neu: 'new-d-product', points: [
+    'Every photograph the store has for the product, in a gallery with arrows, thumbnails and a full-screen view. Raj Green has six frames; Quartz White has ten.',
+    'A wet/dry slider, the feature list, a specification table, what is in a mixed pack (16 / 16 / 16 / 12 slabs), the description rewritten, laying and care notes, and the store’s own honesty notes about natural variation.',
+    'Add to bag with the inc-VAT total shown, a delivery estimate by postcode, a £5 sample button, what pairs with it, a price-your-area calculator and the rest of the family.',
+  ] },
+  { key: 'cart', title: 'Bag and checkout', orig: 'orig-d-cart', neu: 'new-d-checkout', points: [
+    'The bag shows pallets, coverage in square metres, ex-VAT and inc-VAT totals, and a delivery estimate for a postcode.',
+    'Checkout asks for name, phone, email, address, delivery or collection, and card, Klarna or pay-by-phone, exactly as the live store will.',
+    'It stops at the last step with a plain note that nothing is charged in the demo. In the live store this step hands to your existing WooCommerce.',
+  ] },
+  { key: 'blog', title: 'Blog, becoming Guides', orig: 'orig-d-blog', neu: 'new-d-blog', points: [
+    'The current blog is twenty articles. The demo replaces the format with Guides: the things you tell customers across the counter, written down, with drawings to scale.',
+    'Nine guides so far: porcelain or sandstone, laying sandstone, laying porcelain, how many packs, sealing, cleaning, why slabs vary, mixed packs, delivery day.',
+    'The existing articles are not in the demo yet. At go-live they move under Guides with redirects from their old addresses so Google keeps sending the traffic.',
+  ] },
+  { key: 'wholesale', title: 'Wholesale, becoming Trade', orig: 'orig-d-wholesale', neu: 'new-d-wholesale', points: [
+    'What an account includes, in four cards, then an application form the landscaper can send from their phone.',
+    'The four ranges trade buys most, with the trade sheet described as the shop list with the volume column filled in.',
+    'The wording of the offer is yours to confirm; the demo states a typical one.',
+  ] },
+  { key: 'contact', title: 'Contact', orig: 'orig-d-contact', neu: 'new-d-contact', points: [
+    'Both phone numbers, WhatsApp, email, the address with a Google Maps link, and opening hours as a table, all tappable on a phone.',
+    'An enquiry form that composes an email, and a call button.',
+    'The same details sit in the footer of every page and in the structured data Google reads.',
+  ] },
+  { key: 'about', title: 'About', orig: 'orig-d-about', neu: 'new-d-about', points: [
+    'The yard, in photographs and three lines: bought direct, held on our ground, looked at before it leaves.',
+    'How ordering works, delivery bands, collection, and the laying patterns drawn to scale.',
+  ] },
+]
+
+export const MOBILE = [
+  { key: 'm-home', title: 'Home on a phone', orig: 'orig-m-home', neu: 'new-m-home' },
+  { key: 'm-product', title: 'Product page on a phone', orig: 'orig-m-product', neu: 'new-m-product' },
+  { key: 'm-menu', title: 'The menu on a phone', orig: 'orig-m-menu', neu: 'new-m-menu' },
+]
+export const MOBILE_NOTE = 'Most visitors to a paving site arrive on a phone, often from the garden. Every screen was checked at five widths from 360 px up; every tap target is at least 44 px; text never drops below 12 px.'
+
+export const NEW_ONLY = [
+  { shot: 'new-d-collections', title: 'Collections', text: 'Three editions (Essentials, Premium Select, Signature) arrange the same stock by what it is for. Same prices; the curation is the point.' },
+  { shot: 'new-d-build', title: 'Build your patio', text: 'Pick a stone, type the dimensions, pick a laying pattern: it works out whole packs, the price, and saves the design to come back to or reorder from.' },
+  { shot: 'new-d-lightbox', title: 'Full-screen photographs', text: 'Every product photograph opens full screen, swipeable, with a counter.' },
+  { shot: 'new-d-product-light', title: 'Light and dark', text: 'The site opens dark, which suits the stone photography. One tap switches to a light version and the choice is remembered. Either can be the default.' },
+  { shot: 'new-d-projects', title: 'Projects', text: 'Customers’ gardens, each one tapping through to the stone in it. Grows as you send photographs.' },
+  { shot: 'new-d-offers', title: 'Offers', text: 'Everything currently below list price in one place, from the store’s own was/now prices.' },
+  { shot: 'new-d-samples', title: 'Samples', text: '£5 samples of every range, added to the bag from the product page or from one page of all of them.' },
+  { shot: 'new-m-build', title: 'The builder on a phone', text: 'Works one-handed, standing in the garden.' },
+]
+
+export const KEPT = [
+  'All 36 products, with the four sample-only listings folded into the £5 sample flow.',
+  'Every price and every sale price as listed today, including the pallet prices for the 16 mm porcelain.',
+  'The original logo, cleaned up and used at every size: header, footer, hero, the preview gate, favicon.',
+  'All 114 photographs from the store, graded to sit together, with the duplicate uploads removed.',
+  'Phone numbers, WhatsApp, email, address and opening hours as on the current site.',
+  'The two customer reviews the store shows today, word for word.',
+  'The store’s own honesty notes: natural variation, batch variation, order ten per cent over, renders are illustrative.',
+]
+
+export const NOT_YET = [
+  ['Blog (20 articles)', 'Moves under Guides at go-live with redirects from the old addresses, so search rankings hold.'],
+  ['Terms & Conditions, Privacy, Refund & Returns, Delivery Terms', 'Come across as they are, linked from the footer.'],
+  ['My Account', 'Comes with WooCommerce when the checkout is connected.'],
+  ['Designer page', 'A product-designer plugin on the current site. Tell us if it is used; if not, it is dropped.'],
+  ['Special Deal page', 'Becomes the Offers tab, which already exists.'],
+  ['Delivery rates', 'The demo shows indicative bands marked as such, and follows your published terms for the rest. Your real per-pallet rates replace the bands when convenient.'],
+]
+
+export const DECISIONS = [
+  { h: 'Copy the demo states as fact, from your current listings', items: [
+    'Trading since 2016.',
+    'Price match.',
+    'Split packs: outdoor porcelain and Kandla Grey 600 × 900 only; mixed sandstone packs never.',
+    'Custom sizes, colours or finishes from 120 m², up to eight weeks.',
+    'Klarna accepted.',
+    'Samples £5 each. (Or free, or refunded against a first order?)',
+    'Delivery: 3–5 working days standard; free standard delivery on orders over £500 inside the M25. Both from your Delivery Terms page.',
+  ] },
+  { h: 'Where your current listings disagree with themselves', items: [
+    'Sandstone is calibrated to 22 mm (the listings say so; the demo says so).',
+    'Egyptian Sinai Pearl is shown as honed (the listing bullet says riven; the photograph says honed).',
+    'Black Limestone is shown as riven with hand-dressed edges (per the listing).',
+    'The 600 × 900 porcelain pallets: 28.08 m² for Bodo White, HS Beige and Noor Grigio and 21.60 m² for the rest, per the product titles. The attribute box on every listing says 21.30.',
+    'Indoor tiles: all £22.80 per m², no sale price.',
+    'The Kandla Grey Circle Kit listing carries a Copper Slate description by mistake; the demo describes the circle.',
+  ] },
+  { h: 'Choices', items: [
+    'Your Kandla Grey listing says “we operate our own stone quarries in India”. If that is right, it is the strongest line on the site and we will use it. If not, we leave it out.',
+    'Dark or light as the default look.',
+    'The mobile number and WhatsApp on the site, as on the current one? (Yes in the demo.)',
+    'The current site links a Twitter/X account. Keep it?',
+    'The trade offer in your words: terms, pallet pricing, who the contact is.',
+    'A see-it-laid visualiser: yes, later, or no. The options are below.',
+  ] },
+]
+
+export const YARD = [
+  ['Photographs, straight down', 'One dry slab each of Bodo White, Fossil Mint, HS Beige and Himalayan White, phone camera, daylight, from directly above. Every other range already has one.'],
+  ['Hosed slabs', 'One photo of each sandstone hosed, same slab and framing as the dry one, for the wet/dry slider. Until then the wet side is simulated and labelled as such.'],
+  ['A twenty-second video', 'Landscape, phone: a hose over a Raj Green slab, then a slow walk across a laid patio. It becomes the opening of the site.'],
+  ['Finished gardens', 'Any customer photographs with the stone laid, for Projects.'],
+  ['Reviews', 'A Google Business or Trustpilot link if there is one, and any written reviews with the customer’s permission.'],
+  ['The logo as a vector or a large file', 'AI, EPS, SVG or PDF, or a PNG at least 2,000 px wide. The demo uses the small web logo cleaned up; it holds on screen but print needs the original.'],
+  ['Trade', 'What an account actually includes.'],
+  ['Delivery rates', 'Real per-pallet rates by area, when convenient.'],
+  ['Instagram', 'Switch the account to a Business profile (free) if you want the feed on the site.'],
+]
+
+export const GO_LIVE = [
+  ['You', 'Confirm the copy and the choices above.'],
+  ['You', 'Half a day at the yard for the photographs and the video.'],
+  ['Us', 'Connect the demo to your existing WooCommerce: products, stock, payments, orders and emails come from it. The same fields you use now.'],
+  ['Us', 'Move the blog articles under Guides and bring the legal pages across, with redirects from every old address.'],
+  ['Us', 'Put your real delivery rates in.'],
+  ['You and us', 'Point nityastones.co.uk at the new site and remove the preview password. The old site stays available until you are happy.'],
+]
+
+export const OPTIONS = [
+  ['Built into the site', 'A customer photographs their garden, taps the four corners of the patio, and the chosen stone is laid onto the photograph in the chosen pattern. Uses the textures and pattern engine already in the site. Needs the four straight-down photographs above. On brand, no monthly fee, and it drives the £5 sample.'],
+  ['A licensed tool', 'A one-line embed from a visualiser company. Quick to switch on; indoor-first; the customer’s leads sit in their system; a monthly fee for as long as it runs.'],
+  ['The slab in your garden', 'The existing 3D slab exported so a phone can place one slab on the ground through the camera. Free to add; one slab rather than a laid patio.'],
+]
+export const OPTIONS_NOTE = 'Recommendation if you want it: build it into the site, add the free single-slab view, and trial a licensed tool alongside as a comparison. None of this is needed for go-live.'
+
+export const HOW_TO_VIEW = [
+  'Open the link on a phone or a computer and enter the password. The page decrypts in your browser; nothing is sent anywhere.',
+  'Tap the sun/moon button in the header to switch between dark and light.',
+  'Add things to the bag and go through checkout; nothing is charged and nothing is stored beyond your own device.',
+  'Everything you see is a real screen. If a detail is wrong, it is a five-minute change.',
+]
