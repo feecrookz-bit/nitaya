@@ -1,0 +1,106 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Stock tracker link</title>
+<style>
+@font-face{font-family:Geist;src:url(file:///home/user/nitaya/web/src/fonts/Geist-400.ttf);font-weight:400}
+@font-face{font-family:Geist;src:url(file:///home/user/nitaya/web/src/fonts/Geist-500.ttf);font-weight:500}
+@font-face{font-family:Geist;src:url(file:///home/user/nitaya/web/src/fonts/Geist-700.ttf);font-weight:700}
+@font-face{font-family:Cinzel;src:url(file:///home/user/nitaya/web/src/fonts/Cinzel-600.ttf);font-weight:600}
+*{box-sizing:border-box}
+body{margin:0;font-family:Geist,Arial,sans-serif;font-size:10.8pt;line-height:1.45;color:#1C1A17}
+.eyebrow{font-size:8.5pt;letter-spacing:.2em;text-transform:uppercase;color:#8A6D1E;font-weight:700;margin:0 0 6px}
+h1{font-family:Cinzel,Georgia,serif;font-weight:600;font-size:24pt;line-height:1.1;margin:0 0 6px}
+.lede{color:#4A463F;margin:0 0 18px;padding-bottom:14px;border-bottom:1px solid #E2DDD3;max-width:66ch}
+h2{font-family:Cinzel,Georgia,serif;font-weight:600;font-size:13pt;margin:16px 0 5px;page-break-after:avoid}
+h2 small{font-family:Geist;font-weight:400;font-size:9.5pt;color:#6A655C;letter-spacing:0;margin-left:8px}
+p{margin:0 0 8px;max-width:70ch;color:#2B2926}
+ol,ul{margin:0 0 8px;padding-left:20px;max-width:70ch}
+li{margin-bottom:5px;color:#2B2926}
+li::marker{color:#8A6D1E;font-weight:500}
+b{color:#1C1A17}
+table{border-collapse:collapse;width:100%;margin:4px 0 10px;font-size:9.8pt;page-break-inside:avoid}
+th{text-align:left;font-size:8.5pt;letter-spacing:.12em;text-transform:uppercase;color:#6A655C;font-weight:500;padding:4px 8px 4px 0;border-bottom:1px solid #C9C5BE}
+td{padding:5px 8px 5px 0;border-bottom:1px solid #E2DDD3;vertical-align:top}
+td:first-child{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:9.8pt;white-space:nowrap}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0 28px}
+.box{background:#F6F3EE;border-left:3px solid #8A6D1E;padding:10px 14px;margin:14px 0}
+.box p{margin:0}
+.pb{page-break-before:always}
+</style></head><body>
+<p class="eyebrow">Nitya Stones · website upgrade</p>
+<h1>Stock tracker link</h1>
+<p class="lede">Steps for Coleisha and Simar. The aim is a fixed doorway between the website and the stock tracker, so Simar can keep changing the script without breaking the site. Nothing gets built at the meeting. The output is one agreed field list.</p>
+
+<div class="two">
+<div>
+<h2>Simar <small>before the meeting</small></h2>
+<ol>
+<li>Add a <b>product code</b> column to the Database Products tab and fill it for every active row. Same code as the WooCommerce SKU where one exists; make one up in the same style where it doesn't.</li>
+<li>Add rows for <b>Sinai Pearl</b> and for each of the <b>six cladding colours</b> (currently one row).</li>
+<li>Decide where <b>"available"</b> comes from: a column someone keeps, or a formula from your movements. Either is fine, but pick one.</li>
+<li>Make a <b>test copy</b> of the sheet and script with a handful of products and made-up stock.</li>
+</ol>
+</div>
+<div>
+<h2>Coleisha <small>before the meeting</small></h2>
+<ol>
+<li>Open the site preview and note how each product is sold: per pack, per slab, per box, per bucket. <b>Mixed patio packs can be split</b> into their four slab sizes; this is the case the sheet must handle.</li>
+<li>Print the two field tables on the next page.</li>
+<li>Bring the list of <b>five listings that disagree with the sheet</b> (item 10 of the handover), so Simar can say which is right.</li>
+</ol>
+</div>
+</div>
+
+<h2>Together <small>about 30 minutes, the sheet open</small></h2>
+<ol>
+<li>Go down the <b>Read stock</b> table. For each field, write which column it comes from and what a blank means.</li>
+<li>Go down the <b>Record order</b> table. Agree how a split pallet is recorded, and whether stock drops when an order is recorded or when it leaves the yard.</li>
+<li>Agree the <b>four things Simar keeps stable</b> from now on: the web app address, the shared secret, the two entry point names, the field names. Everything else in the script is his to change.</li>
+<li>Agree how he tells us about changes. A <b>Changelog</b> tab in the sheet is enough.</li>
+</ol>
+
+<h2>After</h2>
+<ul>
+<li>Coleisha writes the agreed list up and sends it to Fee. Fee connects the site to the test copy first, then the live one.</li>
+<li>Simar deploys the two entry points as a Google web app on <b>one permanent address</b> (deploy once, then publish new versions to the same deployment) and gives the address and the secret to Fee by phone, not email.</li>
+</ul>
+
+<div class="box"><p><b>Questions to settle in the room.</b> Is stock counted in slabs or in pallets? When a customer takes nine loose slabs from a pallet, how is the broken pallet recorded? Does stock drop when an order is recorded or when the goods leave the yard?</p></div>
+
+<div style="height:10px"></div>
+<p class="eyebrow">Field list</p>
+<h2 style="margin-top:0">Read stock <small>what the script returns, per product</small></h2>
+<table><tr><th>Field</th><th>From the sheet</th><th>Notes</th></tr>
+<tr><td>code</td><td>new column</td><td>Must match the WooCommerce SKU. Settle this first.</td></tr>
+<tr><td>name</td><td>Material + Colour</td><td>As the yard says it, e.g. "Sandstone Raj Green".</td></tr>
+<tr><td>size</td><td>Size</td><td>Text as it stands.</td></tr>
+<tr><td>thickness</td><td>Thickness</td><td>Text as it stands.</td></tr>
+<tr><td>base_unit</td><td>Base Unit</td><td>Slab, box, bucket, piece.</td></tr>
+<tr><td>mode</td><td>Mode</td><td>fixed or mixed pack.</td></tr>
+<tr><td>per_pallet</td><td>Units Per Pallet</td><td>Whole number.</td></tr>
+<tr><td>per_box</td><td>Units Per Box</td><td>Whole number, 0 if not boxed.</td></tr>
+<tr><td>m2_per_unit</td><td>SQM Per Unit</td><td>Number, 0 for non-paving.</td></tr>
+<tr><td>available</td><td>new column or formula</td><td>Whole units on hand and not allocated. Simar decides column or calculation.</td></tr>
+<tr><td>active</td><td>Active</td><td>YES/NO, so a discontinued line drops off the site by itself.</td></tr>
+</table>
+
+<h2>Record order <small>what the site sends</small></h2>
+<table><tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+<tr><td>order_number</td><td>text</td><td>The WooCommerce number, so the sheet and the till agree.</td></tr>
+<tr><td>placed_at</td><td>date and time</td><td></td></tr>
+<tr><td>customer_name</td><td>text</td><td>For the delivery call.</td></tr>
+<tr><td>phone, email</td><td>text</td><td></td></tr>
+<tr><td>fulfilment</td><td>delivery / collection</td><td></td></tr>
+<tr><td>day</td><td>date</td><td>The chosen day from the checkout calendar; blank for earliest.</td></tr>
+<tr><td>postcode</td><td>text</td><td>Blank on collection.</td></tr>
+<tr><td>lines</td><td>list</td><td>One or more of: code, quantity, unit (pallet, box, slab, bucket), and for a split mixed pack the count of each slab size.</td></tr>
+<tr><td>notes</td><td>text</td><td>Access notes from the checkout.</td></tr>
+</table>
+
+<h2>Reply <small>what the script sends back</small></h2>
+<table><tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+<tr><td>ok</td><td>yes / no</td><td></td></tr>
+<tr><td>reason</td><td>text</td><td>Only when not ok, worded so the site can show it: "only 2 pallets of Raj Green available".</td></tr>
+</table>
+
+<h2>What stays fixed, what can change</h2>
+<p><b>Fixed:</b> the web app address, the shared secret, the names of the two entry points, and the field names above.<br><b>Free to change:</b> everything else in the script and the sheet: columns, tabs, formulas, roles, layout. If a fixed thing must change, add the new version alongside the old and say so in the Changelog before the old one goes.</p>
+</body></html>
