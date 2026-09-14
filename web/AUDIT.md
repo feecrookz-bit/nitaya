@@ -5,6 +5,7 @@ Run before the owner presentation, against the build that is now live behind the
 | Area | Script | Result |
 |---|---|---|
 | Typography, fonts, text colours, contrast | `scripts/audit/typo.cjs` | Clean (see notes) |
+| Ordering maths: by the pack, by the area, loose slabs, several calculator areas, bag and checkout totals; the offer pop-up (dialog, focus, Escape, once a week) | `scripts/audit/flows.cjs` (extended) | No findings |
 | Text laid over photographs (scene captions, banners, hero) — 5% worst pixels behind every line box vs the text colour, both themes, 1440 and 400 px | `scripts/audit/overphoto.cjs` | 404 measured, 0 below 4.5:1 (3:1 large) |
 | Accessibility (axe-core 4.13, WCAG 2.1 AA + best practice), both themes | `scripts/audit/axe.cjs` | 0 violations |
 | Behaviour: keyboard, focus, persistence, edge cases, business details on every page, structured data, gate failure paths | `scripts/audit/flows.cjs` | Clean |
@@ -25,6 +26,7 @@ Run before the owner presentation, against the build that is now live behind the
 - Distinct text colours are now 9 per theme, all from the token set.
 
 **Copy**
+- 14 September, ordering rework: every audit script now suppresses the offer pop-up with a localStorage flag so it cannot intercept clicks; the pop-up has its own test in flows.cjs. Re-run after the rework: flows no findings, gate clean, axe 0 violations, typo clean (unit-table headers lifted to the 12 px floor), crawl clean.
 - Text over photographs: scene captions were dark ink on the dark scrim in the light theme and the scrim was too light for pale stone (down to 3.7:1); captions are now white with a deeper scrim and banner kickers sit on a small dark plate. 0 of 404 line boxes below threshold after the fix.
 - 0 spelling errors across 762 visible strings. 80 straight apostrophes and 4 pairs of straight quotes made typographic.
 - "3–4 working days" (8 places) and "Three to four" (2) corrected to the store's own published Delivery Terms: 3–5 working days; the M25 band now says orders over £500 travel free.
