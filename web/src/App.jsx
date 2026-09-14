@@ -322,7 +322,7 @@ function Home({ bag }) {
       <section className="chapter" data-reveal><div className="wrap">
         <div className="narrow"><p className="kicker">Customers’ gardens</p><h2>Laid, not stacked.</h2><p className="intro">Every one of these left Mark Road on a pallet. Tap a garden to shop the stone in it.</p></div>
         <div className="media scenes">
-          {SCENES.map(s => <a key={s.title} className="scene" href={href('product/' + s.product)}><img src={s.img} alt={s.title} loading="lazy" /><figcaption><b>{s.title}</b><span>{s.sub}</span></figcaption></a>)}
+          {SCENES.slice(0, 7).map(s => <a key={s.title} className="scene" href={href(s.product ? 'product/' + s.product : 'shop?cat=' + s.cat)}><img src={s.img} alt={s.title} loading="lazy" /><figcaption><b>{s.title}</b><span>{s.sub}</span></figcaption></a>)}
         </div>
       </div></section>
 
@@ -414,7 +414,7 @@ function Projects() {
       <section className="banner"><img src={SCENES[1].img} alt="" /><div className="wrap"><p className="kicker">Projects</p><h1 style={{ fontSize: 'clamp(2rem,4.6vw,3.4rem)' }}>Gardens laid with Mark Road stone.</h1><p className="intro">Customers’ patios, terraces and pool surrounds. Every one left the yard on a pallet; tap a project to shop the stone.</p></div></section>
       <section className="chapter" style={{ paddingTop: 'clamp(28px,4vw,48px)' }}><div className="wrap">
         <div className="scenes">
-          {SCENES.map(sc => { const p = byId(sc.product); return <a key={sc.title} className="scene" href={href('product/' + sc.product)}><img src={sc.img} alt={sc.title} loading="lazy" /><figcaption><b>{sc.title}</b><span>{sc.sub}</span>{p && <span style={{ color: 'var(--gold)', marginTop: 4 }}>{p.name} · {money(p.price)} {p.unit} + VAT</span>}</figcaption></a> })}
+          {SCENES.map(sc => { const p = sc.product ? byId(sc.product) : null; return <a key={sc.title} className="scene" href={href(sc.product ? 'product/' + sc.product : 'shop?cat=' + sc.cat)}><img src={sc.img} alt={sc.title} loading="lazy" /><figcaption><b>{sc.title}</b><span>{sc.sub}</span>{p ? <span style={{ color: 'var(--gold)', marginTop: 4 }}>{p.name} · {money(p.price)} {p.unit} + VAT</span> : <span style={{ color: 'var(--gold)', marginTop: 4 }}>Shop {CAT_LABEL[sc.cat].toLowerCase()}</span>}</figcaption></a> })}
         </div>
         <div className="narrow" style={{ marginTop: 56 }}><p className="kicker">Your garden here</p><h2>Send us the finished job.</h2><p className="intro">Every project on this page came from a customer’s phone. Send yours to info@nityastones.co.uk with the stone you laid and we’ll add it — and put a sample pack of your choice in the post as a thank-you.</p></div>
       </div></section>

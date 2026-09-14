@@ -12,6 +12,13 @@ import sceneCircle from './assets/scene-circle.jpg'
 import sceneRajWet from './assets/scene-raj-wet.jpg'
 import sceneCopper from './assets/scene-copper.jpg'
 import sceneBodo from './assets/scene-bodo.jpg'
+import sceneQuartzSummerhouse from './assets/scene-quartz-summerhouse.jpg'
+import scenePlanters from './assets/scene-planters.jpg'
+import sceneWhiteHouse from './assets/scene-white-house.jpg'
+import sceneStepsBrick from './assets/scene-steps-brick.jpg'
+import sceneStepsRender from './assets/scene-steps-render.jpg'
+import sceneBath from './assets/scene-bath.jpg'
+import sceneIndoorFloor from './assets/scene-indoor-floor.jpg'
 
 // Studio renders (p-*) and graded lifestyle photos (g-*), both produced by
 // scripts/photos.py from the yard's own photography.
@@ -155,6 +162,15 @@ export const SCENES = [
   { img: sceneHimalayan, title: 'Himalayan White terrace', sub: '600×900 porcelain with a fenced boundary and lawn edge.', product: 'himalayan-white' },
   { img: scenePool, title: 'Poolside in porcelain', sub: 'R11 slip-rated, hoses clean, doesn’t hold algae.', product: 'quartz-white' },
   { img: sceneCopper, title: 'Copper Slate, riven-effect', sub: 'Porcelain that reads as slate — laid on a full bed, pointed dark.', product: 'copper-slate' },
+  // The store's own project photographs from its About page. Where the file
+  // names the stone it links to the product; otherwise to the range.
+  { img: sceneQuartzSummerhouse, title: 'Quartz White to the summerhouse', sub: 'A full-width porcelain terrace running the length of the garden, lawn to one side.', product: 'quartz-white' },
+  { img: scenePlanters, title: 'Grey porcelain with rendered planters', sub: 'Large-format 20 mm porcelain laid tight to the fence line, with rendered raised beds cast on top.', cat: 'outdoor' },
+  { img: sceneWhiteHouse, title: 'Terrace off the bifolds', sub: 'Pale grey porcelain from the doors to the lawn, edged in setts. The house is white render; the stone stays cool.', cat: 'outdoor' },
+  { img: sceneStepsBrick, title: 'Steps, brick risers', sub: 'Porcelain treads on brick risers stepping down to the lawn, mid-build.', cat: 'outdoor' },
+  { img: sceneStepsRender, title: 'Steps, rendered risers', sub: 'Porcelain treads with a rendered wall, the modern version of the same step.', cat: 'outdoor' },
+  { img: sceneBath, title: 'A bathroom in indoor porcelain', sub: 'Large-format porcelain on the wall and floor, with tiled niches cut into the wall.', cat: 'indoor' },
+  { img: sceneIndoorFloor, title: 'Indoor floor, room to room', sub: '600 × 1200 grey porcelain running through a doorway; one floor, no threshold.', cat: 'indoor' },
 ]
 
 export const MIXED = [[900, 600], [600, 600], [600, 295], [295, 295]]

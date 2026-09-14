@@ -264,9 +264,9 @@ footer .logo{height:82px}
 /* scenes */
 .scenes{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
 .scene{margin:0;position:relative;border-radius:var(--radius);overflow:hidden;grid-column:span 6;background:var(--grey-2);isolation:isolate;text-decoration:none;color:inherit;display:block}
-.scene:nth-child(1){grid-column:span 7}.scene:nth-child(2){grid-column:span 5}
-.scene:nth-child(3),.scene:nth-child(4),.scene:nth-child(5){grid-column:span 4}
-.scene:nth-child(6){grid-column:span 5}.scene:nth-child(7){grid-column:span 7}
+.scene:nth-child(7n+1){grid-column:span 7}.scene:nth-child(7n+2){grid-column:span 5}
+.scene:nth-child(7n+3),.scene:nth-child(7n+4),.scene:nth-child(7n+5){grid-column:span 4}
+.scene:nth-child(7n+6){grid-column:span 5}.scene:nth-child(7n){grid-column:span 7}
 .scene img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .9s ease}
 .scene:hover img{transform:scale(1.03)}
 .scene figcaption{position:absolute;left:0;right:0;bottom:0;padding:50px 20px 18px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.78));display:grid;gap:2px}

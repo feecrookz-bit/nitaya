@@ -567,5 +567,40 @@
   ],
   "thick": 8,
   "face": "full"
+ },
+ "scene-quartz-summerhouse": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2024/01/Quartz-White-2.jpeg",
+  "aspect": "4:3",
+  "width": 1100
+ },
+ "scene-planters": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2024/01/WhatsApp-Image-2023-12-20-at-02.32.11-8.jpeg",
+  "aspect": "4:3",
+  "width": 1100
+ },
+ "scene-white-house": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2024/01/WhatsApp-Image-2023-12-20-at-02.32.11-9.jpeg",
+  "aspect": "4:3",
+  "width": 1100
+ },
+ "scene-steps-brick": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2024/01/WhatsApp-Image-2023-12-20-at-02.32.11-2.jpeg",
+  "aspect": "4:3",
+  "width": 1100
+ },
+ "scene-steps-render": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2024/01/WhatsApp-Image-2023-12-20-at-02.32.11.jpeg",
+  "aspect": "4:3",
+  "width": 1100
+ },
+ "scene-bath": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2024/01/WhatsApp-Image-2023-12-20-at-18.35.00.jpeg",
+  "aspect": "4:3",
+  "width": 1100
+ },
+ "scene-indoor-floor": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2024/01/WhatsApp-Image-2023-12-20-at-18.35.01.jpeg",
+  "aspect": "4:3",
+  "width": 1100
  }
 }
