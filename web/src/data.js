@@ -433,6 +433,22 @@ export const SEARCH_TAGS = {
   indoor: 'porcelain indoor tiles floor wall bathroom kitchen hallway rectified marble effect',
   cladding: 'cladding wall split face strips feature wall fireplace',
 }
+/* Shop filters: a colour family, a size and a finish per product, read from
+ * the colour words, the size and the finish already on each range. */
+export const COLOUR_GROUPS = [
+  ['black', 'Blacks', ['black', 'charcoal']],
+  ['white', 'Whites', ['white']],
+  ['green', 'Greens & multi', ['green', 'multi']],
+  ['brown', 'Browns & rust', ['brown', 'rust', 'copper']],
+  ['cream', 'Creams & buffs', ['cream', 'buff', 'beige', 'sand', 'honey', 'mint']],
+  ['grey', 'Greys', ['grey', 'silver']],
+]
+export const colourOf = (p) => { const words = (COLOUR_TAGS[p.id] || '').split(' '); const g = COLOUR_GROUPS.find(([, , ws]) => ws.some(w => words.includes(w))); return g ? g[0] : 'grey' }
+export const sizeOf = (p) => { if (p.size.includes('Mixed')) return 'mixed'; const m = p.size.match(/(\d+)\s*×\s*(\d+)/); return m ? [+m[1], +m[2]].sort((x, y) => x - y).join('x') : p.size.replace(' diameter', '') }
+export const SIZE_LABEL = { mixed: 'Mixed pack', '600x900': '900 × 600', '600x600': '600 × 600', '600x1200': '1200 × 600', '300x600': '600 × 300', '150x600': '600 × 150 strips', '2.85 m': 'Circle kit', '100x100': 'Cobbles' }
+export const finishOf = (p) => /riven-effect/i.test(p.finish) ? 'riven-effect' : /riven/i.test(p.finish) ? 'riven' : /honed/i.test(p.finish) ? 'honed' : /polish/i.test(p.finish) ? 'polished' : /split/i.test(p.finish) ? 'split-face' : 'matt'
+export const FINISH_LABEL = { riven: 'Riven', 'riven-effect': 'Riven-effect', honed: 'Honed', matt: 'Matt', polished: 'Polished', 'split-face': 'Split face' }
+
 export const COLOUR_TAGS = {
   'kandla-grey': 'grey silver', 'kandla-grey-900': 'grey silver', 'raj-green': 'green multi brown', 'rippon-buff': 'buff yellow cream honey', 'autumn-brown': 'brown rust dark', 'fossil-mint': 'cream mint beige light pale', 'kandla-circle': 'grey circle feature',
   'black-limestone': 'black dark charcoal', 'sinai-pearl': 'cream pale white light', 'sinai-pearl-mixed': 'cream pale white light',

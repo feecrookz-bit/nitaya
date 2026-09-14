@@ -6,7 +6,7 @@ import { GUIDE_DIAGRAM } from './Diagrams.jsx'
 import Logo from './Logo.jsx'
 import logoPng from './assets/logo.png'
 import { HeroSlides, Marquee, CountUp, useReveal, Parallax } from './Motion.jsx'
-import { BUSINESS, IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, FAMILY_COLOUR, DELIVERY, deliveryFor, SEARCH_TAGS, COLOUR_TAGS, PAIRS, money, ESSENTIALS, essentialById, essentialsFor, mixText, quantify, exVat, slabPrice, m2Price, workingDaysFrom, fmtDay } from './data.js'
+import { BUSINESS, IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, FAMILY_COLOUR, DELIVERY, deliveryFor, SEARCH_TAGS, COLOUR_TAGS, COLOUR_GROUPS, colourOf, sizeOf, SIZE_LABEL, finishOf, FINISH_LABEL, PAIRS, money, ESSENTIALS, essentialById, essentialsFor, mixText, quantify, exVat, slabPrice, m2Price, workingDaysFrom, fmtDay } from './data.js'
 import { GUIDES, guideBySlug } from './guides.js'
 
 const PHONE = BUSINESS.phone
@@ -602,7 +602,12 @@ function Shop({ route }) {
   const cat = route.q.get('cat') || 'all'
   const [q, setQ] = useState(route.q.get('q') || '')
   const [sort, setSort] = useState('featured')
-  let list = PRODUCTS.filter(p => cat === 'all' || (cat === 'offers' ? saving(p) >= 10 : p.cat === cat))
+  const colour = route.q.get('colour') || '', size = route.q.get('size') || '', finish = route.q.get('finish') || ''
+  const setParam = (k, v) => { const qs = new URLSearchParams(route.q); if (v) qs.set(k, v); else qs.delete(k); qs.delete('q'); go('shop' + (qs.toString() ? '?' + qs.toString() : '')) }
+  const inCat = PRODUCTS.filter(p => cat === 'all' || (cat === 'offers' ? saving(p) >= 10 : p.cat === cat))
+  let list = inCat.filter(p => (!colour || colourOf(p) === colour) && (!size || sizeOf(p) === size) && (!finish || finishOf(p) === finish))
+  const options = (fn) => [...new Set(inCat.map(fn))]
+  const anyFilter = colour || size || finish
   if (q.trim()) { const words = q.trim().toLowerCase().split(/\s+/); list = list.filter(p => { const hay = (p.name + ' ' + CAT_LABEL[p.cat] + ' ' + SEARCH_TAGS[p.cat] + ' ' + (COLOUR_TAGS[p.id] || '') + ' ' + p.size + ' ' + p.thick + ' ' + p.finish + ' ' + p.origin + ' ' + p.blurb).toLowerCase(); return words.every(w => hay.includes(w)) }) }
   if (sort === 'low') list = [...list].sort((a, b) => (a.unit === 'per m²' ? a.price : a.price / (a.cover || 1)) - (b.unit === 'per m²' ? b.price : b.price / (b.cover || 1)))
   if (sort === 'high') list = [...list].sort((a, b) => (b.unit === 'per m²' ? b.price : b.price / (b.cover || 1)) - (a.unit === 'per m²' ? a.price : a.price / (a.cover || 1)))
@@ -626,7 +631,13 @@ function Shop({ route }) {
           </select>
         </div>
       </div>
-      <p className="count" style={{ marginBottom: 16 }}>{list.length} {list.length === 1 ? 'product' : 'products'}</p>
+      <div className="filters">
+        <div className="fgroup"><span className="lbl">Colour</span><div className="chips">{COLOUR_GROUPS.filter(([k]) => options(colourOf).includes(k)).map(([k, l]) => <button key={k} type="button" className="chip" aria-pressed={colour === k} onClick={() => setParam('colour', colour === k ? '' : k)}>{l}</button>)}</div></div>
+        <div className="fgroup"><span className="lbl">Size</span><div className="chips">{options(sizeOf).filter(k => SIZE_LABEL[k]).map(k => <button key={k} type="button" className="chip" aria-pressed={size === k} onClick={() => setParam('size', size === k ? '' : k)}>{SIZE_LABEL[k]}</button>)}</div></div>
+        <div className="fgroup"><span className="lbl">Finish</span><div className="chips">{options(finishOf).map(k => <button key={k} type="button" className="chip" aria-pressed={finish === k} onClick={() => setParam('finish', finish === k ? '' : k)}>{FINISH_LABEL[k]}</button>)}</div></div>
+      </div>
+      <p className="count" style={{ marginBottom: 16 }}>{list.length} {list.length === 1 ? 'product' : 'products'}{anyFilter && <> · <button type="button" className="more" onClick={() => go('shop' + (cat !== 'all' ? '?cat=' + cat : ''))}>Clear filters</button></>}</p>
+      {list.length === 0 && <p className="note">Nothing matches those filters in {current ? current[1].toLowerCase() : 'the shop'}. Clear one and try again, or <a className="more" href={href('contact')}>ask the yard</a>.</p>}
       <h2 className="sr-only">Products</h2><div className="grid">{list.map(p => <ProductCard key={p.id} p={p} featured={sort === 'featured' && !q} />)}</div>
     </div></section>
     </>
@@ -1189,14 +1200,18 @@ export default function App() {
         <div className="nav-in">
           <a className="brand" href={href('')} aria-label="Nitya Stones, home"><Logo compact /></a>
           <nav className="links" aria-label="Primary">{NAV.map(([k, l]) => <a key={k} href={href(k)} className={route.page === k ? 'active' : ''}>{l}</a>)}</nav>
+          <form className="hsearch" role="search" onSubmit={e => { e.preventDefault(); const v = new FormData(e.currentTarget).get('q'); go('shop' + (v ? '?q=' + encodeURIComponent(v) : '')) }}><input id="hq" name="q" type="search" placeholder="Search" aria-label="Search the ranges" autoComplete="off" /></form>
           <ThemeButton theme={theme} toggle={toggleTheme} />
           <a className="bag-btn" href={href('cart')}>Bag {bag.count > 0 && <b>{bag.count}</b>}</a>
           <button className="menu-btn" type="button" aria-expanded={menu} onClick={() => setMenu(m => !m)}>Menu</button>
         </div>
-        <nav className={`drawer ${menu ? 'open' : ''}`} aria-label="Mobile">{NAV.map(([k, l]) => <a key={k} href={href(k)} onClick={() => setMenu(false)}>{l}</a>)}<a href={PHONE_HREF}>Call {PHONE}</a></nav>
+        <nav className={`drawer ${menu ? 'open' : ''}`} aria-label="Mobile">
+          <form className="hsearch drawer-search" role="search" onSubmit={e => { e.preventDefault(); const v = new FormData(e.currentTarget).get('q'); setMenu(false); go('shop' + (v ? '?q=' + encodeURIComponent(v) : '')) }}><input id="mq" name="q" type="search" placeholder="Search the ranges" aria-label="Search the ranges" autoComplete="off" /></form>
+          {NAV.map(([k, l]) => <a key={k} href={href(k)} onClick={() => setMenu(false)}>{l}</a>)}<a href={PHONE_HREF}>Call {PHONE}</a><a href={BUSINESS.whatsapp} target="_blank" rel="noreferrer">WhatsApp the yard</a></nav>
       </div></header>
       <main>{page}</main>
       <OfferPopup route={route} />
+      {!(['checkout'].includes(route.page)) && <aside aria-label="WhatsApp"><a className="wa" href={BUSINESS.whatsapp} target="_blank" rel="noreferrer" aria-label="Chat to the yard on WhatsApp"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.15c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24s8.24 3.7 8.24 8.24-3.7 8.24-8.24 8.24zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28z"/></svg></a></aside>}
       <footer><div className="wrap">
         <div className="foot">
           <div><Logo /><p style={{ marginTop: 14, maxWidth: '32ch' }}>Wholesale and retail suppliers of outdoor and indoor porcelain, sandstone, limestone and cladding. {BUSINESS.address.join(', ')}.</p></div>

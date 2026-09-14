@@ -67,7 +67,8 @@ Their prices include VAT; the yard's are ex VAT, so the gap is smaller than it l
 | Announcement strip and struck prices | A pop-up offer, once a week per browser, built from the store's real was/now prices (the biggest saving and the count of ranges on sale) | Theirs is a strip; the owner asked for a pop-up. It never shows on the bag, checkout or builder, and Escape closes it |
 | Cut sample £2.49 | £5 sample, already there | Price is the store's |
 | Know before you order | Already in the demo as the honesty notes (variation, batches, order ten per cent over) | |
-| Phone, hours, WhatsApp on the product page | In the header, footer, contact page and checkout | No floating WhatsApp button; the number is a tap away in the footer |
+| Phone, hours, WhatsApp on the product page; a floating WhatsApp button | In the header, footer, contact page and checkout; a floating WhatsApp button on every page except checkout, and a "WhatsApp the yard" row in the menu | Opens the yard's own number; hidden at checkout so it never covers the form |
+| Category filters by colour, finish, size, price; search box in the header | Shop filters by colour (six groups), size and finish as chips, in the address so a filtered view can be shared; a search box in the header on wide screens and in the menu on every screen | No price-range slider: the yard's per-m² prices sit in a narrow band, so the Offers tab does that job |
 
 ## What was left alone, and why
 
