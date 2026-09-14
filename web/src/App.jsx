@@ -930,14 +930,50 @@ function Bag({ bag }) {
   )
 }
 
+/* A calendar for the delivery (or collection) day. Working days only, from
+ * the earliest the terms allow; the yard confirms the day by phone. */
+const isoDay = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+const fromIso = (s) => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d) }
+function DayPicker({ value, onChange, earliest, label }) {
+  const first = new Date(earliest.getFullYear(), earliest.getMonth(), 1)
+  const [view, setView] = useState(first)
+  const today = new Date(); today.setHours(0, 0, 0, 0)
+  const last = new Date(earliest); last.setDate(last.getDate() + 60)
+  const cells = []
+  const start = new Date(view); start.setDate(1 - ((view.getDay() + 6) % 7))
+  for (let i = 0; i < 42; i++) { const d = new Date(start); d.setDate(start.getDate() + i); cells.push(d) }
+  const monthName = view.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })
+  const prevOk = view > first, nextOk = new Date(view.getFullYear(), view.getMonth() + 1, 1) <= last
+  return (
+    <div className="cal" role="group" aria-label={label}>
+      <div className="cal-head">
+        <button type="button" onClick={() => setView(new Date(view.getFullYear(), view.getMonth() - 1, 1))} disabled={!prevOk} aria-label="Previous month">‹</button>
+        <b aria-live="polite">{monthName}</b>
+        <button type="button" onClick={() => setView(new Date(view.getFullYear(), view.getMonth() + 1, 1))} disabled={!nextOk} aria-label="Next month">›</button>
+      </div>
+      <div className="cal-grid">
+        {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => <span key={d} className="cal-dow" aria-hidden="true">{d}</span>)}
+        {cells.map(d => {
+          const iso = isoDay(d), out = d.getMonth() !== view.getMonth(), weekend = d.getDay() === 0 || d.getDay() === 6
+          const off = out || weekend || d < earliest || d > last
+          const sel = value === iso
+          return <button key={iso} type="button" className={`cal-day ${out ? 'out' : ''} ${sel ? 'sel' : ''} ${isoDay(d) === isoDay(today) ? 'today' : ''}`} disabled={off} aria-pressed={sel} aria-label={d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }) + (off ? ', not available' : '')} onClick={() => onChange(sel ? '' : iso)}>{d.getDate()}</button>
+        })}
+      </div>
+      <p className="note" style={{ margin: '10px 0 0' }}>Working days from {fmtDay(earliest)}. {value ? <>Chosen: <b>{fmtDay(fromIso(value))}</b>. </> : 'No day chosen: the earliest we can.'}We confirm the day by phone; if the courier is delayed we ring first.</p>
+    </div>
+  )
+}
+
 function Checkout({ bag }) {
   const items = bag.lines.map(l => ({ ...l, p: lineProduct(l.id) })).filter(l => l.p)
   const ex = items.reduce((s, l) => s + lineUnitPrice(l.p) * l.qty, 0)
-  const [f, setF] = useState({ name: '', email: '', phone: '', line1: '', town: '', postcode: '', method: 'delivery', pay: 'card', notes: '' })
+  const [f, setF] = useState({ name: '', email: '', phone: '', line1: '', town: '', postcode: '', method: 'delivery', pay: 'card', notes: '', day: '', pickDay: false })
+  const earliest = workingDaysFrom(3); earliest.setHours(0, 0, 0, 0)
   const [order, setOrder] = useState(null)
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value })
   const ok = f.name && f.phone && (f.method === 'collection' || (f.line1 && f.postcode))
-  if (order) return <div className="wrap done"><p className="kicker">Order received</p><h1 className="pg">Thank you, {order.name.split(' ')[0]}.</h1><p className="intro">{order.method === 'collection' ? 'We’ll ring when it’s ready to collect from Mark Road — usually the same day.' : 'We’ll confirm the delivery cost by phone before anything is charged, then it’s 3–5 working days.'}</p><p className="num">Order {order.ref} · {money(order.total)} inc VAT{order.method === 'delivery' ? ' + delivery' : ''}</p><p className="note" style={{ marginTop: 22 }}>Demo checkout — no payment has been taken. The live store connects this to WooCommerce.</p><div className="actions"><a className="pill ghost" href={href('shop')}>Back to the shop</a></div></div>
+  if (order) return <div className="wrap done"><p className="kicker">Order received</p><h1 className="pg">Thank you, {order.name.split(' ')[0]}.</h1><p className="intro">{order.method === 'collection' ? (order.day ? `We’ll have it ready to collect from Mark Road on ${order.day}, and ring if anything changes.` : 'We’ll ring when it’s ready to collect from Mark Road — usually the same day.') : (order.day ? `We’ll confirm the delivery cost by phone before anything is charged, and aim for ${order.day} as you asked.` : 'We’ll confirm the delivery cost by phone before anything is charged, then it’s 3–5 working days.')}</p><p className="num">Order {order.ref} · {money(order.total)} inc VAT{order.method === 'delivery' ? ' + delivery' : ''}</p><p className="note" style={{ marginTop: 22 }}>Demo checkout — no payment has been taken. The live store connects this to WooCommerce.</p><div className="actions"><a className="pill ghost" href={href('shop')}>Back to the shop</a></div></div>
   if (!items.length) return <div className="wrap empty"><h1 className="pg">Nothing to check out.</h1><p style={{ marginTop: 12 }}><a className="more" href={href('shop')}>Shop the ranges</a></p></div>
   return (
     <div className="wrap checkout">
@@ -952,6 +988,11 @@ function Checkout({ bag }) {
             <label><input type="radio" name="method" checked={f.method === 'delivery'} onChange={() => setF({ ...f, method: 'delivery' })} /><div><b>Deliver it · from {fmtDay(workingDaysFrom(3))}</b><span>3–5 working days from payment, 8am–6pm, kerbside on a tail-lift, we call on the day. Free over £500 inside the M25; elsewhere the cost is confirmed by phone before you’re charged.</span></div></label>
             <label><input type="radio" name="method" checked={f.method === 'collection'} onChange={() => setF({ ...f, method: 'collection' })} /><div><b>Collect from Mark Road</b><span>Free, no minimum. {BUSINESS.address.join(', ')} (<a href={BUSINESS.maps} target="_blank" rel="noreferrer">map</a>). {BUSINESS.hoursShort.replace(' · ', ', ')}. We ring when it’s ready, usually the same day.</span></div></label>
           </div>
+          <div className="choice" style={{ marginTop: 12 }}>
+            <label><input type="radio" name="day" checked={!f.pickDay} onChange={() => setF({ ...f, pickDay: false, day: '' })} /><div><b>{f.method === 'delivery' ? 'Earliest delivery' : 'Collect when it’s ready'}</b><span>{f.method === 'delivery' ? `From ${fmtDay(earliest)}; we ring on the day.` : 'We ring when it’s ready, usually the same day.'}</span></div></label>
+            <label><input type="radio" name="day" checked={f.pickDay} onChange={() => setF({ ...f, pickDay: true })} /><div><b>{f.method === 'delivery' ? 'Choose a delivery day' : 'Choose a collection day'}</b><span>{f.method === 'delivery' ? 'Any working day from the earliest. Confirmed by phone.' : 'Tell us the day and we have it ready by the door.'}</span></div></label>
+          </div>
+          {f.pickDay && <DayPicker value={f.day} onChange={(day) => setF({ ...f, day })} earliest={f.method === 'delivery' ? earliest : new Date(new Date().setHours(0, 0, 0, 0))} label={f.method === 'delivery' ? 'Delivery day' : 'Collection day'} />}
           {f.method === 'delivery' && <>
             <div className="field"><label htmlFor="coLine1">Address</label><input id="coLine1" autoComplete="address-line1" value={f.line1} onChange={set('line1')} /></div>
             <div className="two"><div className="field"><label htmlFor="coTown">Town</label><input id="coTown" autoComplete="address-level2" value={f.town} onChange={set('town')} /></div><div className="field"><label htmlFor="coPost">Postcode</label><input id="coPost" autoComplete="postal-code" value={f.postcode} onChange={set('postcode')} /></div></div>
@@ -968,7 +1009,7 @@ function Checkout({ bag }) {
           </div>
           <img className="payments" src={IMG.payments} alt="Mastercard, Maestro, Visa and Klarna accepted" />
         </div>
-        <button className="pill" type="button" disabled={!ok} onClick={() => { setOrder({ name: f.name, method: f.method, total: ex * (1 + VAT), ref: 'NS-' + Date.now().toString(36).toUpperCase().slice(-6) }); bag.clear() }}>Place order · {money(ex * (1 + VAT))} inc VAT{items.some(l => l.p.quote) ? ' + quoted items' : ''}</button>
+        <button className="pill" type="button" disabled={!ok} onClick={() => { setOrder({ name: f.name, method: f.method, day: f.pickDay && f.day ? fmtDay(fromIso(f.day)) : '', total: ex * (1 + VAT), ref: 'NS-' + Date.now().toString(36).toUpperCase().slice(-6) }); bag.clear() }}>Place order · {money(ex * (1 + VAT))} inc VAT{items.some(l => l.p.quote) ? ' + quoted items' : ''}</button>
         <p className="note">Demo checkout — nothing is charged. In the live store this step hands off to WooCommerce with the same fields.</p>
       </div>
       <h2 className="sr-only">Order summary</h2><aside className="summary">

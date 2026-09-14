@@ -37,7 +37,7 @@ export const PAIRS = [
   ] },
   { key: 'cart', title: 'Bag and checkout', orig: 'orig-d-cart', neu: 'new-d-checkout', points: [
     'The bag shows packs and loose slabs with their coverage in square metres, ex-VAT and inc-VAT totals, the pallet count, the earliest delivery date and a delivery estimate for a postcode.',
-    'Checkout asks for name, phone, email, address, delivery (from a date, free over £500 inside the M25) or collection from Mark Road (address, map, hours), access notes, and card, Klarna or pay-by-phone, exactly as the live store will.',
+    'Checkout asks for name, phone, email, address, delivery (from a date, free over £500 inside the M25) or collection from Mark Road (address, map, hours), a calendar to choose the delivery or collection day (working days from the earliest, confirmed by phone), access notes, and card, Klarna or pay-by-phone, exactly as the live store will.',
     'It stops at the last step with a plain note that nothing is charged in the demo. In the live store this step hands to your existing WooCommerce.',
   ] },
   { key: 'blog', title: 'Blog, becoming Guides', orig: 'orig-d-blog', neu: 'new-d-blog', points: [

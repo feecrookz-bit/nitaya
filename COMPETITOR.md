@@ -60,7 +60,7 @@ Their prices include VAT; the yard's are ex VAT, so the gap is smaller than it l
 |---|---|---|
 | Unit table: per m², single slab, pallet, with was/now | Same three rows, ex VAT, on every packed range | Single-slab row only on ranges the yard splits; boxes for indoor tiles and cladding |
 | Order by pallet / by m², single slabs | "By the pack" / "By the area" toggle; loose slabs where the pack splits; area mode says exactly what leaves the yard ("1 × 21.60 m² + 9 × 0.54 m² = 26.46 m²") | Mixed sandstone packs stay whole, which is the yard's own rule |
-| Delivery from a date | "Delivery from Thu 17 Sep", three working days out, on the product page, bag and checkout | Their 2–3 day express is not offered; the yard's terms say 3–5 |
+| Delivery from a date; specified-day delivery by ringing after checkout | "Delivery from Thu 17 Sep", three working days out, on the product page, bag and checkout; a calendar at checkout to choose the delivery or collection day, working days only, confirmed by phone | Their 2–3 day express and paid AM/PM slots are not offered; the yard's terms say 3–5 |
 | Free delivery on full pallets, £80 split fee | "Orders over £500 inside the M25 travel free", from the yard's own terms; loose slabs "confirmed with the delivery cost" | No fee is invented. Whether the yard charges for split packs is a decision in the pack |
 | Available for collection, call to book | Collection line with address, hours, map and "no minimum" on the product page and at checkout | One yard, not three warehouses |
 | Calculator with several areas and automatic 10% | Several areas, the allowance is a tick box with 5/10/15/20%, packs and loose slabs, add to bag | The result line always shows packs × coverage = m², so the builder, calculator and bag agree |
