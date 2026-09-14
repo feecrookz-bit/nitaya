@@ -40,11 +40,31 @@ Every address on the current store is mapped in `web/public/_redirects`, which C
 
 - The 40 product listings go to their new product pages; the four samples to Samples; the category pages to the shop filtered by category; about, contact, wholesale, FAQs, designer and services to their new pages.
 - The blog (45 posts), the legal pages (privacy, terms, refunds, delivery terms) and My Account go to WordPress, which stays up on a subdomain until they are moved across. The file uses `wp.nityastones.co.uk` as the working name for that subdomain. **Decide the real name before go-live and replace it in the file** (one find-and-replace).
-- Two product addresses on the old store begin with an invisible character (`%e2%81%a0`). Check those two on the first deploy; if Cloudflare does not match the encoded form, add the decoded form beside it.
+- Two product addresses on the old store need a check on the first deploy. See "The two odd addresses" below.
 
 A path typed without the `#` (`/product/raj-green`) also works: a five-line script in `web/index.html` turns it into the router's address.
 
 `web/public/_headers` sets long caching on the hashed asset files and the usual safety headers.
+
+### The two odd addresses
+
+On the current store, Noor Grigio Porcelain and Light Grey Porcelain were typed in with an invisible character at the start of their names (the kind that comes along when a name is pasted from a phone). WordPress builds a product's web address from its name, so those two addresses carry the invisible character too. In the address bar it appears as `%e2%81%a0`:
+
+```
+https://nityastones.co.uk/product/%e2%81%a0noor-grigio-porcelain/
+https://nityastones.co.uk/product/%e2%81%a0light-grey-porcelain/
+```
+
+A redirect only fires when the address matches exactly. Some systems compare the spelled-out form (`%e2%81%a0…`); others turn it back into the invisible character first, and then the two no longer look the same. Which way Cloudflare goes can only be seen once the project exists.
+
+To check, once the project has its `pages.dev` address:
+
+1. In a browser, open the project address with the old path on the end:
+   `https://<project>.pages.dev/product/%e2%81%a0noor-grigio-porcelain/`
+2. If the Noor Grigio product page opens, the redirect works. Do the same for Light Grey and stop here.
+3. If the home page opens instead, the match failed. Open `web/public/_redirects`, find the two lines that begin `/product/%e2%81%a0`, and add a copy of each line directly beneath with the real invisible character in place of `%e2%81%a0` (paste it from the old product's address bar). Push, wait for the rebuild, and open the address again.
+
+The other thirty-eight product addresses are ordinary letters and dashes and need no check.
 
 ## 4. Going live
 
