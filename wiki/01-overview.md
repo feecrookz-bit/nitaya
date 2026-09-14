@@ -35,7 +35,7 @@ It replaces a WordPress/WooCommerce store whose listings contradict each other a
 
 ## Who does what
 
-Fee built the site and does the go-live work (DNS, WooCommerce, the stock tracker) as the paid job. Once it is paid for, the site is Nitya Stones' own and Coleisha maintains it on their behalf. Simar maintains the stock tracker sheet and script.
+Fee built the site and does the go-live work (DNS, WooCommerce, the stock tracker) as the paid job. Once it is paid for, Nitya Stones owns everything on the site: code, design, graded photographs, documents. Upgrades and changes after that are arranged through Coleisha. Simar maintains the stock tracker sheet and script.
 
 ## The rules it is built to
 

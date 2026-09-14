@@ -95,4 +95,4 @@ It prints one line per check and "NO FINDINGS" at the end, or a FAILED list sayi
 | Domain registrar | Company (as now) | Fee for the DNS work |
 | WordPress / WooCommerce | Company (as now) | Fee for the API keys |
 
-Nothing in the deployment depends on Fee's personal accounts once these four are in place.
+Nothing in the deployment depends on Fee's personal accounts once these four are in place. Once the build is paid for, Nitya Stones owns everything on the site; upgrades and changes are arranged through Coleisha.
