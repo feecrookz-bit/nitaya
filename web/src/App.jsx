@@ -6,7 +6,7 @@ import { GUIDE_DIAGRAM } from './Diagrams.jsx'
 import Logo from './Logo.jsx'
 import logoPng from './assets/logo.png'
 import { HeroSlides, Marquee, CountUp, useReveal, Parallax } from './Motion.jsx'
-import { BUSINESS, IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, FAMILY_COLOUR, DELIVERY, deliveryFor, SEARCH_TAGS, COLOUR_TAGS, PAIRS, money, ESSENTIALS, essentialById, essentialsFor, quantify, exVat, slabPrice, m2Price, workingDaysFrom, fmtDay } from './data.js'
+import { BUSINESS, IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, FAMILY_COLOUR, DELIVERY, deliveryFor, SEARCH_TAGS, COLOUR_TAGS, PAIRS, money, ESSENTIALS, essentialById, essentialsFor, mixText, quantify, exVat, slabPrice, m2Price, workingDaysFrom, fmtDay } from './data.js'
 import { GUIDES, guideBySlug } from './guides.js'
 
 const PHONE = BUSINESS.phone
@@ -74,12 +74,13 @@ function useBag() {
 }
 const lineProduct = (id) => id.startsWith('sample:') ? { ...SAMPLE, id, name: `Sample — ${byId(id.slice(7))?.name || ''}`, img: byId(id.slice(7))?.img }
   : id.startsWith('ask:') ? (() => { const e = essentialById(id.slice(4)); return e && { ...e, id, img: null, name: e.name, unit: 'each', price: 0, cover: null, quote: true, spec: e.spec } })()
+  : id.startsWith('mix:') ? (() => { const [, pid, cs] = id.split(':'); const b = byId(pid); if (!b || !b.packing?.sizes) return null; const counts = cs.split('.').map(Number); const m2 = round2(b.packing.sizes.reduce((t, [, , sm2], i) => t + counts[i] * sm2, 0)); return { ...b, id, base: b, name: `${b.name} · loose slabs`, unit: 'per set', cover: null, price: round2(m2 * m2Price(b)), packing: null, split: false, mixM2: m2, mixText: mixText(b.packing, counts), mixSlabs: counts.reduce((a, c) => a + c, 0) } })()
   : id.startsWith('slabs:') ? (() => { const b = byId(id.slice(6)); return b && { ...b, id, base: b, name: `${b.name} · loose slabs`, unit: 'per slab', cover: null, price: slabPrice(b), packing: null, split: false, slabM2: b.packing?.slabM2 } })()
   : byId(id)
 const lineUnitPrice = (p) => p.unit === 'per m²' && p.cover ? p.price * p.cover : p.price
 const packWord = (p) => p.packing?.unit === 'box' && p.cat !== 'outdoor' ? 'box' : (p.cat === 'outdoor' || p.unit === 'per pallet') ? 'pallet' : 'pack'
 const plural = (w, n) => n === 1 ? w : w === 'box' ? 'boxes' : w + 's'
-const lineUnitLabel = (p) => p.unit === 'per m²' ? (p.cover ? `${packWord(p)} of ${p.cover.toFixed(2)} m²` : 'per m²') : p.unit === 'per pallet' ? 'pallet' : p.unit === 'per kit' ? 'kit' : p.unit === 'per slab' ? `slab of ${p.slabM2} m²` : 'each'
+const lineUnitLabel = (p) => p.unit === 'per m²' ? (p.cover ? `${packWord(p)} of ${p.cover.toFixed(2)} m²` : 'per m²') : p.unit === 'per pallet' ? 'pallet' : p.unit === 'per kit' ? 'kit' : p.unit === 'per slab' ? `slab of ${p.slabM2} m²` : p.unit === 'per set' ? `set of ${p.mixSlabs} slabs (${p.mixText}) · ${p.mixM2.toFixed(2)} m²` : 'each'
 const num = (v, d = 0) => { const n = parseFloat(v); return isFinite(n) && n >= 0 ? n : d }
 const round2 = (n) => Math.round(n * 100) / 100
 /* A quantity is packs plus, for ranges that split, loose slabs. */
@@ -87,9 +88,10 @@ const qtyLine = (p, q) => {
   if (!p.cover) return `${q.m2.toFixed(2)} m², by the m²`
   const parts = []
   if (q.packs) parts.push(`${q.packs} × ${p.cover.toFixed(2)} m²`)
-  if (q.slabs) parts.push(`${q.slabs} × ${p.packing.slabM2} m²`)
+  if (q.slabs) parts.push(q.mix ? `${q.slabs} loose ${plural('slab', q.slabs)} (${q.mixM2.toFixed(2)} m²)` : `${q.slabs} × ${p.packing.slabM2} m²`)
   return `${parts.join(' + ')} = ${q.m2.toFixed(2)} m²`
 }
+const mixNote = (p, q) => q.mix && q.slabs ? `Loose slabs in the pack’s sizes: ${mixText(p.packing, q.mix)}.` : ''
 const qtyWords = (p, q) => {
   if (!p.cover) return `${q.m2.toFixed(2)} m²`
   const a = []
@@ -97,11 +99,12 @@ const qtyWords = (p, q) => {
   if (q.slabs) a.push(`${q.slabs} loose ${plural('slab', q.slabs)}`)
   return a.join(' + ')
 }
-const addQuantity = (bag, p, q) => { if (q.packs) bag.add(p.id, q.packs); if (q.slabs) bag.add('slabs:' + p.id, q.slabs) }
+const addQuantity = (bag, p, q) => { if (q.packs) bag.add(p.id, q.packs); if (q.slabs && q.mix) bag.add('mix:' + p.id + ':' + q.mix.join('.'), 1); else if (q.slabs) bag.add('slabs:' + p.id, q.slabs) }
 /* Pallets for the delivery estimate: boxes and loose slabs share a pallet. */
 const palletsOf = (items) => Math.max(1, Math.ceil(items.reduce((n, l) => {
   const p = l.p; if (!p || p.unit === 'each') return n
   if (p.unit === 'per slab') return n + l.qty / (p.base?.packing?.perPack || 40)
+  if (p.unit === 'per set') return n + l.qty * p.mixM2 / (p.base?.cover || 18.19)
   if (p.packing?.unit === 'box' && p.cat !== 'outdoor') return n + l.qty * p.packing.perBox / p.packing.perPack
   return n + (p.cover || p.unit === 'per kit' ? l.qty : 0)
 }, 0) - 1e-9))
@@ -212,12 +215,13 @@ function Calculator({ initial = 'autumn-brown', bag, compact = false }) {
           </select></div>}
         <AreaRows areas={areas} setAreas={setAreas} idp={idp} />
         <CutAllowance on={allow} setOn={setAllow} pct={pct} setPct={setPct} id={idp + 'Allow'} />
-        <p className="note">10% covers a straight patio; circles, diagonals and lots of edges want 15–20%. {p.split ? 'This range splits: whole packs plus the loose slabs you need.' : p.cover ? `Sold in whole ${plural(packWord(p), 2)} of ${p.cover.toFixed(2)} m².` : 'Sold by the m².'}</p>
+        <p className="note">10% covers a straight patio; circles, diagonals and lots of edges want 15–20%. {p.split ? (p.packing?.mode === 'mixed' ? 'Whole packs plus loose slabs in the pack’s own four sizes, so you pay for the metreage, not the next pack.' : 'Whole packs plus the loose slabs you need.') : p.cover ? `Sold in whole ${plural(packWord(p), 2)} of ${p.cover.toFixed(2)} m².` : 'Sold by the m².'}</p>
       </div>
       <div className="calc-out">
         <div className="row"><span className="k">Area{areas.length > 1 ? ` · ${areas.length} areas` : ''}</span><span className="v">{net.toFixed(2)} m²</span></div>
         <div className="row"><span className="k">{allow ? `With ${pct}% for cuts` : 'No allowance for cuts'}</span><span className="v">{gross.toFixed(2)} m²</span></div>
         <div className="row"><span className="k">{p.cover ? (p.split && q.slabs ? 'Packs + slabs' : plural(packWord(p), 2).replace(/^./, c => c.toUpperCase())) : 'Supplied'}</span><span className="v">{qtyLine(p, q)}</span></div>
+        {mixNote(p, q) && <p className="note" style={{ margin: 0 }}>{mixNote(p, q)}</p>}
         <div className="row"><span className="k">{p.name}, ex VAT</span><span className="v">{money(ex)}</span></div>
         <div className="row"><span className="k">VAT at 20%</span><span className="v">{money(ex * VAT)}</span></div>
         <div className="row total"><span className="k">Total inc VAT</span><span className="v">{money(ex * (1 + VAT))}</span></div>
@@ -581,6 +585,7 @@ function Build({ bag }) {
           <div className="row"><span className="k">Area</span><span className="v">{net.toFixed(2)} m² · +{pct}% = {gross.toFixed(2)} m²</span></div>
           <div className="row"><span className="k">Lay</span><span className="v">{pattern.title}</span></div>
           <div className="row"><span className="k">{p.cover ? (q.slabs ? 'Packs + slabs' : plural(packWord(p), 2).replace(/^./, c => c.toUpperCase())) : 'Supplied'}</span><span className="v">{qtyLine(p, q)}</span></div>
+          {mixNote(p, q) && <p className="note" style={{ margin: 0 }}>{mixNote(p, q)}</p>}
           <div className="row"><span className="k">Stone, ex VAT</span><span className="v">{money(ex)}</span></div>
           <div className="row total"><span className="k">Total inc VAT</span><span className="v">{money(ex * (1 + VAT))}</span></div>
           <button className="pill" type="button" onClick={() => { addQuantity(bag, p, q); go('cart') }}>Add {qtyWords(p, q)} to bag</button>
@@ -709,7 +714,8 @@ function OrderBox({ p, bag, setAdded, added }) {
   const [allow, setAllow] = useState(true), [pct, setPct] = useState(10)
   const k = p.packing, w = packWord(p), cap = (t) => t.replace(/^./, c => c.toUpperCase())
   const gross = num(area) * (1 + (allow ? pct : 0) / 100)
-  const q = mode === 'area' ? quantify(p, gross) : p.cover ? { packs, slabs: p.split ? slabs : 0, m2: round2(packs * p.cover + (p.split ? slabs * k.slabM2 : 0)) } : { packs, slabs: 0, m2: packs }
+  const bySlab = p.split && k?.mode === 'fixed'
+  const q = mode === 'area' ? quantify(p, gross) : p.cover ? { packs, slabs: bySlab ? slabs : 0, m2: round2(packs * p.cover + (bySlab ? slabs * k.slabM2 : 0)) } : { packs, slabs: 0, m2: packs }
   const ex = exVat(p, q), empty = !q.packs && !q.slabs
   const add = () => { if (empty) return; addQuantity(bag, p, q); setAdded(`Added ${qtyWords(p, q)} to your bag`) }
   const packLabel = !k ? cap(w) : k.mode === 'mixed' ? `${cap(w)} · ${p.slabs} slabs, four sizes` : k.unit === 'box' && p.cat !== 'outdoor' ? `${cap(w)} · ${k.perBox} ${p.cat === 'cladding' ? 'strips' : 'tiles'}` : `${cap(w)} · ${k.perPack} slabs`
@@ -719,7 +725,8 @@ function OrderBox({ p, bag, setAdded, added }) {
         <thead><tr><th scope="col">Unit</th><th scope="col">Covers</th><th scope="col">Price + VAT</th></tr></thead>
         <tbody>
           <tr><td>Per m²</td><td>1 m²</td><td>{p.was && <s>{money(p.unit === 'per pallet' ? p.was / p.cover : p.was)}</s>}<b>{money(m2Price(p))}</b></td></tr>
-          {p.split && <tr><td>Single slab</td><td>{k.slabM2} m²</td><td><b>{money(slabPrice(p))}</b></td></tr>}
+          {bySlab && <tr><td>Single slab</td><td>{k.slabM2} m²</td><td><b>{money(slabPrice(p))}</b></td></tr>}
+          {p.split && k.mode === 'mixed' && <tr><td>Loose slabs, any of the four sizes</td><td>by area</td><td><b>{money(m2Price(p))} /m²</b></td></tr>}
           <tr><td>{packLabel}</td><td>{p.cover.toFixed(2)} m²</td><td>{p.was && <s>{money(p.unit === 'per pallet' ? p.was : p.was * p.cover)}</s>}<b>{money(lineUnitPrice(p))}</b></td></tr>
         </tbody></table>
         : <div className="row"><span>{p.unit === 'per kit' ? 'Complete kit' : 'Per m²'}</span><b>{money(p.price)} + VAT</b></div>}
@@ -727,13 +734,14 @@ function OrderBox({ p, bag, setAdded, added }) {
       {mode === 'pack' || !p.cover
         ? <div className="order-row">
           <div className="field"><span className="lbl">{p.cover ? plural(cap(w), 2) : p.unit === 'per kit' ? 'Kits' : 'm²'}</span><Qty value={packs} set={setPacks} min={p.split ? 0 : 1} label={plural(cap(w), 2)} /></div>
-          {p.split && <div className="field"><span className="lbl">Loose slabs</span><Qty value={slabs} set={setSlabs} min={0} max={k.perPack - 1} label="Loose slabs" /></div>}
+          {bySlab && <div className="field"><span className="lbl">Loose slabs</span><Qty value={slabs} set={setSlabs} min={0} max={k.perPack - 1} label="Loose slabs" /></div>}
+          {p.split && k.mode === 'mixed' && <p className="note" style={{ alignSelf: 'center', margin: 0 }}>For part of a pack, order by the area: we make it up in the pack’s four sizes.</p>}
         </div>
         : <div className="order-area">
           <div className="order-row area">
             <div className="field"><label htmlFor="obArea">Area to cover (m²)</label><input id="obArea" type="number" min="0" step="0.1" placeholder="e.g. 24" value={area} onChange={e => setArea(e.target.value)} /></div>
             <p className="deliv-out">{num(area) > 0
-              ? <>{num(area).toFixed(2)} m²{allow ? <> + {pct}% for cuts = <b>{gross.toFixed(2)} m²</b></> : ', no allowance for cuts'}. Supplied as <b>{qtyLine(p, q)}</b>{p.split ? '' : ` — whole ${plural(w, 2)} only`}.</>
+              ? <>{num(area).toFixed(2)} m²{allow ? <> + {pct}% for cuts = <b>{gross.toFixed(2)} m²</b></> : ', no allowance for cuts'}. Supplied as <b>{qtyLine(p, q)}</b>{p.split ? '' : ` — whole ${plural(w, 2)} only`}.{mixNote(p, q) ? ' ' + mixNote(p, q) : ''}</>
               : 'Type the area you measured. The allowance for cuts is added below; untick it if you have already allowed for cuts.'}</p>
           </div>
           <CutAllowance on={allow} setOn={setAllow} pct={pct} setPct={setPct} id="obAllow" />
@@ -853,7 +861,7 @@ function Product({ route, bag }) {
             <div><dt>Finish</dt><dd>{p.finish}</dd></div>
             <div><dt>Sold as</dt><dd>{p.pack}</dd></div>
             <div><dt>Delivery</dt><dd>From {fmtDay(workingDaysFrom(3))} · 3–5 working days · free over £500 inside the M25 · collect free from HP2 7BW</dd></div>
-            <div><dt>Split packs</dt><dd>{p.split ? 'Yes — whole packs plus loose slabs' : p.packing?.unit === 'box' && p.cat !== 'outdoor' ? 'Sold by the box' : p.cover ? 'No — sold as a full ' + packWord(p) : 'No'}</dd></div>
+            <div><dt>Split packs</dt><dd>{p.split ? (p.packing?.mode === 'mixed' ? 'Yes — whole packs plus loose slabs in the four sizes' : 'Yes — whole packs plus loose slabs') : p.packing?.unit === 'box' && p.cat !== 'outdoor' ? 'Sold by the box' : p.cover ? 'No — sold as a full ' + packWord(p) : 'No'}</dd></div>
           </dl>
           <OrderBox p={p} bag={bag} setAdded={setAdded} added={added} />
         </div>
@@ -909,7 +917,7 @@ function Bag({ bag }) {
           {items.map(l => (
             <div key={l.id} className="line">
               {l.p.img ? <img src={l.p.img} alt="" /> : <span className="swatch" style={{ background: l.p.tint }} aria-hidden="true" />}
-              <div><div className="name">{l.p.name}</div><div className="meta">{l.p.quote ? <>{l.p.spec} · <b>priced at the counter, confirmed by phone</b></> : <>{lineUnitLabel(l.p)} · {money(lineUnitPrice(l.p))} + VAT</>}{l.p.cover ? <> · <b>{l.qty} {plural(packWord(l.p), l.qty)} = {(l.qty * l.p.cover).toFixed(2)} m²</b></> : l.p.unit === 'per slab' ? <> · <b>{l.qty} {plural('slab', l.qty)} = {(l.qty * l.p.slabM2).toFixed(2)} m²</b></> : null}</div>
+              <div><div className="name">{l.p.name}</div><div className="meta">{l.p.quote ? <>{l.p.spec} · <b>priced at the counter, confirmed by phone</b></> : <>{lineUnitLabel(l.p)} · {money(lineUnitPrice(l.p))} + VAT</>}{l.p.cover ? <> · <b>{l.qty} {plural(packWord(l.p), l.qty)} = {(l.qty * l.p.cover).toFixed(2)} m²</b></> : l.p.unit === 'per slab' ? <> · <b>{l.qty} {plural('slab', l.qty)} = {(l.qty * l.p.slabM2).toFixed(2)} m²</b></> : l.p.unit === 'per set' ? <> · <b>{(l.qty * l.p.mixM2).toFixed(2)} m²</b></> : null}</div>
                 <div className="qty" style={{ marginTop: 10 }}><button type="button" onClick={() => bag.set(l.id, l.qty - 1)} aria-label="Fewer">−</button><output>{l.qty}</output><button type="button" onClick={() => bag.set(l.id, l.qty + 1)} aria-label="More">+</button></div></div>
               <div className="right"><span className="sum">{l.p.quote ? 'Quote' : money(lineUnitPrice(l.p) * l.qty)}</span><button className="remove" type="button" onClick={() => bag.set(l.id, 0)}>Remove</button></div>
             </div>
@@ -997,7 +1005,7 @@ function Checkout({ bag }) {
             <div className="field"><label htmlFor="coLine1">Address</label><input id="coLine1" autoComplete="address-line1" value={f.line1} onChange={set('line1')} /></div>
             <div className="two"><div className="field"><label htmlFor="coTown">Town</label><input id="coTown" autoComplete="address-level2" value={f.town} onChange={set('town')} /></div><div className="field"><label htmlFor="coPost">Postcode</label><input id="coPost" autoComplete="postal-code" value={f.postcode} onChange={set('postcode')} /></div></div>
             {f.postcode && (() => { const r = deliveryFor(f.postcode); const pallets = palletsOf(items); const free = r && !r.ask && r.band.key === 'london' && ex * (1 + VAT) > 500; return <p className="deliv-out">{!r ? 'Check the postcode.' : r.ask ? <>Priced by the job for this postcode — we’ll ring you with the cost.</> : free ? <>Inside the M25 and over £500: <b>delivery is free</b>. Kerbside, {pallets} {pallets === 1 ? 'pallet' : 'pallets'}.</> : <>Indicative: <b>{money(r.band.perPallet)} per pallet</b> × {pallets} = <b>{money(r.band.perPallet * pallets)}</b> ({r.band.name}). Confirmed by phone before payment.</>}</p> })()}
-            {items.some(l => l.p.unit === 'per slab') && <p className="deliv-out">Loose slabs travel on the same pallet as the packs. Any split-pack handling is confirmed with the delivery cost.</p>}
+            {items.some(l => l.p.unit === 'per slab' || l.p.unit === 'per set') && <p className="deliv-out">Loose slabs travel on the same pallet as the packs. Any split-pack handling is confirmed with the delivery cost.</p>}
             <div className="field"><label htmlFor="coNotes">Access notes</label><input id="coNotes" placeholder="Narrow drive, no kerb, leave on the lawn…" value={f.notes} onChange={set('notes')} /></div>
           </>}
         </div>
@@ -1014,7 +1022,7 @@ function Checkout({ bag }) {
       </div>
       <h2 className="sr-only">Order summary</h2><aside className="summary">
         <h3>{bag.count} {bag.count === 1 ? 'item' : 'items'}</h3>
-        {items.map(l => <div key={l.id} className="row"><span className="k">{l.qty} × {l.p.name}{l.p.cover ? <small> · {(l.qty * l.p.cover).toFixed(2)} m²</small> : l.p.unit === 'per slab' ? <small> · {(l.qty * l.p.slabM2).toFixed(2)} m²</small> : l.p.quote ? <small> · priced by phone</small> : null}</span><span className="v">{l.p.quote ? 'Quote' : money(lineUnitPrice(l.p) * l.qty)}</span></div>)}
+        {items.map(l => <div key={l.id} className="row"><span className="k">{l.qty} × {l.p.name}{l.p.cover ? <small> · {(l.qty * l.p.cover).toFixed(2)} m²</small> : l.p.unit === 'per slab' ? <small> · {(l.qty * l.p.slabM2).toFixed(2)} m²</small> : l.p.unit === 'per set' ? <small> · {l.p.mixText} · {(l.qty * l.p.mixM2).toFixed(2)} m²</small> : l.p.quote ? <small> · priced by phone</small> : null}</span><span className="v">{l.p.quote ? 'Quote' : money(lineUnitPrice(l.p) * l.qty)}</span></div>)}
         {items.some(l => l.p.quote) && <p className="note">Essentials are priced at the counter: we ring with the price before anything is charged.</p>}
         <div className="row"><span className="k">VAT at 20%</span><span className="v">{money(ex * VAT)}</span></div>
         <div className="row total"><span className="k">Total inc VAT{items.some(l => l.p.quote) ? ' + quoted items' : ''}</span><span className="v">{money(ex * (1 + VAT))}</span></div>

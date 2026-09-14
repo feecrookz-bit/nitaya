@@ -79,7 +79,7 @@ These are the reason the demo is trusted. Please keep them.
 A complete new front end for nityastones.co.uk, viewable now at the preview link above (password from Fee or Coleisha).
 
 - All 36 ranges as listed on the current store, with every price and sale price, plus the cladding shown as its six colourways. 136 of the store's own photographs, graded to sit together, and a studio render of every slab.
-- Every product page: unit table (per m², per slab, per pack), order by the pack or by the area, loose slabs where a pack splits, delivery date, collection line, the photographs, and the stone in 3D: one slab, laid in its pattern, dry or wet.
+- Every product page: unit table (per m², per slab, per pack), order by the pack or by the area, loose slabs to make up the metreage (mixed packs in their four sizes), delivery date, collection line, the photographs, and the stone in 3D: one slab, laid in its pattern, dry or wet.
 - The shop, collections, offers, samples, a patio builder, an area calculator, nine guides with drawings, 23 project photographs, trade and contact pages, dark and light themes, and a pop-up built from the real offers.
 - A bag and a checkout that stop at the last step. **No payment is taken and nothing is stored.**
 - A twenty-three page owner pack (PDF) with the current site beside the new one, the decisions needed, and a presenter script.

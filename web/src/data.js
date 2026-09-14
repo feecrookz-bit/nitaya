@@ -90,7 +90,7 @@ const sand = (slug, id, name, size, pack, cover, was, extra = {}) => add({
 sand('kandla-grey-22mm-sandstone-mixed', 'kandla-grey', 'Kandla Grey', 'Mixed patio pack', '18.19 m² per pack', 18.19, 22.2,
   { feature: 'The calm grey for white render and grey frames', blurb: 'Kandla Grey is the calm one: light-to-mid grey with occasional buff undertones, and the sandstone most often laid around white render and grey window frames. Mixed patio pack of four sizes, laid random.' })
 sand('kandla-grey-22mm-sandstone-900', 'kandla-grey-900', 'Kandla Grey 900×600', '900 × 600 mm', '21.60 m² per pack', 21.6, 22.2,
-  { tag: 'Splits', blurb: 'The same Kandla Grey in a single 900×600 size for a half-bond or stack-bond lay. This is one of the two packs we’ll split.' })
+  { blurb: 'The same Kandla Grey in a single 900×600 size for a half-bond or stack-bond lay. Sold by the pack or by the area, with loose slabs to make up the metreage.' })
 sand('raj-green', 'raj-green', 'Raj Green', 'Mixed patio pack', '18.19 m² per pack', 18.19, 22.2,
   { feature: 'The classic English-garden sandstone', blurb: 'Raj Green is a multicolour: greens, browns, greys and the occasional buff in one pack, and it comes up richer every time it rains. The classic English-garden sandstone.' })
 sand('rippon-buff', 'rippon-buff', 'Rippon Buff', 'Mixed patio pack', '18.19 m² per pack', 18.19, 22.2,
@@ -210,15 +210,39 @@ for (const p of P) {
     p.cover = coverOf(k); p.slabs = k.perPack
     p.pack = `${p.cover.toFixed(2)} m² per ${p.cat === 'outdoor' ? 'pallet' : 'pack'} · ${k.perPack} slabs${k.perBox ? ` in boxes of ${k.perBox}` : ''}`
   }
-  // Split packs: the store splits outdoor porcelain pallets and the Kandla Grey 900 × 600 pack. Mixed patio packs never split.
-  p.split = k.mode === 'fixed' && k.unit === 'slab' && (p.cat === 'outdoor' || p.id === 'kandla-grey-900')
+  // Every pack splits: whole packs plus loose slabs to the metreage asked for.
+  // Single-size packs split by the slab; mixed patio packs split in the pack's own four sizes.
+  p.split = k.mode === 'mixed' || (k.mode === 'fixed' && k.unit === 'slab' && p.cat !== 'cladding')
 }
 
-/* Turn an area into what leaves the yard. Whole packs unless the range
- * splits, in which case whole packs plus the fewest loose slabs. */
+/* Loose slabs for a mixed pack: the remainder made up in the pack's own four
+ * sizes. First the sizes in the pack's proportion, then the last bit largest
+ * slab first, so the overshoot is never more than one small slab. */
+export function mixFill(k, rem) {
+  const cover = coverOf(k), counts = k.sizes.map(() => 0)
+  let left = rem
+  k.sizes.forEach(([, n, m2], i) => { const c = Math.floor(rem * n / cover); counts[i] += c; left -= c * m2 })
+  const order = k.sizes.map((sz, i) => [sz[2], i]).sort((a, b) => b[0] - a[0])
+  for (const [m2, i] of order) { const c = Math.floor(left / m2 + 1e-9); counts[i] += c; left -= c * m2 }
+  if (left > 1e-9) { const [, i] = order[order.length - 1]; counts[i] += 1; left -= k.sizes[i][2] }
+  const m2 = round2(k.sizes.reduce((t, [, , sm2], i) => t + counts[i] * sm2, 0))
+  return { counts, slabs: counts.reduce((a, b) => a + b, 0), m2 }
+}
+export const mixText = (k, counts) => k.sizes.map(([name], i) => counts[i] ? `${counts[i]} × ${name}` : null).filter(Boolean).join(', ')
+
+/* Turn an area into what leaves the yard: whole packs plus the loose slabs
+ * that make up the rest, by the slab for single-size packs and in the four
+ * sizes for mixed packs. Boxes and kits stay whole. */
 export function quantify(p, m2) {
   const k = p.packing
   if (!k || !p.cover) return { packs: Math.max(1, Math.ceil(m2 - 1e-9)), slabs: 0, m2: Math.max(1, Math.ceil(m2 - 1e-9)) }
+  if (p.split && k.mode === 'mixed') {
+    const packs = Math.floor(m2 / p.cover + 1e-9), rem = m2 - packs * p.cover
+    if (rem <= 1e-9) return { packs: Math.max(1, packs), slabs: 0, m2: round2(Math.max(1, packs) * p.cover) }
+    const fill = mixFill(k, rem)
+    if (fill.slabs >= k.sizes.reduce((t, [, n]) => t + n, 0)) return { packs: packs + 1, slabs: 0, m2: round2((packs + 1) * p.cover) }
+    return { packs, slabs: fill.slabs, mix: fill.counts, mixM2: fill.m2, m2: round2(packs * p.cover + fill.m2) }
+  }
   if (p.split) {
     let packs = Math.floor(m2 / p.cover + 1e-9); const rem = m2 - packs * p.cover
     let slabs = rem > 1e-9 ? Math.ceil(rem / k.slabM2 - 1e-9) : 0
@@ -231,7 +255,7 @@ export function quantify(p, m2) {
 }
 export const m2Price = (p) => p.unit === 'per m²' ? p.price : p.unit === 'per pallet' && p.cover ? p.price / p.cover : p.price
 export const slabPrice = (p) => p.packing?.slabM2 ? round2(m2Price(p) * p.packing.slabM2) : null
-export const exVat = (p, q) => p.unit === 'per m²' && !p.cover ? q.m2 * p.price : (q.packs * (p.unit === 'per m²' ? p.price * p.cover : p.price)) + (q.slabs || 0) * (slabPrice(p) || 0)
+export const exVat = (p, q) => p.unit === 'per m²' && !p.cover ? q.m2 * p.price : (q.packs * (p.unit === 'per m²' ? p.price * p.cover : p.price)) + (q.mix ? round2((q.mixM2 || 0) * m2Price(p)) : (q.slabs || 0) * (slabPrice(p) || 0))
 
 /* Working-day arithmetic for the delivery line: the store's terms say 3–5
  * working days from payment, so the earliest day is three working days out. */
@@ -319,7 +343,7 @@ export const PATTERNS = [
 export const FAQ = [
   ['Are your sandstone slabs calibrated?', 'Yes. Every slab is machine-calibrated to 22 mm after it’s split, so the pack lays evenly on a full wet bed. The riven face still varies a few millimetres, as natural stone should; the 20 mm outdoor porcelain is dead flat, if that’s what you’d rather lay.'],
   ['Why are some of my slabs slightly different shades?', 'Because they’re natural stone. Depending on the batch number there can be a slight difference in shade between pallets. It’s not a fault, and it’s the reason experienced layers mix from three or four packs at once rather than working through one pallet at a time.'],
-  ['Do you split packs?', 'We split outdoor porcelain packs and Kandla Grey 600×900 packs. Mixed sandstone patio packs can’t be split — the four sizes come banded as a set.'],
+  ['Do you split packs?', 'Yes, every pack. Type the area you need on the product page and we make it up as whole packs plus loose slabs: by the slab for a single-size pack, and in the pack’s own four sizes for a mixed patio pack. You pay for the metreage, not the next whole pack.'],
   ['How long does delivery take, and what happens on the day?', 'Three to five working days once payment has been received. Delivery lands between 8am and 6pm, we call you on the day, and someone needs to be there to sign for it.'],
   ['Is there a minimum order?', 'No minimum if you’re collecting from the warehouse. There is a minimum for delivery — it depends on quantity and where you are, so ring and we’ll tell you straight away.'],
   ['Can I order and pay over the phone?', 'Yes. Call 0330 236 9227 during yard hours and we’ll take the order and the payment on the same call.'],

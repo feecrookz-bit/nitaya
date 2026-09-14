@@ -68,7 +68,7 @@ export const CONTENT = {
     details: sandDetails('Light grey with blue-grey and buff tones', '900 × 600 mm', '18.90 m² · 35 slabs', [['Split packs', 'Yes']]),
     body: [
       'The same Kandla Grey in a single 900 × 600 size for a half-bond, stack-bond or stretcher lay. Rows read cleaner and there are fewer joints to point, which is why this is the size most often chosen for modern extensions and long paths.',
-      'Riven face, hand-cut edges, calibrated to 22 mm. Because every slab is the same size we’ll split this pack to the metreage you need — one of only two packs in the yard we will.',
+      'Riven face, hand-cut edges, calibrated to 22 mm. We’ll split this pack to the metreage you need, as we do every pack.',
     ],
   }),
   'raj-green': sand({

@@ -32,7 +32,7 @@ export const PAIRS = [
   { key: 'product', title: 'Product page', orig: 'orig-d-product', neu: 'new-d-product', points: [
     'Every photograph the store has for the product, in a gallery with arrows, thumbnails and a full-screen view. Raj Green has six frames; Kandla Grey has seven; Quartz White has ten.',
     'See it in 3D: the slab turned in the hand or laid in its pattern, dry or wet, textured with the yard’s own photograph. A wet/dry slider, the feature list, a specification table, what is in a mixed pack (16 / 16 / 16 / 12 slabs), the description rewritten, laying and care notes, and the store’s own honesty notes about natural variation.',
-    'A unit table first: per m², single slab and pack, with the was and now prices. Order by the pack or by the area; ranges that split take whole packs plus loose slabs, and the area line says exactly what leaves the yard (1 × 21.60 m² + 9 × 0.54 m² = 26.46 m²). Pack sizes come from your warehouse database.',
+    'A unit table first: per m², single slab and pack, with the was and now prices. Order by the pack or by the area; every pack splits into whole packs plus loose slabs (mixed packs in their four sizes), and the area line says exactly what leaves the yard (1 × 21.60 m² + 9 × 0.54 m² = 26.46 m²). Pack sizes come from your warehouse database.',
     'Under the button: delivery from a date three working days out, free over £500 inside the M25, collect free from Mark Road with the hours, a delivery estimate by postcode, and a £5 sample. Then what pairs with it, the area calculator and the rest of the family.',
   ] },
   { key: 'cart', title: 'Bag and checkout', orig: 'orig-d-cart', neu: 'new-d-checkout', points: [
@@ -104,7 +104,7 @@ export const DECISIONS = [
   { h: 'Copy the demo states as fact, from your current listings', items: [
     'Trading since 2016.',
     'Price match.',
-    'Split packs: outdoor porcelain and Kandla Grey 600 × 900 only; mixed sandstone packs never.',
+    'Split packs: every pack, mixed patio packs made up in their four sizes. Your site’s FAQ still says only porcelain and Kandla Grey 900 × 600 split; correct it.',
     'Custom sizes, colours or finishes from 120 m², up to eight weeks.',
     'Klarna accepted.',
     'Samples £5 each. (Or free, or refunded against a first order?)',
@@ -138,7 +138,7 @@ export const DECISIONS = [
   ] },
   { h: 'Against Royale Stones (their site, read on 14 September)', items: [
     'On every range you both sell, your listed price is level or under theirs, before VAT. Say so once the price-match line is confirmed.',
-    'They charge £80 to split a pallet and offer a paid cutting service. Do you? The demo splits outdoor porcelain and Kandla Grey 900 × 600 with no fee shown.',
+    'They charge £80 to split a pallet and offer a paid cutting service. Do you? The demo splits every pack, mixed packs in their four sizes, with no fee shown.',
     'They sell the mixed patio pack in 5 m² and 10 m² sizes at a higher rate. Do you want to?',
     'They show seventy-two reviews on one product and a Trustpilot slider. A Google Business or Trustpilot link is on the yard list.',
   ] },
