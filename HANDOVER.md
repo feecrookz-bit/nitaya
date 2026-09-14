@@ -139,6 +139,7 @@ The site is a static build and needs no server of its own. The preview runs on G
 
 ### Reading
 
+- `wiki/README.md`: the build wiki, the reference for everything here in more depth.
 - `COMPETITOR.md`: Royale Stones, what they do well, what the site took from them and what it left alone, and the yard's price position against them.
 - `OPTIONS.md`: the full decisions list, in more detail than above.
 - `AUDIT.md`: every check the site has passed and how to run it again.

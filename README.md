@@ -1,17 +1,11 @@
-# Nitya Stones — website
+# Nitya Stones — the website upgrade
 
-Single-page site for Nitya Stones, 34 Mark Road, Hemel Hempstead HP2 7BW.
+A new front end for nityastones.co.uk (34 Mark Road, Hemel Hempstead HP2 7BW): the yard's own stock, prices and photographs, area-based ordering from the warehouse's pack sizes, a patio builder, guides, projects, trade and contact, dark and light themes, and every stone in 3D.
 
-- `index.html` — the whole site: no build step, no dependencies beyond Google Fonts.
-- Stone swatches and laying patterns are drawn with Canvas/SVG at real slab sizes; there are no product photos yet.
-- Range data (sizes, pack coverage, prices) lives in the `RANGES` array at the top of the script in `index.html`. Prices are per m² ex VAT and were taken from the live shop; anything without a published rate shows "Ask the yard".
+- **The site**: `web/` (React 19 + Vite). `cd web && npm ci && npm run dev`.
+- **The preview**: https://feecrookz-bit.github.io/nitaya/ behind a password; every push to `main` redeploys it.
+- **The wiki**: `wiki/README.md` is the reference for the whole build: architecture, data model, pages, photographs, build and deploy, audits, integrations, rules, glossary, history.
+- **Handover**: `HANDOVER.md` (Coleisha and the company), `DEPLOY.md` (GitHub transfer, Cloudflare Pages, go-live), `OPTIONS.md` (what the yard still owes), `COMPETITOR.md` (Royale Stones), `UPDATES.md` (since the meeting), `web/AUDIT.md` (what has been checked).
+- **The owner pack**: `present/Nitya-Stones-Website-Upgrade-Pack.pdf` and `present/SCRIPT.md`; the stock tracker brief `present/Nitya-Stones-Stock-Tracker-Link.pdf`.
 
-## Preview
-
-Open `index.html` in a browser, or serve the folder with any static host (GitHub Pages, Netlify, Cloudflare Pages).
-
-## To do
-
-- Replace drawn swatches with photographed slabs (wet and dry) once shot.
-- Add a Projects grid: location, stone, m² and a photo per job.
-- Confirm prices for Kandla Grey, Raj Green, Rippon Buff, Fossil Mint, Sinai Pearl and cladding.
+`index.html` at this level is the first single-page prototype from 10 September 2026 and is not used.

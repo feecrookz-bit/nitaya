@@ -66,7 +66,18 @@ To check, once the project has its `pages.dev` address:
 
 The other thirty-eight product addresses are ordinary letters and dashes and need no check.
 
-## 4. Going live
+## 4. The final audit
+
+One script checks everything in sections 2 and 3 against the deployed site, including the two odd addresses. Run it from `web/` after the first Cloudflare deploy and again after go-live:
+
+```
+BASE=https://<project>.pages.dev node scripts/audit/golive.cjs
+BASE=https://nityastones.co.uk EXPECT=open node scripts/audit/golive.cjs
+```
+
+It prints one line per check and "NO FINDINGS" at the end, or a FAILED list saying exactly which redirect, header or page is wrong. To rehearse it before the Cloudflare project exists: `PUBLIC_SITE=true npm run pages`, then `npm run preview:pages` in one terminal and `EXPECT=open node scripts/audit/golive.cjs` in another.
+
+## 5. Going live
 
 1. Copy, prices and photographs confirmed (HANDOVER.md, "What we need").
 2. WooCommerce connected and a test order placed end to end on the `pages.dev` address.
@@ -75,7 +86,7 @@ The other thirty-eight product addresses are ordinary letters and dashes and nee
 5. Switch `SITE_PASSWORD` for `PUBLIC_SITE=true` and redeploy. Check the home page, a product page, an old product address and an old blog address.
 6. Leave the old site reachable on its subdomain until the owner says otherwise. Submit the new address in Google Search Console.
 
-## 5. Ownership at the end
+## 6. Ownership at the end
 
 | | Owner | Members |
 |---|---|---|

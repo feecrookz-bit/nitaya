@@ -14,6 +14,7 @@ Run before the owner presentation, against the build that is now live behind the
 | Visual pass: 17 routes × 3 widths × 2 themes, looked at by eye | `scripts/audit/visual.cjs` → `out/` | Reviewed; fixes below |
 | Spelling (en-GB, nspell) and copy consistency over every visible string | `scripts/audit/strings.mjs` + `tools/spell.mjs` | 0 misspellings; consistency fixes below |
 | Gate on the live host, desktop and phone viewports | `scratchpad/gatefull.js` | Clean |
+| Go-live: gate up or down as expected, safety headers, fallback 200, immutable assets, all 114 redirects and the two wildcards, the invisible-character addresses, old addresses landing on the right product in a browser | `scripts/audit/golive.cjs` (`BASE=` the deployed address, `EXPECT=open` after go-live) | Passes against the local Cloudflare-style server (`npm run preview:pages`), open and gated |
 
 ## What was found and fixed
 
