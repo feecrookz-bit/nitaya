@@ -133,7 +133,7 @@ export const DECISIONS = [
     'Five listings on the current store say something else and want correcting: Kandla Grey 900 × 600 (18.90 m²), Black Limestone (18 m² at 20 mm), Bodo White, Noor Grigio and HS Beige (28.08 m²), Fossil Mint (mixed pack), the 16 mm pallets (28.08 m²).',
     'Sinai Pearl is not in the sheet; the demo assumes 50 slabs of 600 × 600. Add it to the sheet.',
     'Where the sheet and the shop use different names we matched by size: the 16 mm pallets to the Clorado rows, Aspire Grey to Aspire Anthra. A name tidy in the sheet removes the guesswork.',
-    'Steps, edging, granite setts, cobbles, jointing compounds and primer are in the database but not on the site. With prices they go on as Essentials.',
+    'Steps, edging, granite setts, cobbles, jointing compounds and primer from the database are now on the site as Essentials, priced at the counter, with an Ask for a price button. Give us the prices and they become ordinary products.',
     'Cladding: your listing shows six colourways with no names, so the demo sells six products named by colour (Buff Mix, Silver Quartz, Mint, Slate Green, Kandla Grey, Pale Grey). The database names four: Mandawar, Kandla Grey, Jack Black, Rock Face Mint. Which is which?',
   ] },
   { h: 'Against Royale Stones (their site, read on 14 September)', items: [

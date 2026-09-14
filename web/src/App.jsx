@@ -6,7 +6,7 @@ import { GUIDE_DIAGRAM } from './Diagrams.jsx'
 import Logo from './Logo.jsx'
 import logoPng from './assets/logo.png'
 import { HeroSlides, Marquee, CountUp, useReveal, Parallax } from './Motion.jsx'
-import { BUSINESS, IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, FAMILY_COLOUR, DELIVERY, deliveryFor, SEARCH_TAGS, COLOUR_TAGS, PAIRS, money, quantify, exVat, slabPrice, m2Price, workingDaysFrom, fmtDay } from './data.js'
+import { BUSINESS, IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, FAMILY_COLOUR, DELIVERY, deliveryFor, SEARCH_TAGS, COLOUR_TAGS, PAIRS, money, ESSENTIALS, essentialById, essentialsFor, quantify, exVat, slabPrice, m2Price, workingDaysFrom, fmtDay } from './data.js'
 import { GUIDES, guideBySlug } from './guides.js'
 
 const PHONE = BUSINESS.phone
@@ -73,6 +73,7 @@ function useBag() {
   return { lines, add, set, clear, count }
 }
 const lineProduct = (id) => id.startsWith('sample:') ? { ...SAMPLE, id, name: `Sample — ${byId(id.slice(7))?.name || ''}`, img: byId(id.slice(7))?.img }
+  : id.startsWith('ask:') ? (() => { const e = essentialById(id.slice(4)); return e && { ...e, id, img: null, name: e.name, unit: 'each', price: 0, cover: null, quote: true, spec: e.spec } })()
   : id.startsWith('slabs:') ? (() => { const b = byId(id.slice(6)); return b && { ...b, id, base: b, name: `${b.name} · loose slabs`, unit: 'per slab', cover: null, price: slabPrice(b), packing: null, split: false, slabM2: b.packing?.slabM2 } })()
   : byId(id)
 const lineUnitPrice = (p) => p.unit === 'per m²' && p.cover ? p.price * p.cover : p.price
@@ -783,6 +784,45 @@ function Stone3D({ p }) {
   )
 }
 
+/* Essentials: the warehouse lines beside the slabs. No listed price yet, so a
+ * customer asks for one with their order and the yard rings back. */
+function EssentialCard({ e, bag, onAdded }) {
+  return (
+    <div className="product ess">
+      <div className="swatch-tile" style={{ background: e.tint }} aria-hidden="true"><span>{e.name.split(',')[1]?.trim() || e.name}</span></div>
+      <div className="product-body"><h3>{e.name}</h3><span className="spec">{e.spec}</span><span className="spec">{e.packing}</span>
+        <div className="row" style={{ padding: '8px 0 0', border: 0 }}><span className="k">Priced at the counter</span></div>
+        <div className="buy-actions" style={{ marginTop: 8 }}><button className="pill ghost" type="button" style={{ padding: '9px 16px', fontSize: '.88rem' }} onClick={() => { bag.add('ask:' + e.id, 1); onAdded(`${e.name} added to your bag for a price`) }}>Ask for a price</button></div>
+      </div>
+    </div>
+  )
+}
+function Essentials({ bag }) {
+  const [added, setAdded] = useState('')
+  const groups = [...new Set(ESSENTIALS.map(e => e.group))]
+  return (
+    <section className="chapter" style={{ paddingTop: 'clamp(36px,5vw,64px)' }}><div className="wrap">
+      <div className="narrow"><p className="kicker">Essentials</p><h1 className="pg">What goes down with the stone.</h1><p className="intro">Jointing compounds, primer, step treads, edging and granite setts, held on the ground at Mark Road beside the slabs. They are priced at the counter for now: add one to your bag and we ring with the price before anything is charged, or ask when you collect.</p><p className="added" style={{ marginTop: 14 }} role="status" aria-live="polite">{added}</p></div>
+      {groups.map(g => <div key={g}><h2 style={{ marginTop: 36, marginBottom: 14, fontSize: '1.25rem' }}>{g}</h2>
+        <div className="media grid" style={{ marginTop: 0 }}>{ESSENTIALS.filter(e => e.group === g).map(e => <EssentialCard key={e.id} e={e} bag={bag} onAdded={setAdded} />)}</div>
+      </div>)}
+      <p className="note" style={{ marginTop: 28 }}>Quantities and packing are from the yard’s stock system. Colours shown are indicative; ask for a sample pot at the counter.</p>
+    </div></section>
+  )
+}
+function FinishTheJob({ p, bag }) {
+  const [added, setAdded] = useState('')
+  const list = essentialsFor(p).map(essentialById).filter(Boolean)
+  if (!list.length) return null
+  return (
+    <section className="chapter" style={{ paddingBlock: 'clamp(40px,6vw,80px)', paddingTop: 0 }}><div className="wrap">
+      <div className="head-row"><div><p className="kicker">Finish the job</p><h2>Jointing and primer for {p.name}.</h2></div><a className="more" href={href('essentials')}>All essentials</a></div>
+      <p className="added" role="status" aria-live="polite">{added}</p>
+      <div className="grid">{list.map(e => <EssentialCard key={e.id} e={e} bag={bag} onAdded={setAdded} />)}</div>
+    </div></section>
+  )
+}
+
 function Product({ route, bag }) {
   const p = byId(route.id)
   const [added, setAdded] = useState('')
@@ -820,6 +860,7 @@ function Product({ route, bag }) {
       </div>
       {p.unit !== 'per kit' && <Stone3D p={p} />}
       <ProductStory p={p} />
+      <FinishTheJob p={p} bag={bag} />
       {pairs.length > 0 && <section className="chapter" style={{ paddingBlock: 'clamp(40px,6vw,80px)', paddingTop: 0 }}><div className="wrap">
         <div className="head-row"><div><p className="kicker">Pairs with</p><h2>Laid next to {p.name}.</h2></div></div>
         <div className="pairs">{pairs.map(x => <a key={x.id} className="pair" href={href('product/' + x.id)}><img src={p.img} alt="" /><img src={x.img} alt={x.name} /><div><b>{p.name} + {x.name}</b><span>{x.cat === 'cladding' ? 'Wall behind the patio' : x.cat === p.cat ? 'Border, step or contrast band' : CAT_LABEL[x.cat] + ' · ' + money(x.price) + ' ' + x.unit}</span></div></a>)}</div>
@@ -867,10 +908,10 @@ function Bag({ bag }) {
         <div className="lines">
           {items.map(l => (
             <div key={l.id} className="line">
-              <img src={l.p.img} alt="" />
-              <div><div className="name">{l.p.name}</div><div className="meta">{lineUnitLabel(l.p)} · {money(lineUnitPrice(l.p))} + VAT{l.p.cover ? <> · <b>{l.qty} {plural(packWord(l.p), l.qty)} = {(l.qty * l.p.cover).toFixed(2)} m²</b></> : l.p.unit === 'per slab' ? <> · <b>{l.qty} {plural('slab', l.qty)} = {(l.qty * l.p.slabM2).toFixed(2)} m²</b></> : null}</div>
+              {l.p.img ? <img src={l.p.img} alt="" /> : <span className="swatch" style={{ background: l.p.tint }} aria-hidden="true" />}
+              <div><div className="name">{l.p.name}</div><div className="meta">{l.p.quote ? <>{l.p.spec} · <b>priced at the counter, confirmed by phone</b></> : <>{lineUnitLabel(l.p)} · {money(lineUnitPrice(l.p))} + VAT</>}{l.p.cover ? <> · <b>{l.qty} {plural(packWord(l.p), l.qty)} = {(l.qty * l.p.cover).toFixed(2)} m²</b></> : l.p.unit === 'per slab' ? <> · <b>{l.qty} {plural('slab', l.qty)} = {(l.qty * l.p.slabM2).toFixed(2)} m²</b></> : null}</div>
                 <div className="qty" style={{ marginTop: 10 }}><button type="button" onClick={() => bag.set(l.id, l.qty - 1)} aria-label="Fewer">−</button><output>{l.qty}</output><button type="button" onClick={() => bag.set(l.id, l.qty + 1)} aria-label="More">+</button></div></div>
-              <div className="right"><span className="sum">{money(lineUnitPrice(l.p) * l.qty)}</span><button className="remove" type="button" onClick={() => bag.set(l.id, 0)}>Remove</button></div>
+              <div className="right"><span className="sum">{l.p.quote ? 'Quote' : money(lineUnitPrice(l.p) * l.qty)}</span><button className="remove" type="button" onClick={() => bag.set(l.id, 0)}>Remove</button></div>
             </div>
           ))}
         </div>
@@ -880,7 +921,7 @@ function Bag({ bag }) {
         <div className="row"><span className="k">Goods, ex VAT</span><span className="v">{money(ex)}</span></div>
         <div className="row"><span className="k">VAT at 20%</span><span className="v">{money(ex * VAT)}</span></div>
         <div className="row"><span className="k">Delivery</span><span className="v">{palletsOf(items)} {palletsOf(items) === 1 ? 'pallet' : 'pallets'} · from {fmtDay(workingDaysFrom(3))}</span></div>
-        <div className="row total"><span className="k">Total inc VAT</span><span className="v">{money(ex * (1 + VAT))}</span></div>
+        <div className="row total"><span className="k">Total inc VAT{items.some(l => l.p.quote) ? ' + quoted items' : ''}</span><span className="v">{money(ex * (1 + VAT))}</span></div>
         <DeliveryEstimate pallets={palletsOf(items)} compact />
         <a className="pill" href={href('checkout')}>Checkout</a>
         <a className="more" href={href('shop')} style={{ justifySelf: 'center' }}>Keep shopping</a>
@@ -927,14 +968,15 @@ function Checkout({ bag }) {
           </div>
           <img className="payments" src={IMG.payments} alt="Mastercard, Maestro, Visa and Klarna accepted" />
         </div>
-        <button className="pill" type="button" disabled={!ok} onClick={() => { setOrder({ name: f.name, method: f.method, total: ex * (1 + VAT), ref: 'NS-' + Date.now().toString(36).toUpperCase().slice(-6) }); bag.clear() }}>Place order · {money(ex * (1 + VAT))} inc VAT</button>
+        <button className="pill" type="button" disabled={!ok} onClick={() => { setOrder({ name: f.name, method: f.method, total: ex * (1 + VAT), ref: 'NS-' + Date.now().toString(36).toUpperCase().slice(-6) }); bag.clear() }}>Place order · {money(ex * (1 + VAT))} inc VAT{items.some(l => l.p.quote) ? ' + quoted items' : ''}</button>
         <p className="note">Demo checkout — nothing is charged. In the live store this step hands off to WooCommerce with the same fields.</p>
       </div>
       <h2 className="sr-only">Order summary</h2><aside className="summary">
         <h3>{bag.count} {bag.count === 1 ? 'item' : 'items'}</h3>
-        {items.map(l => <div key={l.id} className="row"><span className="k">{l.qty} × {l.p.name}{l.p.cover ? <small> · {(l.qty * l.p.cover).toFixed(2)} m²</small> : l.p.unit === 'per slab' ? <small> · {(l.qty * l.p.slabM2).toFixed(2)} m²</small> : null}</span><span className="v">{money(lineUnitPrice(l.p) * l.qty)}</span></div>)}
+        {items.map(l => <div key={l.id} className="row"><span className="k">{l.qty} × {l.p.name}{l.p.cover ? <small> · {(l.qty * l.p.cover).toFixed(2)} m²</small> : l.p.unit === 'per slab' ? <small> · {(l.qty * l.p.slabM2).toFixed(2)} m²</small> : l.p.quote ? <small> · priced by phone</small> : null}</span><span className="v">{l.p.quote ? 'Quote' : money(lineUnitPrice(l.p) * l.qty)}</span></div>)}
+        {items.some(l => l.p.quote) && <p className="note">Essentials are priced at the counter: we ring with the price before anything is charged.</p>}
         <div className="row"><span className="k">VAT at 20%</span><span className="v">{money(ex * VAT)}</span></div>
-        <div className="row total"><span className="k">Total inc VAT</span><span className="v">{money(ex * (1 + VAT))}</span></div>
+        <div className="row total"><span className="k">Total inc VAT{items.some(l => l.p.quote) ? ' + quoted items' : ''}</span><span className="v">{money(ex * (1 + VAT))}</span></div>
       </aside>
     </div>
   )
@@ -1016,7 +1058,7 @@ function Contact() {
 }
 
 /* ---------------- shell ---------------- */
-const TITLES = { home: 'Nitya Stones — Sandstone, Limestone & Porcelain Paving, Hemel Hempstead', shop: 'Shop', collections: 'Collections', build: 'Build your patio', samples: 'Samples', cart: 'Your bag', checkout: 'Checkout', about: 'About the yard', faq: 'FAQ', contact: 'Contact', guides: 'Guides', projects: 'Projects', trade: 'Trade accounts', notfound: 'Page not found' }
+const TITLES = { home: 'Nitya Stones — Sandstone, Limestone & Porcelain Paving, Hemel Hempstead', shop: 'Shop', essentials: 'Essentials', collections: 'Collections', build: 'Build your patio', samples: 'Samples', cart: 'Your bag', checkout: 'Checkout', about: 'About the yard', faq: 'FAQ', contact: 'Contact', guides: 'Guides', projects: 'Projects', trade: 'Trade accounts', notfound: 'Page not found' }
 
 function useTheme() {
   const [theme, setTheme] = useState(() => { try { return localStorage.getItem('nitya-theme') || 'dark' } catch { return 'dark' } })
@@ -1090,7 +1132,7 @@ export default function App() {
   const NAV = [['shop', 'Shop'], ['collections', 'Collections'], ['build', 'Build your patio'], ['projects', 'Projects'], ['guides', 'Guides'], ['trade', 'Trade'], ['contact', 'Contact']]
   const page = {
     home: <Home bag={bag} />, shop: <Shop key={route.q.toString()} route={route} />, product: <Product key={route.id} route={route} bag={bag} />, samples: <Samples bag={bag} />,
-    cart: <Bag bag={bag} />, checkout: <Checkout bag={bag} />, about: <About />, faq: <Faq />, contact: <Contact />, collections: <Collections />, build: <Build bag={bag} />, guides: <Guides />, guide: <Guide key={route.id} route={route} />, projects: <Projects />, trade: <Trade />,
+    cart: <Bag bag={bag} />, checkout: <Checkout bag={bag} />, essentials: <Essentials bag={bag} />, about: <About />, faq: <Faq />, contact: <Contact />, collections: <Collections />, build: <Build bag={bag} />, guides: <Guides />, guide: <Guide key={route.id} route={route} />, projects: <Projects />, trade: <Trade />,
   }[route.page] || <div className="wrap empty"><h1 className="pg">Not found</h1><p style={{ marginTop: 12 }}>That page isn’t here. <a className="more" href={href('')}>Back to the start</a> or <a className="more" href={href('shop')}>shop the ranges</a>.</p></div>
   return (
     <>
@@ -1109,7 +1151,7 @@ export default function App() {
       <footer><div className="wrap">
         <div className="foot">
           <div><Logo /><p style={{ marginTop: 14, maxWidth: '32ch' }}>Wholesale and retail suppliers of outdoor and indoor porcelain, sandstone, limestone and cladding. {BUSINESS.address.join(', ')}.</p></div>
-          <div><h3 className="foot-h">Shop</h3>{CATS.map(([k, l]) => <a key={k} href={href('shop?cat=' + k)}>{l}</a>)}<a href={href('shop?cat=offers')}>Offers</a><a href={href('samples')}>Samples</a></div>
+          <div><h3 className="foot-h">Shop</h3>{CATS.map(([k, l]) => <a key={k} href={href('shop?cat=' + k)}>{l}</a>)}<a href={href('shop?cat=offers')}>Offers</a><a href={href('samples')}>Samples</a><a href={href('essentials')}>Essentials</a></div>
           <div><h3 className="foot-h">Help</h3><a href={href('trade')}>Trade accounts</a><a href={href('projects')}>Projects</a><a href={href('about')}>About the yard</a><a href={href('guides')}>Guides</a><a href={href('build')}>Build your patio</a><a href={href('collections')}>Collections</a><a href={href('faq')}>FAQ</a><a href={href('about')}>Ordering &amp; delivery</a><a href={href('about')}>Laying patterns</a><a href={href('contact')}>Contact</a></div>
           <div><h3 className="foot-h">The yard</h3><a href={BUSINESS.phoneHref}>{BUSINESS.phone}</a><a href={BUSINESS.mobileHref}>{BUSINESS.mobile}</a><a href={'mailto:' + BUSINESS.email}>{BUSINESS.email}</a><a href={BUSINESS.maps} target="_blank" rel="noreferrer">{BUSINESS.address.join(', ')}</a><span style={{ display: 'block', paddingTop: 3 }}>{BUSINESS.hoursShort}</span>
             <div className="social">{BUSINESS.socials.map(([n, u]) => <a key={n} href={u} target="_blank" rel="noreferrer">{n}</a>)}</div></div>

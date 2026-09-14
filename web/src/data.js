@@ -281,6 +281,33 @@ export const SCENES = [
   { img: sceneWetTerrace, title: 'Grey porcelain, just washed', sub: 'Large-format porcelain wet, showing the darker tone it takes in rain.', cat: 'outdoor' },
 ]
 
+/* ---------- essentials ----------
+ * What the warehouse holds beside the slabs, from the same database sheet:
+ * jointing compounds, primer, steps, edging, granite. None are on the current
+ * store and none have a listed price, so the site shows them priced at the
+ * counter and lets a customer ask for a price with their order. */
+const ess = (id, group, name, spec, packing, tint) => ({ id, group, name, spec, packing, tint, unit: 'each', price: null, quote: true })
+export const ESSENTIALS = [
+  ess('jointtec-pitch-black', 'Jointing compound for sandstone and limestone', 'Joint-Tec, Pitch Black', '15 kg bucket · brush-in resin jointing for riven stone', '40 buckets a pallet', '#2A2A2C'),
+  ess('jointtec-granite-grey', 'Jointing compound for sandstone and limestone', 'Joint-Tec, Granite Grey', '15 kg bucket · brush-in resin jointing for riven stone', '40 buckets a pallet', '#8B8C8A'),
+  ess('jointtec-buff-sand', 'Jointing compound for sandstone and limestone', 'Joint-Tec, Buff Sand', '15 kg bucket · brush-in resin jointing for riven stone', '40 buckets a pallet', '#C9B48A'),
+  ess('portec-midnight-grey', 'Jointing compound for porcelain', 'Por-Tec, Midnight Grey', '12.5 kg bucket · fine brush-in jointing for 3–5 mm porcelain joints', '40 buckets a pallet', '#3D3F43'),
+  ess('portec-ivory', 'Jointing compound for porcelain', 'Por-Tec, Ivory', '12.5 kg bucket · fine brush-in jointing for 3–5 mm porcelain joints', '40 buckets a pallet', '#E6DCC6'),
+  ess('portec-dove', 'Jointing compound for porcelain', 'Por-Tec, Dove', '12.5 kg bucket · fine brush-in jointing for 3–5 mm porcelain joints', '40 buckets a pallet', '#B9B6B0'),
+  ess('portec-storm', 'Jointing compound for porcelain', 'Por-Tec, Storm', '12.5 kg bucket · fine brush-in jointing for 3–5 mm porcelain joints', '40 buckets a pallet', '#6E7176'),
+  ess('primer', 'Primer', 'Priming slurry', '15 kg bucket · bonds porcelain and stone to the mortar bed', '40 buckets a pallet', '#A8A29A'),
+  ess('step-kandla-grey', 'Steps', 'Kandla Grey step tread', '900 × 300 × 20 mm · 0.54 m² each', '84 a pallet, 2 a box', '#8E9094'),
+  ess('step-quartz-grey', 'Steps', 'Quartz Grey step tread', '900 × 300 × 20 mm · 0.54 m² each', '84 a pallet, 2 a box', '#A4A6A8'),
+  ess('edging-terra-grey', 'Edging', 'Terra Grey edging', '200 × 100 × 20 mm · 0.02 m² each', '1,080 a pallet, 18 a box', '#7E7A75'),
+  ess('edging-polar-ivory', 'Edging', 'Polar Ivory edging', '200 × 100 × 20 mm · 0.02 m² each', '1,080 a pallet, 18 a box', '#E4E0D6'),
+  ess('granite-black', 'Granite setts and cobbles', 'Black granite sett', '300 × 200 × 80 mm · 0.06 m² each', '110 a pallet', '#2C2D2F'),
+  ess('granite-silver', 'Granite setts and cobbles', 'Silver granite sett', '300 × 200 × 50 mm · 0.06 m² each', '160 a pallet', '#9EA1A3'),
+  ess('granite-black-cobble', 'Granite setts and cobbles', 'Black granite cobble', '100 × 100 × 100 mm · 0.01 m² each', '548 a pallet', '#333436'),
+]
+export const essentialById = (id) => ESSENTIALS.find(e => e.id === id)
+/* Which essentials go with a range: jointing for its material, primer for anything laid on a bed. */
+export const essentialsFor = (p) => p.cat === 'outdoor' ? ['portec-midnight-grey', 'portec-ivory', 'portec-dove', 'portec-storm', 'primer'] : p.cat === 'sandstone' || p.cat === 'limestone' ? ['jointtec-pitch-black', 'jointtec-granite-grey', 'jointtec-buff-sand', 'primer'] : []
+
 export const MIXED = [[900, 600], [600, 600], [600, 295], [295, 295]]
 export const PATTERNS = [
   { title: 'Mixed patio pack', sub: '900×600, 600×600, 600×295, 295×295 — laid random, no repeat.', kind: 'mixed', tint: '#8A957F' },

@@ -34,6 +34,7 @@ Written 14 September 2026. Everything below is true of the `main` branch on that
 | Colours, fonts, spacing, light and dark theme | `web/src/index.css`; the colour tokens are at the top and again under the light theme block |
 | The guides | `web/src/guides.js` and the drawings in `web/src/Diagrams.jsx` |
 | The 3D slab and laid views | `web/src/StoneScene.jsx` |
+| Essentials (jointing, primer, steps, edging, granite): the lines and their packing | `ESSENTIALS` in `web/src/data.js`; add a `price` once the yard gives one |
 | Project photographs | `web/scripts/photos.json` (add the photo's URL or file with a `scene-` name), run `python3 scripts/photos.py grade` from `web/`, then add a line to `SCENES` in `data.js` |
 | Product gallery photographs | `web/scripts/gallery.json`, then `python3 scripts/photos.py gallery` |
 | The owner pack | `present/content.js` for the words, then `node shoot.mjs new`, `python3 prep.py`, `node build.mjs` in `present/` |
@@ -116,6 +117,7 @@ Connected. The site does not talk to WooCommerce or to the warehouse stock track
 12. The photographs the yard already has, as full-size originals rather than through WhatsApp: straight-down slab shots dry and hosed, laid patios, finished gardens. A shared folder or a memory stick at the yard.
 13. The logo as a vector or a large file, for print and the favicon.
 14. A Google Business or Trustpilot link if one exists, and any written reviews with the customer's permission.
+15. Prices for the fifteen Essentials lines (Joint-Tec and Por-Tec jointing compounds, primer, step treads, edging, granite setts and cobbles). They are on the site now from the warehouse sheet, marked "priced at the counter"; a customer can ask for a price with their order. With prices they become ordinary products.
 
 ### Going live, in order
 
