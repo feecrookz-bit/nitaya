@@ -5,6 +5,7 @@ Run before the owner presentation, against the build that is now live behind the
 | Area | Script | Result |
 |---|---|---|
 | Typography, fonts, text colours, contrast | `scripts/audit/typo.cjs` | Clean (see notes) |
+| Text laid over photographs (scene captions, banners, hero) — 5% worst pixels behind every line box vs the text colour, both themes, 1440 and 400 px | `scripts/audit/overphoto.cjs` | 404 measured, 0 below 4.5:1 (3:1 large) |
 | Accessibility (axe-core 4.13, WCAG 2.1 AA + best practice), both themes | `scripts/audit/axe.cjs` | 0 violations |
 | Behaviour: keyboard, focus, persistence, edge cases, business details on every page, structured data, gate failure paths | `scripts/audit/flows.cjs` | Clean |
 | Route crawl (63 routes), flows, images, labels, one h1 per page | `scripts/audit/crawl.cjs` | Clean |
@@ -24,6 +25,7 @@ Run before the owner presentation, against the build that is now live behind the
 - Distinct text colours are now 9 per theme, all from the token set.
 
 **Copy**
+- Text over photographs: scene captions were dark ink on the dark scrim in the light theme and the scrim was too light for pale stone (down to 3.7:1); captions are now white with a deeper scrim and banner kickers sit on a small dark plate. 0 of 404 line boxes below threshold after the fix.
 - 0 spelling errors across 762 visible strings. 80 straight apostrophes and 4 pairs of straight quotes made typographic.
 - "3–4 working days" (8 places) and "Three to four" (2) corrected to the store's own published Delivery Terms: 3–5 working days; the M25 band now says orders over £500 travel free.
 - "Visa Electron" (discontinued) removed from the payment lines. Indoor finishes "matt or gloss" → "matt, satin or polished" per the listings. One remaining "thickness varies" line in a guide reconciled with calibrated stone. An unverifiable "most patios in Hertfordshire" line removed.
@@ -62,6 +64,7 @@ Run before the owner presentation, against the build that is now live behind the
 cd web
 SINGLE=1 npm run build                          # audit build (file://)
 node scripts/audit/typo.cjs
+PNGJS=<path to pngjs> node scripts/audit/overphoto.cjs   # captions and headings over photographs
 AXE=<path to axe.min.js> node scripts/audit/axe.cjs
 node scripts/audit/flows.cjs                    # also needs publish/ served at http://localhost:8765/nitaya/
 node scripts/audit/crawl.cjs
