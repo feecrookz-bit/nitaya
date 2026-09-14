@@ -1,0 +1,134 @@
+# Cloudflare Pages redirects: every address on the current store, mapped to the new site.
+# Read by Cloudflare only; GitHub Pages ignores this file. Order matters: first match wins.
+# WP below is the working name for where WordPress (blog, legal pages, account) will live
+# after go-live. Change it once the subdomain is decided; see DEPLOY.md.
+
+# Products (old slug -> new product page)
+/product/black-limestone/  /#/product/black-limestone  301
+/product/egyptian-sinai-pearl/  /#/product/sinai-pearl  301
+/product/egyptian-limestone-sinai-pearl-mixed-patios-pack/  /#/product/sinai-pearl-mixed  301
+/product/kandla-grey-circle-kit/  /#/product/kandla-circle  301
+/product/hs-beige-porcelain/  /#/product/hs-beige  301
+/product/bodo-white-porcelain/  /#/product/bodo-white  301
+/product/%e2%81%a0noor-grigio-porcelain/  /#/product/noor-grigio  301
+/product/black-porcelain/  /#/product/black-porcelain  301
+/product/beige-porcelain/  /#/product/beige-porcelain  301
+/product/%e2%81%a0light-grey-porcelain/  /#/product/light-grey-porcelain  301
+/product/quartz-white-porcelain/  /#/product/quartz-white  301
+/product/raj-green-mixed-patio-pack-22mm/  /#/product/raj-green  301
+/product/kandla-grey-poveclain-600x900-20mm/  /#/product/kandla-porcelain  301
+/product/rippon-buff-mixed-patio-pack-22mm/  /#/product/rippon-buff  301
+/product/fossil-mint-mixed-patio-pack-22mm/  /#/product/fossil-mint  301
+/product/natural-kandla-grey-sandstone-900x600-slabs-22mm/  /#/product/kandla-grey-900  301
+/product/kandla-grey-sandstone-mixed-patio-size-22mm/  /#/product/kandla-grey  301
+/product/crystal-gris-porcelain-600x900/  /#/product/crystal-gris  301
+/product/himalayan-white-porcelain-600x900/  /#/product/himalayan-white  301
+/product/autum-brown-mixed-patio-pack-22mm/  /#/product/autumn-brown  301
+/product/eden-ash-porcelain-tile-300600/  /#/product/eden-ash  301
+/product/aspire-grey-porcelain-tiles-300-x-600/  /#/product/aspire-grey  301
+/product/sand-grigio-tiles-300x600/  /#/product/sand-grigio  301
+/product/unika-gris-tiles-300x600/  /#/product/unika-gris  301
+/product/rovero-dark-grey-300x600/  /#/product/rovero-dark-grey  301
+/product/dark-stonella-porcelain-tiles-300x600/  /#/product/dark-stonella  301
+/product/brit-raven-porcelain-tiles-600x600/  /#/product/brit-raven  301
+/product/miracle-statuario-porcelain-tiles-600x1200/  /#/product/miracle-statuario  301
+/product/saint-lawrence-black-diamond-porcelain-tiles-600x1200/  /#/product/saint-lawrence  301
+/product/lobbies-silver-porcelain-tiles-600x1200/  /#/product/lobbies-silver  301
+/product/calacatta-blanco-porcelain-tiles-600x1200/  /#/product/calacatta-blanco  301
+/product/modern-statuario-porcelain-tiles-600x1200/  /#/product/modern-statuario  301
+/product/jiniva-natural-porcelain-indoor-tiles-8mm-600x1200/  /#/product/jiniva-natural  301
+/product/earthstone-grey-porcelain/  /#/product/earthstone-grey  301
+/product/rust-slate-porcelain/  /#/product/copper-slate  301
+/product/stone-cladding-600x150/  /#/shop?cat=cladding  301
+
+# Samples
+/product/kandla-grey-porcelain-100x100-20mm-sample/  /#/samples  301
+/product/quartz-white-porcelain-600x900-20mm-sample/  /#/samples  301
+/product/raj-green-mixed-patio-pack-size-20-70-sqmt-18mm-sample/  /#/samples  301
+/product/rust-slate-porcelain-600x900-20mm-sample/  /#/samples  301
+
+# Shop and categories
+/shop  /#/shop  301
+/shop/  /#/shop  301
+/product-category/sandstones/  /#/shop?cat=sandstone  301
+/product-category/outdoor/sandstones-outdoor/  /#/shop?cat=sandstone  301
+/product-category/limestones/  /#/shop?cat=limestone  301
+/product-category/outdoor-porcelain/  /#/shop?cat=outdoor  301
+/product-category/outdoor/  /#/shop  301
+/product-category/indoor/  /#/shop?cat=indoor  301
+/product-category/sample/  /#/samples  301
+/outdoor-sandstones/  /#/shop?cat=sandstone  301
+/outdoor-porcelain/  /#/shop?cat=outdoor  301
+/indoor-porcelain/  /#/shop?cat=indoor  301
+/indoor-stones/  /#/shop?cat=indoor  301
+/special-deal/  /#/shop?cat=offers  301
+
+# Pages
+/about-us/  /#/about  301
+/contact-us/  /#/contact  301
+/wholesale/  /#/trade  301
+/faqs/  /#/faq  301
+/designer/  /#/build  301
+/services/  /#/trade  301
+/cart/  /#/cart  301
+/checkout/  /#/cart  301
+
+# Blog and legal pages stay on WordPress until they are moved across (HANDOVER.md, going live step 4)
+/blog/  https://wp.nityastones.co.uk/blog/  301
+/blog/*  https://wp.nityastones.co.uk/blog/:splat  301
+/privacy-policy/  https://wp.nityastones.co.uk/privacy-policy/  301
+/terms-conditions/  https://wp.nityastones.co.uk/terms-conditions/  301
+/refund-returns/  https://wp.nityastones.co.uk/refund-returns/  301
+/delivery-terms-conditions/  https://wp.nityastones.co.uk/delivery-terms-conditions/  301
+/my-account/  https://wp.nityastones.co.uk/my-account/  301
+/my-account/*  https://wp.nityastones.co.uk/my-account/:splat  301
+/feed/  https://wp.nityastones.co.uk/feed/  301
+/author/*  https://wp.nityastones.co.uk/blog/  301
+/category/*  https://wp.nityastones.co.uk/blog/  301
+
+# The 45 blog posts, by slug
+/best-paving-slabs-for-uk-gardens-in-2026-complete-expert-guide/  https://wp.nityastones.co.uk/best-paving-slabs-for-uk-gardens-in-2026-complete-expert-guide/  301
+/where-to-buy-porcelain-paving-slabs-in-the-uk-complete-buyers-guide/  https://wp.nityastones.co.uk/where-to-buy-porcelain-paving-slabs-in-the-uk-complete-buyers-guide/  301
+/porcelain-vs-sandstone-paving-which-is-best-for-your-uk-outdoor-space/  https://wp.nityastones.co.uk/porcelain-vs-sandstone-paving-which-is-best-for-your-uk-outdoor-space/  301
+/premium-porcelain-sandstone-paving-slabs-uk-quality-you-can-trust/  https://wp.nityastones.co.uk/premium-porcelain-sandstone-paving-slabs-uk-quality-you-can-trust/  301
+/new-year-home-garden-upgrades-with-porcelain-and-sandstone/  https://wp.nityastones.co.uk/new-year-home-garden-upgrades-with-porcelain-and-sandstone/  301
+/the-complete-guide-to-choosing-granite-for-driveways-in-the-uk-2026/  https://wp.nityastones.co.uk/the-complete-guide-to-choosing-granite-for-driveways-in-the-uk-2026/  301
+/top-outdoor-paving-trends-uk-homeowners-will-follow-in-2026/  https://wp.nityastones.co.uk/top-outdoor-paving-trends-uk-homeowners-will-follow-in-2026/  301
+/why-2026-is-the-year-of-sustainable-luxury-gardens-in-the-uk/  https://wp.nityastones.co.uk/why-2026-is-the-year-of-sustainable-luxury-gardens-in-the-uk/  301
+/why-sandstone-remains-the-uks-favourite-outdoor-paving-choice-in-2026/  https://wp.nityastones.co.uk/why-sandstone-remains-the-uks-favourite-outdoor-paving-choice-in-2026/  301
+/__trashed/  https://wp.nityastones.co.uk/__trashed/  301
+/granite-paving-the-perfect-choice-for-timeless-outdoor-elegance-in-london-and-hemel-hempstead/  https://wp.nityastones.co.uk/granite-paving-the-perfect-choice-for-timeless-outdoor-elegance-in-london-and-hemel-hempstead/  301
+/why-granite-paving-is-the-ultimate-choice-for-modern-outdoor-spaces/  https://wp.nityastones.co.uk/why-granite-paving-is-the-ultimate-choice-for-modern-outdoor-spaces/  301
+/sandstone-vs-porcelain-paving-find-the-best-patio-stones-in-hemel-hempstead-london-nitya-stones/  https://wp.nityastones.co.uk/sandstone-vs-porcelain-paving-find-the-best-patio-stones-in-hemel-hempstead-london-nitya-stones/  301
+/top-5-patio-design-trends-in-the-uk-for-autumn-2025/  https://wp.nityastones.co.uk/top-5-patio-design-trends-in-the-uk-for-autumn-2025/  301
+/seasonal-care-tips-keep-your-stone-patio-looking-new-all-year-round/  https://wp.nityastones.co.uk/seasonal-care-tips-keep-your-stone-patio-looking-new-all-year-round/  301
+/the-complete-buyers-guide-to-outdoor-paving-stones-in-the-uk-2025-edition/  https://wp.nityastones.co.uk/the-complete-buyers-guide-to-outdoor-paving-stones-in-the-uk-2025-edition/  301
+/granite-vs-sandstone-which-stone-is-right-for-your-driveway-and-patio/  https://wp.nityastones.co.uk/granite-vs-sandstone-which-stone-is-right-for-your-driveway-and-patio/  301
+/the-ultimate-guide-to-buying-granite-in-bulk-in-the-uk/  https://wp.nityastones.co.uk/the-ultimate-guide-to-buying-granite-in-bulk-in-the-uk/  301
+/indoor-elegance-meets-outdoor-strength-why-porcelain-is-the-best-choice-for-modern-uk-homes/  https://wp.nityastones.co.uk/indoor-elegance-meets-outdoor-strength-why-porcelain-is-the-best-choice-for-modern-uk-homes/  301
+/transform-your-garden-pathways-creative-ways-to-use-granite-cobbles-in-landscaping/  https://wp.nityastones.co.uk/transform-your-garden-pathways-creative-ways-to-use-granite-cobbles-in-landscaping/  301
+/5-common-mistakes-to-avoid-when-buying-paving-online-in-the-uk/  https://wp.nityastones.co.uk/5-common-mistakes-to-avoid-when-buying-paving-online-in-the-uk/  301
+/how-to-maintain-your-sandstone-paving-all-year-round/  https://wp.nityastones.co.uk/how-to-maintain-your-sandstone-paving-all-year-round/  301
+/sandstone-vs-porcelain-which-is-better-for-your-patio-in-the-uk/  https://wp.nityastones.co.uk/sandstone-vs-porcelain-which-is-better-for-your-patio-in-the-uk/  301
+/top-landscaping-trends-for-summer-2025-best-sandstones-ideas-in-uk/  https://wp.nityastones.co.uk/top-landscaping-trends-for-summer-2025-best-sandstones-ideas-in-uk/  301
+/top-5-reasons-to-buy-sandstones-from-nityastones-the-best-sandstones-supplier-in-the-uk/  https://wp.nityastones.co.uk/top-5-reasons-to-buy-sandstones-from-nityastones-the-best-sandstones-supplier-in-the-uk/  301
+/buy-sandstones-in-london-a-homeowners-guide-to-affordable-luxury/  https://wp.nityastones.co.uk/buy-sandstones-in-london-a-homeowners-guide-to-affordable-luxury/  301
+/why-architects-prefer-natural-stone-for-high-end-projects/  https://wp.nityastones.co.uk/why-architects-prefer-natural-stone-for-high-end-projects/  301
+/top-natural-stone-choices-for-uk-homes-what-works-best-in-our-climate/  https://wp.nityastones.co.uk/top-natural-stone-choices-for-uk-homes-what-works-best-in-our-climate/  301
+/year-round-outdoor-beauty-seasonal-maintenance-tips-for-porcelain-sandstone-paving/  https://wp.nityastones.co.uk/year-round-outdoor-beauty-seasonal-maintenance-tips-for-porcelain-sandstone-paving/  301
+/best-sandstone-porcelain-supplier-in-the-uk/  https://wp.nityastones.co.uk/best-sandstone-porcelain-supplier-in-the-uk/  301
+/tile-care-101-tips-for-keeping-tiles-beautiful/  https://wp.nityastones.co.uk/tile-care-101-tips-for-keeping-tiles-beautiful/  301
+/nitya-stones-your-partner-for-timeless-natural-beauty-and-durability/  https://wp.nityastones.co.uk/nitya-stones-your-partner-for-timeless-natural-beauty-and-durability/  301
+/how-to-choose-the-perfect-porcelain-tiles-for-your-patio/  https://wp.nityastones.co.uk/how-to-choose-the-perfect-porcelain-tiles-for-your-patio/  301
+/integrating-indoor-and-outdoor-spaces-with-nityastoness-premier-indian-sandstones/  https://wp.nityastones.co.uk/integrating-indoor-and-outdoor-spaces-with-nityastoness-premier-indian-sandstones/  301
+/elevate-your-property-a-complete-guide-to-natural-stone-driveways/  https://wp.nityastones.co.uk/elevate-your-property-a-complete-guide-to-natural-stone-driveways/  301
+/enhance-your-home-with-kandla-grey-sandstone-and-porcelain-tiles/  https://wp.nityastones.co.uk/enhance-your-home-with-kandla-grey-sandstone-and-porcelain-tiles/  301
+/7-crucial-factors-for-creating-your-ideal-outdoor-space/  https://wp.nityastones.co.uk/7-crucial-factors-for-creating-your-ideal-outdoor-space/  301
+/the-ultimate-guide-to-choosing-the-perfect-sandstone-for-your-project-in-the-uk/  https://wp.nityastones.co.uk/the-ultimate-guide-to-choosing-the-perfect-sandstone-for-your-project-in-the-uk/  301
+/valentines-day-gift-guide-featuring-porcelain-sandstone/  https://wp.nityastones.co.uk/valentines-day-gift-guide-featuring-porcelain-sandstone/  301
+/outdoor-porcelain-tiles-benefits/  https://wp.nityastones.co.uk/outdoor-porcelain-tiles-benefits/  301
+/what-are-exposed-bricks/  https://wp.nityastones.co.uk/what-are-exposed-bricks/  301
+/indoor-porcelain-tiles-guide/  https://wp.nityastones.co.uk/indoor-porcelain-tiles-guide/  301
+/kandla-grey-porcelain-for-outdoors/  https://wp.nityastones.co.uk/kandla-grey-porcelain-for-outdoors/  301
+/the-timeless-elegance-and-unrivalled-benefits-of-natural-stones-introduction/  https://wp.nityastones.co.uk/the-timeless-elegance-and-unrivalled-benefits-of-natural-stones-introduction/  301
+/spice-up-your-outdoors-with-kandla-grey-sandstone/  https://wp.nityastones.co.uk/spice-up-your-outdoors-with-kandla-grey-sandstone/  301

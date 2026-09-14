@@ -13,7 +13,7 @@ Written 14 September 2026. Everything below is true of the `main` branch on that
 - **The code**: github.com/feecrookz-bit/nitaya, branch `main`. Every push to `main` rebuilds and redeploys the preview by itself in about half a minute (GitHub Actions, `.github/workflows/pages.yml`).
 - **The preview**: https://feecrookz-bit.github.io/nitaya/ behind a password (`nitya2026!!`). The password lives as a repository secret called `SITE_PASSWORD`; change it there, never in the code. Don't forward the password in email chains; give it by phone or in person.
 - **The owner pack**: `present/Nitya-Stones-Website-Upgrade-Pack.pdf`, and the presenter one-pager `present/SCRIPT.md`.
-- **The lists that matter**: `OPTIONS.md` (every decision and asset still needed from the yard), `COMPETITOR.md` (the Royale Stones study), `AUDIT.md` (what has been checked and how to re-run it).
+- **The lists that matter**: `OPTIONS.md` (every decision and asset still needed from the yard), `COMPETITOR.md` (the Royale Stones study), `AUDIT.md` (what has been checked and how to re-run it), `DEPLOY.md` (the GitHub transfer, Cloudflare Pages, old-address redirects and go-live).
 
 ### Setting up a laptop
 
@@ -126,7 +126,7 @@ The site is a static build and needs no server of its own. The preview runs on G
 - **Cloudflare Pages**, in an account created with a Nitya Stones email, with Fee and Coleisha as members. Free for commercial use; builds from GitHub on every push as the preview does now; custom domain, HTTPS and redirect rules for the old blog addresses; server functions on the same plan if one is ever needed. Vercel would work but its free tier forbids commercial use.
 - **The GitHub repository** transferred to an organisation the company owns, or Coleisha added as a collaborator until then.
 - **WordPress stays** as the till and the blog, moved to a subdomain; the new site takes the main address. Nothing is deleted until the redirects are in.
-- **No secrets in the front end.** The WooCommerce key and the stock tracker's shared secret never go in the site's code. The stock tracker syncs with WooCommerce (orders out by WooCommerce webhook, stock in by a timed push from the script), and the site talks only to WooCommerce's public Store API. See `present/Nitya-Stones-Stock-Tracker-Link.pdf`.
+- **No secrets in the front end.** The WooCommerce key and the stock tracker's shared secret never go in the site's code. The stock tracker syncs with WooCommerce (orders out by WooCommerce webhook, stock in by a timed push from the script), and the site talks only to WooCommerce's public Store API. See `present/Nitya-Stones-Stock-Tracker-Link.pdf`. The step-by-step is in `DEPLOY.md`.
 
 ### Going live, in order
 
