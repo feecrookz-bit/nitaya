@@ -14,7 +14,7 @@ Open with: **"Everything you're about to see is your stock, your prices and your
 | 6 | Raj Green, scroll | The pack table, specification, laying notes | "What's in the pack, sixteen-sixteen-sixteen-twelve. Your listings say calibrated to 22 mm, so that's what it says." | "Sinai Pearl: honed or riven? Your listing says both." |
 | 7 | **Add to bag → Bag → Checkout** | Pallet count and coverage; the delivery estimate; the demo note at the bottom | "Delivery follows your published terms: 3–5 days, free over £500 inside the M25. It stops here on purpose — the live one hands to your WooCommerce." | "Do those delivery terms still hold?" |
 | 8 | **Build your patio** | Pick a stone, type 6 × 4, pick a pattern, save | "Whole packs, price, a saved design they can reorder from." | — |
-| 9 | **Guides** | The laying diagram | "What you tell people over the counter, written down and drawn to scale. Your twenty blog posts move under here with redirects, so Google keeps sending people." | — |
+| 9 | **Guides** | The laying diagram | "What you tell people over the counter, written down and drawn to scale. Your forty-five blog posts move under here with redirects, so Google keeps sending people." | — |
 | 10 | **Trade** | The four cards and the form | "This is a typical trade offer. It should be yours." | "What does a trade account actually include?" |
 | 11 | **Phone in hand**: home, then Raj Green | Thumb through the gallery; the sticky Add to bag | "This is where most customers will see it — standing in the garden." | — |
 | 12 | The sun/moon button | Switch to light | "Either can be the default." | "Dark or light?" |

@@ -19,6 +19,15 @@ import sceneStepsBrick from './assets/scene-steps-brick.jpg'
 import sceneStepsRender from './assets/scene-steps-render.jpg'
 import sceneBath from './assets/scene-bath.jpg'
 import sceneIndoorFloor from './assets/scene-indoor-floor.jpg'
+import sceneKandlaFence from './assets/scene-kandla-fence.jpg'
+import sceneKandlaBrick from './assets/scene-kandla-brick.jpg'
+import sceneFirepit from './assets/scene-firepit.jpg'
+import sceneRajDry from './assets/scene-raj-dry.jpg'
+import sceneCopperLawn from './assets/scene-copper-lawn.jpg'
+import sceneDrone from './assets/scene-drone.jpg'
+import sceneDriveway from './assets/scene-driveway.jpg'
+import sceneNight from './assets/scene-night.jpg'
+import sceneWetTerrace from './assets/scene-wet-terrace.jpg'
 
 // Studio renders (p-*) and graded lifestyle photos (g-*), both produced by
 // scripts/photos.py from the yard's own photography.
@@ -171,6 +180,17 @@ export const SCENES = [
   { img: sceneStepsRender, title: 'Steps, rendered risers', sub: 'Porcelain treads with a rendered wall, the modern version of the same step.', cat: 'outdoor' },
   { img: sceneBath, title: 'A bathroom in indoor porcelain', sub: 'Large-format porcelain on the wall and floor, with tiled niches cut into the wall.', cat: 'indoor' },
   { img: sceneIndoorFloor, title: 'Indoor floor, room to room', sub: '600 × 1200 grey porcelain running through a doorway; one floor, no threshold.', cat: 'indoor' },
+  // Photographs from the store's product listings and blog. Where the store
+  // files a photo under a product it links there; the wording says so.
+  { img: sceneKandlaFence, title: 'Kandla Grey to the fence line', sub: 'Mixed patio pack laid random up to a close-board fence, edged in charcoal blocks. From the store’s Kandla Grey listing.', product: 'kandla-grey' },
+  { img: sceneKandlaBrick, title: 'Kandla Grey by a brick wall', sub: 'Riven Kandla Grey, four sizes, running to a low brick wall and the hedge behind it. Captioned Kandla Grey on the store’s blog.', product: 'kandla-grey' },
+  { img: sceneFirepit, title: 'Fire pit, gravel margins', sub: 'Grey slabs with pale gravel either side and a raised bed at the end. The store files this photograph under Kandla Grey.', product: 'kandla-grey' },
+  { img: sceneRajDry, title: 'Riven sandstone, dry', sub: 'Mixed sizes laid random under the tree line, buff and grey coming through. The store files this photograph under Raj Green.', product: 'raj-green' },
+  { img: sceneCopperLawn, title: 'Copper Slate beside the lawn', sub: 'Riven-effect porcelain in rust and grey, laid to a lawn edge. The store files this photograph under Copper Slate.', product: 'copper-slate' },
+  { img: sceneDrone, title: 'The whole plot from above', sub: 'Porcelain path and terrace wrapping a chalet-style house, from the store’s article on joining indoor and outdoor spaces.', cat: 'outdoor' },
+  { img: sceneDriveway, title: 'Driveway in charcoal blocks', sub: 'Herringbone block paving up to the fence, from the store’s own photographs. Blocks aren’t listed online; ask at the yard.', cat: 'outdoor' },
+  { img: sceneNight, title: 'The terrace after dark', sub: 'The same house as the summerhouse terrace, lit from inside: large-format porcelain off the bifolds.', product: 'quartz-white' },
+  { img: sceneWetTerrace, title: 'Grey porcelain, just washed', sub: 'Large-format porcelain wet, showing the darker tone it takes in rain.', cat: 'outdoor' },
 ]
 
 export const MIXED = [[900, 600], [600, 600], [600, 295], [295, 295]]

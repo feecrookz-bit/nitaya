@@ -602,5 +602,56 @@
   "src": "https://nityastones.co.uk/wp-content/uploads/2024/01/WhatsApp-Image-2023-12-20-at-18.35.01.jpeg",
   "aspect": "4:3",
   "width": 1100
+ },
+ "scene-kandla-fence": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/04/WhatsApp-Image-2025-07-24-at-20.47.37-1.jpeg",
+  "aspect": "4:3",
+  "width": 1100
+ },
+ "scene-kandla-brick": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/10/Kandla-grey-sandstone-04-edited.jpg",
+  "aspect": "4:3",
+  "width": 1100
+ },
+ "scene-firepit": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/04/WhatsApp-Image-2025-07-23-at-19.46.23.jpeg",
+  "aspect": "4:3",
+  "width": 1100
+ },
+ "scene-raj-dry": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/04/WhatsApp-Image-2025-07-24-at-20.54.46.jpeg",
+  "aspect": "4:3",
+  "width": 1100
+ },
+ "scene-copper-lawn": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2023/07/WhatsApp-Image-2025-07-23-at-20.18.16.jpeg",
+  "aspect": "4:3",
+  "width": 1100
+ },
+ "scene-drone": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2024/05/WhatsApp-Image-2024-05-03-at-18.52.03.jpeg",
+  "aspect": "4:3",
+  "width": 1100
+ },
+ "scene-driveway": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/36.jpg",
+  "aspect": "4:3",
+  "width": 1100,
+  "trim_top": 0.17,
+  "trim_bottom": 0.08
+ },
+ "scene-night": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/38.jpg",
+  "aspect": "4:3",
+  "width": 1100,
+  "trim_top": 0.17,
+  "trim_bottom": 0.08
+ },
+ "scene-wet-terrace": {
+  "src": "https://nityastones.co.uk/wp-content/uploads/2024/02/41.jpg",
+  "aspect": "4:3",
+  "width": 1100,
+  "trim_top": 0.17,
+  "trim_bottom": 0.08
  }
 }

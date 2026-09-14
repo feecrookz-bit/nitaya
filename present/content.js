@@ -30,7 +30,7 @@ export const PAIRS = [
     'Four editor’s picks (Kandla Grey, Raj Green, Bodo White, Quartz White) get a wider card with a real garden photograph; the rest sit in a clean grid with the render, size, thickness and the was/now price.',
   ] },
   { key: 'product', title: 'Product page', orig: 'orig-d-product', neu: 'new-d-product', points: [
-    'Every photograph the store has for the product, in a gallery with arrows, thumbnails and a full-screen view. Raj Green has six frames; Quartz White has ten.',
+    'Every photograph the store has for the product, in a gallery with arrows, thumbnails and a full-screen view. Raj Green has six frames; Kandla Grey has seven; Quartz White has ten.',
     'A wet/dry slider, the feature list, a specification table, what is in a mixed pack (16 / 16 / 16 / 12 slabs), the description rewritten, laying and care notes, and the store’s own honesty notes about natural variation.',
     'Add to bag with the inc-VAT total shown, a delivery estimate by postcode, a £5 sample button, what pairs with it, a price-your-area calculator and the rest of the family.',
   ] },
@@ -40,7 +40,7 @@ export const PAIRS = [
     'It stops at the last step with a plain note that nothing is charged in the demo. In the live store this step hands to your existing WooCommerce.',
   ] },
   { key: 'blog', title: 'Blog, becoming Guides', orig: 'orig-d-blog', neu: 'new-d-blog', points: [
-    'The current blog is twenty articles. The demo replaces the format with Guides: the things you tell customers across the counter, written down, with drawings to scale.',
+    'The current blog is forty-five articles. The demo replaces the format with Guides: the things you tell customers across the counter, written down, with drawings to scale.',
     'Nine guides so far: porcelain or sandstone, laying sandstone, laying porcelain, how many packs, sealing, cleaning, why slabs vary, mixed packs, delivery day.',
     'The existing articles are not in the demo yet. At go-live they move under Guides with redirects from their old addresses so Google keeps sending the traffic.',
   ] },
@@ -57,7 +57,7 @@ export const PAIRS = [
   { key: 'about', title: 'About', orig: 'orig-d-about', neu: 'new-d-about', points: [
     'The yard, in photographs and three lines: bought direct, held on our ground, looked at before it leaves.',
     'How ordering works, delivery bands, collection, and the laying patterns drawn to scale.',
-    'The seven project photographs on the current About page now live in Projects, each captioned with what is in it and linked to the stone or the range.',
+    'The seven project photographs on the current About page now live in Projects, with nine more found in the store’s listings and blog, each captioned with what is in it and linked to the stone or the range.',
   ] },
 ]
 
@@ -73,7 +73,7 @@ export const NEW_ONLY = [
   { shot: 'new-d-build', title: 'Build your patio', text: 'Pick a stone, type the dimensions, pick a laying pattern: it works out whole packs, the price, and saves the design to come back to or reorder from.' },
   { shot: 'new-d-lightbox', title: 'Full-screen photographs', text: 'Every product photograph opens full screen, swipeable, with a counter.' },
   { shot: 'new-d-product-light', title: 'Light and dark', text: 'The site opens dark, which suits the stone photography. One tap switches to a light version and the choice is remembered. Either can be the default.' },
-  { shot: 'new-d-projects', title: 'Projects', text: 'Fourteen customers’ gardens and rooms, including the seven from the current About page, each tapping through to the stone or the range. Grows as you send photographs.' },
+  { shot: 'new-d-projects', title: 'Projects', text: 'Twenty-three customers’ gardens and rooms: the seven from the current About page and nine more from the listings and the blog, each tapping through to the stone or the range. Grows as you send photographs.' },
   { shot: 'new-d-offers', title: 'Offers', text: 'Everything currently below list price in one place, from the store’s own was/now prices.' },
   { shot: 'new-d-samples', title: 'Samples', text: '£5 samples of every range, added to the bag from the product page or from one page of all of them.' },
   { shot: 'new-m-build', title: 'The builder on a phone', text: 'Works one-handed, standing in the garden.' },
@@ -83,14 +83,14 @@ export const KEPT = [
   'All 36 products, with the four sample-only listings folded into the £5 sample flow.',
   'Every price and every sale price as listed today, including the pallet prices for the 16 mm porcelain.',
   'The original logo, cleaned up and used at every size: header, footer, hero, the preview gate, favicon.',
-  'All 121 photographs from the store, including the seven project photographs on its About page, graded to sit together, with the duplicate uploads removed.',
+  'All 136 photographs from the store, including the project photographs on its About page, in its listings and in its blog, graded to sit together, with the duplicate uploads removed.',
   'Phone numbers, WhatsApp, email, address and opening hours as on the current site.',
   'The two customer reviews the store shows today, word for word.',
   'The store’s own honesty notes: natural variation, batch variation, order ten per cent over, renders are illustrative.',
 ]
 
 export const NOT_YET = [
-  ['Blog (20 articles)', 'Moves under Guides at go-live with redirects from the old addresses, so search rankings hold.'],
+  ['Blog (45 articles)', 'Moves under Guides at go-live with redirects from the old addresses, so search rankings hold.'],
   ['Terms & Conditions, Privacy, Refund & Returns, Delivery Terms', 'Come across as they are, linked from the footer.'],
   ['My Account', 'Comes with WooCommerce when the checkout is connected.'],
   ['Designer page', 'A product-designer plugin on the current site. Tell us if it is used; if not, it is dropped.'],
@@ -123,6 +123,8 @@ export const DECISIONS = [
     'The current site links a Twitter/X account. Keep it?',
     'The trade offer in your words: terms, pallet pricing, who the contact is.',
     'A see-it-laid visualiser: yes, later, or no. The options are below.',
+    'Projects: which stone is in each photograph? Your site names only the Quartz White terrace. The rest are captioned by what can be seen and by where you filed them (Kandla Grey, Raj Green, Copper Slate). Tell us the stone for the others and the captions change.',
+    'Two grey-patio photographs on your home page carry another supplier’s file names. They are left out until you confirm they are yours.',
   ] },
 ]
 

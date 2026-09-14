@@ -16,8 +16,8 @@ The pass is the same for every image so the cards read as one shoot:
      ground are first cropped to the tile itself (`mode: auto`), which is what
      turns a phone snap on the yard floor into something that reads as a
      product shot.
-Overrides per image live in photos.json (trim_bottom removes a baked-in
-caption; grade:false skips the tonal work for texture maps; watermark:false
+Overrides per image live in photos.json (trim_bottom / trim_top remove a
+baked-in caption or logo; grade:false skips the tonal work for texture maps; watermark:false
 leaves an image unstamped — product cards default to unstamped, scene and
 yard photography defaults to stamped so it can't be lifted anonymously).
 """
@@ -277,6 +277,8 @@ def grade_one(name, spec):
     im = ImageOps.exif_transpose(im)
     if spec.get('trim_bottom'):
         im = im.crop((0, 0, im.width, int(im.height * (1 - spec['trim_bottom']))))
+    if spec.get('trim_top'):  # a logo or banner baked into the top of the upload
+        im = im.crop((0, int(im.height * spec['trim_top']), im.width, im.height))
     if spec.get('mode') == 'studio':
         tex = white_balance(face_texture(im, spec))
         im = studio_render(tex, spec['slab'], spec['thick'])
