@@ -57,6 +57,7 @@ export const PAIRS = [
   { key: 'about', title: 'About', orig: 'orig-d-about', neu: 'new-d-about', points: [
     'The yard, in photographs and three lines: bought direct, held on our ground, looked at before it leaves.',
     'How ordering works, delivery bands, collection, and the laying patterns drawn to scale.',
+    'The seven project photographs on the current About page now live in Projects, each captioned with what is in it and linked to the stone or the range.',
   ] },
 ]
 
@@ -72,7 +73,7 @@ export const NEW_ONLY = [
   { shot: 'new-d-build', title: 'Build your patio', text: 'Pick a stone, type the dimensions, pick a laying pattern: it works out whole packs, the price, and saves the design to come back to or reorder from.' },
   { shot: 'new-d-lightbox', title: 'Full-screen photographs', text: 'Every product photograph opens full screen, swipeable, with a counter.' },
   { shot: 'new-d-product-light', title: 'Light and dark', text: 'The site opens dark, which suits the stone photography. One tap switches to a light version and the choice is remembered. Either can be the default.' },
-  { shot: 'new-d-projects', title: 'Projects', text: 'Customers’ gardens, each one tapping through to the stone in it. Grows as you send photographs.' },
+  { shot: 'new-d-projects', title: 'Projects', text: 'Fourteen customers’ gardens and rooms, including the seven from the current About page, each tapping through to the stone or the range. Grows as you send photographs.' },
   { shot: 'new-d-offers', title: 'Offers', text: 'Everything currently below list price in one place, from the store’s own was/now prices.' },
   { shot: 'new-d-samples', title: 'Samples', text: '£5 samples of every range, added to the bag from the product page or from one page of all of them.' },
   { shot: 'new-m-build', title: 'The builder on a phone', text: 'Works one-handed, standing in the garden.' },
@@ -82,7 +83,7 @@ export const KEPT = [
   'All 36 products, with the four sample-only listings folded into the £5 sample flow.',
   'Every price and every sale price as listed today, including the pallet prices for the 16 mm porcelain.',
   'The original logo, cleaned up and used at every size: header, footer, hero, the preview gate, favicon.',
-  'All 114 photographs from the store, graded to sit together, with the duplicate uploads removed.',
+  'All 121 photographs from the store, including the seven project photographs on its About page, graded to sit together, with the duplicate uploads removed.',
   'Phone numbers, WhatsApp, email, address and opening hours as on the current site.',
   'The two customer reviews the store shows today, word for word.',
   'The store’s own honesty notes: natural variation, batch variation, order ten per cent over, renders are illustrative.',
