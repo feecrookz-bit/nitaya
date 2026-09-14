@@ -33,6 +33,10 @@ It replaces a WordPress/WooCommerce store whose listings contradict each other a
 - Stock tracker brief: `present/Nitya-Stones-Stock-Tracker-Link.pdf`.
 - Private web copies of the site, the pack, the handover and the updates list exist as Claude artifacts; Fee holds the links.
 
+## Who does what
+
+Fee built the site and does the go-live work (DNS, WooCommerce, the stock tracker) as the paid job. Once it is paid for, the site is Nitya Stones' own and Coleisha maintains it on their behalf. Simar maintains the stock tracker sheet and script.
+
 ## The rules it is built to
 
 Nothing invented; only the yard's own photographs; the original logo; pack sizes only from the warehouse sheet; the wet view simulated and labelled; delivery bands marked indicative; no fee or charge the yard has not stated. Page 9 has the full list.

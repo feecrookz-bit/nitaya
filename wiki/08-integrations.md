@@ -34,4 +34,4 @@ Sinai Pearl is missing from the sheet; the six cladding colourways are one row. 
 2. The site's `pages.dev` address pointed at a WooCommerce staging copy; a test order end to end.
 3. Live sheet and live WooCommerce.
 
-Fee owns this work; Coleisha owns everything on the site itself.
+Fee does this work as part of the build, up to and including go-live, and is paid for it. Once the build is paid for, the site belongs to Nitya Stones, and Coleisha maintains it on their behalf: copy, photographs, prices, the look.

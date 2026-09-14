@@ -92,8 +92,8 @@ Connected. The site does not talk to WooCommerce or to the warehouse stock track
 
 | | |
 |---|---|
-| **Fee** | The DNS switch on go-live day, and connecting the site to WooCommerce and to the warehouse script. |
-| **Coleisha** | Everything on the site itself from now on: copy, photographs, prices when they change, the look, the pack. Works from the yard, so she can check facts across the counter. |
+| **Fee** | The build, the DNS switch on go-live day, and connecting the site to WooCommerce and to the warehouse script. This is the paid work; it ends at go-live. |
+| **Coleisha** | Once the build is paid for, everything on the site itself, on behalf of Nitya Stones: copy, photographs, prices when they change, the look, the pack. Works from the yard, so she can check facts across the counter. |
 | **Nitya Stones** | The answers and assets in the next section, and a WordPress/WooCommerce administrator to issue keys. |
 
 ### What we need from Nitya Stones
