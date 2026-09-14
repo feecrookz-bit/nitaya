@@ -97,8 +97,9 @@ sand('rippon-buff', 'rippon-buff', 'Rippon Buff', 'Mixed patio pack', '18.19 m²
   { blurb: 'Rippon Buff runs from pale cream through honey to light brown. Warm against red brick and old stone.' })
 sand('autumn-brown', 'autumn-brown', 'Autumn Brown', 'Mixed patio pack', '18.19 m² per pack', 18.19, 24.2,
   { blurb: 'Autumn Brown is the deepest of the sandstones: warm browns and rust with darker bands. It reads like a country-house path and hides leaf litter.' })
-sand('fossil-mint', 'fossil-mint', 'Fossil Mint', 'Mixed patio pack', '18.19 m² per pack', 18.19, 22.2,
-  { blurb: 'Fossil Mint is pale cream and beige with fossil marks and mint-green veining through some slabs. Light, bright and the sandstone most often chosen for south-facing patios.' })
+// The warehouse database marks the Fossil Mint mixed pack inactive; the active line is a 900 × 600 pack of 37 slabs.
+sand('fossil-mint', 'fossil-mint', 'Fossil Mint', '900 × 600 mm', '19.98 m² per pack', 19.98, 22.2,
+  { blurb: 'Fossil Mint is pale cream and beige with fossil marks and mint-green veining through some slabs. Light, bright and the sandstone most often chosen for south-facing patios. Sold as a single-size 900 × 600 pack for a half-bond or stack-bond lay.' })
 add({ slug: 'kandla-grey-circle', id: 'kandla-circle', name: 'Kandla Grey Circle Kit', cat: 'sandstone', origin: 'Indian sandstone',
   size: '2.85 m diameter', thick: '22 mm, calibrated', pack: 'Complete kit', cover: null, finish: 'Riven, natural', price: 400, was: 450, unit: 'per kit', tag: 'Was £450',
   blurb: 'A complete 2.85 m feature circle in Kandla Grey: centre stone, two rings and the squaring-off pieces to set it into a straight field of the same stone.' })
@@ -180,16 +181,17 @@ CLADDING.forEach(([key, colour, blurb], i) => add({
 const MIXED_22 = { mode: 'mixed', unit: 'slab', sizes: [['900 × 600', 16, 0.54], ['600 × 600', 16, 0.36], ['600 × 290', 16, 0.174], ['290 × 290', 12, 0.0841]] }
 const fixed = (perPack, slabM2, perBox = 0) => ({ mode: 'fixed', unit: perBox ? 'box' : 'slab', perPack, slabM2, perBox })
 const PACKING = {
-  'kandla-grey': MIXED_22, 'raj-green': MIXED_22, 'rippon-buff': MIXED_22, 'autumn-brown': MIXED_22, 'fossil-mint': MIXED_22,
+  'kandla-grey': MIXED_22, 'raj-green': MIXED_22, 'rippon-buff': MIXED_22, 'autumn-brown': MIXED_22,
+  'fossil-mint': fixed(37, 0.54),
   'kandla-grey-900': fixed(40, 0.54),
   'black-limestone': fixed(38, 0.36),
   'sinai-pearl': { ...fixed(50, 0.36), assumed: true },          // not in the database: 18 m² at 600 × 600 is 50 slabs
   'bodo-white': fixed(40, 0.54), 'himalayan-white': fixed(40, 0.54), 'quartz-white': fixed(40, 0.54), 'crystal-gris': fixed(40, 0.54),
   'earthstone-grey': fixed(40, 0.54), 'kandla-porcelain': fixed(40, 0.54), 'noor-grigio': fixed(40, 0.54), 'hs-beige': fixed(40, 0.54), 'copper-slate': fixed(40, 0.54),
-  'beige-porcelain': fixed(78, 0.36, 2), 'light-grey-porcelain': fixed(78, 0.36, 2), 'black-porcelain': fixed(78, 0.36, 2), // 78 × 0.36 = 28.08, as the titles say
+  'beige-porcelain': fixed(80, 0.36, 2), 'light-grey-porcelain': fixed(80, 0.36, 2), 'black-porcelain': fixed(80, 0.36, 2), // the database's 600 × 600 × 16 mm pallets: 80 slabs in boxes of 2 (the titles say 28.08)
   'calacatta-blanco': fixed(64, 0.72, 2), 'miracle-statuario': fixed(64, 0.72, 2), 'modern-statuario': fixed(64, 0.72, 2), 'saint-lawrence': fixed(64, 0.72, 2), 'lobbies-silver': fixed(64, 0.72, 2), 'jiniva-natural': fixed(64, 0.72, 2),
   'brit-raven': fixed(160, 0.36, 4),
-  'aspire-grey': fixed(336, 0.18, 6), 'dark-stonella': fixed(336, 0.18, 6), 'eden-ash': fixed(336, 0.18, 6), 'rovero-dark-grey': fixed(336, 0.18, 6), 'sand-grigio': fixed(336, 0.18, 6), 'unika-gris': fixed(336, 0.18, 6),
+  'aspire-grey': fixed(280, 0.18, 5), 'dark-stonella': fixed(336, 0.18, 6), 'eden-ash': fixed(336, 0.18, 6), 'rovero-dark-grey': fixed(336, 0.18, 6), 'sand-grigio': fixed(336, 0.18, 6), 'unika-gris': fixed(336, 0.18, 6),
   ...Object.fromEntries(['buff-mix', 'silver-quartz', 'mint', 'slate-green', 'kandla-grey', 'pale-grey'].map(k => ['cladding-' + k, fixed(196, 0.09, 7)])),
 }
 export const coverOf = (k) => k.mode === 'mixed' ? +k.sizes.reduce((s, [, n, m2]) => s + n * m2, 0).toFixed(2) : +(k.perPack * k.slabM2).toFixed(2)

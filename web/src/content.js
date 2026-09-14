@@ -99,11 +99,11 @@ export const CONTENT = {
     ],
   }),
   'fossil-mint': sand({
-    pack: MIXED_PACK,
-    details: sandDetails('Cream and beige with mint-green veining and fossil marks', 'Four sizes, mixed', '18.19 m² · 60 slabs'),
+    pack: [['900 × 600 mm', 37]],
+    details: sandDetails('Cream and beige with mint-green veining and fossil marks', 'Single size, 900 × 600', '19.98 m² · 37 slabs'),
     body: [
       'Fossil Mint is pale cream and beige with soft mint-green veining and, across some slabs, the fossil marks of the ancient sea bed the stone came from. It is the brightest sandstone in the yard and the one most often chosen for sunny, south-facing patios.',
-      'Split for a riven face, calibrated to 22 mm, hand-cut edges. The four-size mixed pack lays random and takes the British weather with its frost resistance and hard-wearing surface.',
+      'Split for a riven face, calibrated to 22 mm, hand-cut edges. Sold as a 900 × 600 pack of 37 slabs for a half-bond or stack-bond lay, and it takes the British weather with its frost resistance and hard-wearing surface.',
       'A light stone shows the dirt sooner than a dark one; a seal after laying keeps it looking new and makes the odd spill a wipe rather than a scrub.',
     ],
   }),

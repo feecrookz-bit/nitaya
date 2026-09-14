@@ -128,13 +128,11 @@ export const DECISIONS = [
     'Projects: which stone is in each photograph? Your site names only the Quartz White terrace. The rest are captioned by what can be seen and by where you filed them (Kandla Grey, Raj Green, Copper Slate). Tell us the stone for the others and the captions change.',
     'Two grey-patio photographs on your home page carry another supplier’s file names. They are left out until you confirm they are yours.',
   ] },
-  { h: 'Pack sizes, now from your warehouse database', items: [
-    'Kandla Grey 900 × 600: the listing says 18.90 m² a pack; the database says 40 slabs, 21.60 m². The demo uses 21.60.',
-    'Black Limestone: the listing says 18 m² at 20 mm; the database says 22 mm and 38 slabs, 13.68 m². The demo uses 13.68.',
-    'Bodo White, Noor Grigio and HS Beige: the titles say 28.08 m² a pallet; the database says 40 slabs at 20 mm, 21.60 m². The demo uses 21.60.',
-    'Fossil Mint: the database marks the mixed pack inactive and only a 900 × 600 pack of 37 slabs active. The demo still sells the mixed pack because the store lists it. Which?',
-    'Sinai Pearl is not in the database. The demo assumes 50 slabs of 600 × 600, 18 m².',
-    'Indoor tiles and cladding now sell by the box (two 600 × 1200 tiles, four 600 × 600, six 300 × 600, seven cladding strips), as the database packs them.',
+  { h: 'Pack sizes: settled by your warehouse database', items: [
+    'The demo follows the database sheet everywhere: mixed sandstone 18.19 m²; Kandla Grey 900 × 600, 40 slabs; Black Limestone 22 mm, 38 slabs; Fossil Mint as the active 900 × 600 pack of 37 slabs; 600 × 900 porcelain 40 slabs; 16 mm 600 × 600 pallets 80 slabs in boxes of 2; indoor tiles and cladding by the box.',
+    'Five listings on the current store say something else and want correcting: Kandla Grey 900 × 600 (18.90 m²), Black Limestone (18 m² at 20 mm), Bodo White, Noor Grigio and HS Beige (28.08 m²), Fossil Mint (mixed pack), the 16 mm pallets (28.08 m²).',
+    'Sinai Pearl is not in the sheet; the demo assumes 50 slabs of 600 × 600. Add it to the sheet.',
+    'Where the sheet and the shop use different names we matched by size: the 16 mm pallets to the Clorado rows, Aspire Grey to Aspire Anthra. A name tidy in the sheet removes the guesswork.',
     'Steps, edging, granite setts, cobbles, jointing compounds and primer are in the database but not on the site. With prices they go on as Essentials.',
     'Cladding: your listing shows six colourways with no names, so the demo sells six products named by colour (Buff Mix, Silver Quartz, Mint, Slate Green, Kandla Grey, Pale Grey). The database names four: Mandawar, Kandla Grey, Jack Black, Rock Face Mint. Which is which?',
   ] },
