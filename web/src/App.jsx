@@ -705,8 +705,10 @@ function ProductStory({ p }) {
  * and collection facts a customer wants before they add anything. */
 function OrderBox({ p, bag, setAdded, added }) {
   const [mode, setMode] = useState('pack'), [packs, setPacks] = useState(1), [slabs, setSlabs] = useState(0), [area, setArea] = useState('')
+  const [allow, setAllow] = useState(true), [pct, setPct] = useState(10)
   const k = p.packing, w = packWord(p), cap = (t) => t.replace(/^./, c => c.toUpperCase())
-  const q = mode === 'area' ? quantify(p, num(area)) : p.cover ? { packs, slabs: p.split ? slabs : 0, m2: round2(packs * p.cover + (p.split ? slabs * k.slabM2 : 0)) } : { packs, slabs: 0, m2: packs }
+  const gross = num(area) * (1 + (allow ? pct : 0) / 100)
+  const q = mode === 'area' ? quantify(p, gross) : p.cover ? { packs, slabs: p.split ? slabs : 0, m2: round2(packs * p.cover + (p.split ? slabs * k.slabM2 : 0)) } : { packs, slabs: 0, m2: packs }
   const ex = exVat(p, q), empty = !q.packs && !q.slabs
   const add = () => { if (empty) return; addQuantity(bag, p, q); setAdded(`Added ${qtyWords(p, q)} to your bag`) }
   const packLabel = !k ? cap(w) : k.mode === 'mixed' ? `${cap(w)} · ${p.slabs} slabs, four sizes` : k.unit === 'box' && p.cat !== 'outdoor' ? `${cap(w)} · ${k.perBox} ${p.cat === 'cladding' ? 'strips' : 'tiles'}` : `${cap(w)} · ${k.perPack} slabs`
@@ -726,9 +728,14 @@ function OrderBox({ p, bag, setAdded, added }) {
           <div className="field"><span className="lbl">{p.cover ? plural(cap(w), 2) : p.unit === 'per kit' ? 'Kits' : 'm²'}</span><Qty value={packs} set={setPacks} min={p.split ? 0 : 1} label={plural(cap(w), 2)} /></div>
           {p.split && <div className="field"><span className="lbl">Loose slabs</span><Qty value={slabs} set={setSlabs} min={0} max={k.perPack - 1} label="Loose slabs" /></div>}
         </div>
-        : <div className="order-row area">
-          <div className="field"><label htmlFor="obArea">Area to cover (m²)</label><input id="obArea" type="number" min="0" step="0.1" placeholder="e.g. 24" value={area} onChange={e => setArea(e.target.value)} /></div>
-          <p className="deliv-out">{num(area) > 0 ? <>Supplied as <b>{qtyLine(p, q)}</b>{p.split ? '' : ` — whole ${plural(w, 2)} only`}. Add 10% for cuts if you haven’t.</> : 'Type the area, with any allowance for cuts.'}</p>
+        : <div className="order-area">
+          <div className="order-row area">
+            <div className="field"><label htmlFor="obArea">Area to cover (m²)</label><input id="obArea" type="number" min="0" step="0.1" placeholder="e.g. 24" value={area} onChange={e => setArea(e.target.value)} /></div>
+            <p className="deliv-out">{num(area) > 0
+              ? <>{num(area).toFixed(2)} m²{allow ? <> + {pct}% for cuts = <b>{gross.toFixed(2)} m²</b></> : ', no allowance for cuts'}. Supplied as <b>{qtyLine(p, q)}</b>{p.split ? '' : ` — whole ${plural(w, 2)} only`}.</>
+              : 'Type the area you measured. The allowance for cuts is added below; untick it if you have already allowed for cuts.'}</p>
+          </div>
+          <CutAllowance on={allow} setOn={setAllow} pct={pct} setPct={setPct} id="obAllow" />
         </div>}
       <div className="row"><span>{empty ? 'Nothing selected' : qtyWords(p, q)}{!empty && p.cover ? ` · ${q.m2.toFixed(2)} m²` : ''}</span><b>{money(ex)} + VAT</b></div>
       <div className="buy-actions">
