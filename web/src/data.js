@@ -33,6 +33,8 @@ import sceneWetTerrace from './assets/scene-wet-terrace.jpg'
 // scripts/photos.py from the yard's own photography.
 const STUDIO = import.meta.glob('./assets/p-*.jpg', { eager: true, import: 'default' })
 const GALLERY = import.meta.glob('./assets/g-*.jpg', { eager: true, import: 'default' })
+// Face textures (t-*) for the 3D slab and laid views, same source photos, no watermark.
+const TEX = import.meta.glob('./assets/t-*.jpg', { eager: true, import: 'default' })
 const find = (map, prefix) => {
   const key = Object.keys(map).find(k => k.startsWith('./assets/' + prefix))
   return key ? map[key] : null
@@ -78,7 +80,7 @@ export const CAT_LABEL = Object.fromEntries(CATS.map(([k, l]) => [k, l]))
 
 /* Prices per m² ex VAT unless `unit` says otherwise, exactly as listed on the shop. */
 const P = []
-const add = (o) => { P.push({ gallery: gallery(o.id), img: studio(o.slug), unit: 'per m²', content: contentFor(o.id), ...o }) }
+const add = ({ content, ...o }) => { P.push({ gallery: gallery(o.id), img: o.img || studio(o.slug), texture: find(TEX, 't-' + o.slug), unit: 'per m²', content: contentFor(content || o.id), ...o }) }
 
 const sand = (slug, id, name, size, pack, cover, was, extra = {}) => add({
   slug, id, name, cat: 'sandstone', origin: 'Indian sandstone', size, thick: '22 mm, calibrated', pack, cover,
@@ -150,9 +152,23 @@ indoor('rovero-dark-grey', 'rovero-dark-grey', 'Rovero Dark Grey', '300 × 600 m
 indoor('sand-grigio', 'sand-grigio', 'Sand Grigio', '300 × 600 mm', 'Sand Grigio is a soft grey with a sandy grain.')
 indoor('unika-gris', 'unika-gris', 'Unika Gris', '300 × 600 mm', 'Unika Gris is a smooth, even grey. Timeless.')
 
-add({ slug: 'stone-cladding', id: 'cladding', name: 'Stone Cladding', cat: 'cladding', origin: 'Natural stone',
+// The store lists cladding once with six colourway photographs and no names.
+// Each colourway is its own product here, named by what is in the photograph;
+// the yard's names for them are on the decisions list (OPTIONS.md).
+const CLAD_FRAMES = gallery('cladding')
+export const CLADDING = [
+  ['buff-mix', 'Buff Mix', 'Split-face strips in buff, honey and grey, the warmest of the six. Garden walls, fireplaces, the wall behind the TV.'],
+  ['silver-quartz', 'Silver Quartz', 'Silver and white quartzite strips with a fine sparkle. Bright against dark render.'],
+  ['mint', 'Mint', 'Cream and pale mint strips with soft pink banding. The lightest colourway.'],
+  ['slate-green', 'Slate Green', 'Dark green-grey strips with a slate-like sheen. Reads almost black when wet.'],
+  ['kandla-grey', 'Kandla Grey', 'Mid grey strips, the same stone as the Kandla Grey paving, for a wall that matches the patio.'],
+  ['pale-grey', 'Pale Grey', 'Pale grey-beige strips with a tumbled face. Quiet, for large walls.'],
+]
+CLADDING.forEach(([key, colour, blurb], i) => add({
+  slug: 'stone-cladding', id: 'cladding-' + key, content: 'cladding', name: `${colour} Cladding`, cat: 'cladding', origin: 'Natural stone',
   size: '600 × 150 mm', thick: '8–10 mm strips, split face', pack: 'Sold by the m²', cover: null, finish: 'Split face, running bond', price: 28.8, was: null,
-  blurb: 'Split-face natural stone strips in mixed greys and buffs, laid in a running bond. Garden walls, fireplaces, the wall behind the TV.' })
+  img: CLAD_FRAMES[i], gallery: [CLAD_FRAMES[i], ...CLAD_FRAMES.filter((_, j) => j !== i)], texture: CLAD_FRAMES[i], blurb,
+}))
 
 /* ---------- packing ----------
  * How each range is packed, from the warehouse database (stock tracker main ·
@@ -174,7 +190,7 @@ const PACKING = {
   'calacatta-blanco': fixed(64, 0.72, 2), 'miracle-statuario': fixed(64, 0.72, 2), 'modern-statuario': fixed(64, 0.72, 2), 'saint-lawrence': fixed(64, 0.72, 2), 'lobbies-silver': fixed(64, 0.72, 2), 'jiniva-natural': fixed(64, 0.72, 2),
   'brit-raven': fixed(160, 0.36, 4),
   'aspire-grey': fixed(336, 0.18, 6), 'dark-stonella': fixed(336, 0.18, 6), 'eden-ash': fixed(336, 0.18, 6), 'rovero-dark-grey': fixed(336, 0.18, 6), 'sand-grigio': fixed(336, 0.18, 6), 'unika-gris': fixed(336, 0.18, 6),
-  'cladding': fixed(196, 0.09, 7),
+  ...Object.fromEntries(['buff-mix', 'silver-quartz', 'mint', 'slate-green', 'kandla-grey', 'pale-grey'].map(k => ['cladding-' + k, fixed(196, 0.09, 7)])),
 }
 export const coverOf = (k) => k.mode === 'mixed' ? +k.sizes.reduce((s, [, n, m2]) => s + n * m2, 0).toFixed(2) : +(k.perPack * k.slabM2).toFixed(2)
 const round2 = (n) => Math.round(n * 100) / 100
@@ -299,7 +315,7 @@ export const EDITIONS = [
   { num: 'Edition II', name: 'Premium Select', why: '20 mm vitrified porcelain: calibrated, R11, frost-proof, and it stays the colour you chose. The most-laid tier this season.',
     ids: ['bodo-white', 'himalayan-white', 'copper-slate', 'crystal-gris', 'earthstone-grey', 'quartz-white'], from: 19.5, featured: true },
   { num: 'Edition III', name: 'Signature', why: 'Egyptian limestone, marble-effect large format for inside, and the circle kit. The pieces that make a garden a project.',
-    ids: ['sinai-pearl', 'calacatta-blanco', 'saint-lawrence', 'miracle-statuario', 'kandla-circle', 'cladding'], from: 22.8 },
+    ids: ['sinai-pearl', 'calacatta-blanco', 'saint-lawrence', 'miracle-statuario', 'kandla-circle', 'cladding-silver-quartz'], from: 22.8 },
 ]
 
 // This season's palette — a short, honest edit of what's on the ground now.
@@ -370,29 +386,29 @@ export const COLOUR_TAGS = {
   'bodo-white': 'white light marble', 'himalayan-white': 'white light pale', 'quartz-white': 'white light', 'crystal-gris': 'grey', 'earthstone-grey': 'grey charcoal', 'kandla-porcelain': 'grey riven', 'noor-grigio': 'grey light', 'hs-beige': 'beige sand warm', 'copper-slate': 'copper rust slate dark multi',
   'beige-porcelain': 'beige', 'light-grey-porcelain': 'grey light', 'black-porcelain': 'black dark',
   'calacatta-blanco': 'white marble veined', 'miracle-statuario': 'white marble gloss', 'modern-statuario': 'white marble', 'saint-lawrence': 'black marble gold', 'lobbies-silver': 'grey silver', 'jiniva-natural': 'beige grey', 'brit-raven': 'charcoal dark concrete', 'aspire-grey': 'grey', 'dark-stonella': 'dark grey', 'eden-ash': 'grey ash light', 'rovero-dark-grey': 'dark grey', 'sand-grigio': 'grey sand', 'unika-gris': 'grey',
-  cladding: 'grey buff mixed',
+  'cladding-buff-mix': 'buff honey grey mixed', 'cladding-silver-quartz': 'silver white grey', 'cladding-mint': 'cream mint pale pink', 'cladding-slate-green': 'green dark grey', 'cladding-kandla-grey': 'grey', 'cladding-pale-grey': 'grey beige pale',
 }
 
 /* Curated pairings shown on product pages: a border, a contrast, a wall. */
 export const PAIRS = {
-  'kandla-grey': ['black-limestone', 'kandla-circle', 'cladding'],
-  'kandla-grey-900': ['black-limestone', 'kandla-grey', 'cladding'],
-  'raj-green': ['rippon-buff', 'autumn-brown', 'cladding'],
+  'kandla-grey': ['black-limestone', 'kandla-circle', 'cladding-kandla-grey'],
+  'kandla-grey-900': ['black-limestone', 'kandla-grey', 'cladding-kandla-grey'],
+  'raj-green': ['rippon-buff', 'autumn-brown', 'cladding-kandla-grey'],
   'rippon-buff': ['raj-green', 'fossil-mint', 'hs-beige'],
   'autumn-brown': ['raj-green', 'black-limestone', 'copper-slate'],
   'fossil-mint': ['rippon-buff', 'sinai-pearl', 'himalayan-white'],
   'kandla-circle': ['kandla-grey', 'kandla-grey-900', 'black-limestone'],
   'black-limestone': ['kandla-grey', 'bodo-white', 'sinai-pearl'],
   'sinai-pearl': ['fossil-mint', 'calacatta-blanco', 'quartz-white'],
-  'sinai-pearl-mixed': ['sinai-pearl', 'fossil-mint', 'cladding'],
-  'bodo-white': ['black-limestone', 'calacatta-blanco', 'cladding'],
+  'sinai-pearl-mixed': ['sinai-pearl', 'fossil-mint', 'cladding-kandla-grey'],
+  'bodo-white': ['black-limestone', 'calacatta-blanco', 'cladding-kandla-grey'],
   'himalayan-white': ['quartz-white', 'noor-grigio', 'fossil-mint'],
   'quartz-white': ['himalayan-white', 'black-porcelain', 'calacatta-blanco'],
-  'crystal-gris': ['earthstone-grey', 'black-limestone', 'cladding'],
+  'crystal-gris': ['earthstone-grey', 'black-limestone', 'cladding-kandla-grey'],
   'earthstone-grey': ['crystal-gris', 'copper-slate', 'brit-raven'],
-  'kandla-porcelain': ['kandla-grey', 'black-limestone', 'cladding'],
-  'noor-grigio': ['himalayan-white', 'lobbies-silver', 'cladding'],
+  'kandla-porcelain': ['kandla-grey', 'black-limestone', 'cladding-kandla-grey'],
+  'noor-grigio': ['himalayan-white', 'lobbies-silver', 'cladding-kandla-grey'],
   'hs-beige': ['rippon-buff', 'beige-porcelain', 'jiniva-natural'],
-  'copper-slate': ['autumn-brown', 'brit-raven', 'cladding'],
+  'copper-slate': ['autumn-brown', 'brit-raven', 'cladding-kandla-grey'],
   'cladding': ['kandla-grey', 'bodo-white', 'raj-green'],
 }

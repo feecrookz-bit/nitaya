@@ -967,3 +967,12 @@ b,strong{font-weight:600}
   .units th:nth-child(2),.units td:nth-child(2){display:none}
 }
 @media print{.offer-pop{display:none}}
+
+/* ---------- 3D on the product page ---------- */
+.seg-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.stone3d{position:relative;border-radius:var(--radius);overflow:hidden;background:var(--grey-2);border:1px solid var(--hair);margin-top:22px}
+.stone3d .hero-3d{height:clamp(300px,46vw,600px);margin-top:0}
+.stone3d.wet{background:#22211f}
+.stone3d .hero-static{max-width:none;margin:0}
+.stone3d .hero-3d.failed + .hero-static img{border-radius:0}
+@media (max-width:640px){.stone3d .hero-3d{height:300px}.head-row .seg-row{width:100%}}

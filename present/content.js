@@ -31,7 +31,7 @@ export const PAIRS = [
   ] },
   { key: 'product', title: 'Product page', orig: 'orig-d-product', neu: 'new-d-product', points: [
     'Every photograph the store has for the product, in a gallery with arrows, thumbnails and a full-screen view. Raj Green has six frames; Kandla Grey has seven; Quartz White has ten.',
-    'A wet/dry slider, the feature list, a specification table, what is in a mixed pack (16 / 16 / 16 / 12 slabs), the description rewritten, laying and care notes, and the store’s own honesty notes about natural variation.',
+    'See it in 3D: the slab turned in the hand or laid in its pattern, dry or wet, textured with the yard’s own photograph. A wet/dry slider, the feature list, a specification table, what is in a mixed pack (16 / 16 / 16 / 12 slabs), the description rewritten, laying and care notes, and the store’s own honesty notes about natural variation.',
     'A unit table first: per m², single slab and pack, with the was and now prices. Order by the pack or by the area; ranges that split take whole packs plus loose slabs, and the area line says exactly what leaves the yard (1 × 21.60 m² + 9 × 0.54 m² = 26.46 m²). Pack sizes come from your warehouse database.',
     'Under the button: delivery from a date three working days out, free over £500 inside the M25, collect free from Mark Road with the hours, a delivery estimate by postcode, and a £5 sample. Then what pairs with it, the area calculator and the rest of the family.',
   ] },
@@ -73,6 +73,7 @@ export const NEW_ONLY = [
   { shot: 'new-d-collections', title: 'Collections', text: 'Three editions (Essentials, Premium Select, Signature) arrange the same stock by what it is for. Same prices; the curation is the point.' },
   { shot: 'new-d-build', title: 'Build your patio', text: 'Pick a stone, type the dimensions, pick a laying pattern: it works out whole packs, the price, and saves the design to come back to or reorder from.' },
   { shot: 'new-d-lightbox', title: 'Full-screen photographs', text: 'Every product photograph opens full screen, swipeable, with a counter.' },
+  { shot: 'new-d-3d', title: 'See it in 3D', text: 'Every range as one slab turned in the hand, or laid in its pattern with pointed joints (a wall for cladding), dry or wet. The face is the yard’s own photograph.' },
   { shot: 'new-d-product-light', title: 'Light and dark', text: 'The site opens dark, which suits the stone photography. One tap switches to a light version and the choice is remembered. Either can be the default.' },
   { shot: 'new-d-projects', title: 'Projects', text: 'Twenty-three customers’ gardens and rooms: the seven from the current About page and nine more from the listings and the blog, each tapping through to the stone or the range. Grows as you send photographs.' },
   { shot: 'new-d-offers', title: 'Offers', text: 'Everything currently below list price in one place, from the store’s own was/now prices. A pop-up, once a week per visitor, tells a new visitor the biggest saving and how many ranges are on offer; it never appears on the bag or checkout.' },
@@ -135,6 +136,7 @@ export const DECISIONS = [
     'Sinai Pearl is not in the database. The demo assumes 50 slabs of 600 × 600, 18 m².',
     'Indoor tiles and cladding now sell by the box (two 600 × 1200 tiles, four 600 × 600, six 300 × 600, seven cladding strips), as the database packs them.',
     'Steps, edging, granite setts, cobbles, jointing compounds and primer are in the database but not on the site. With prices they go on as Essentials.',
+    'Cladding: your listing shows six colourways with no names, so the demo sells six products named by colour (Buff Mix, Silver Quartz, Mint, Slate Green, Kandla Grey, Pale Grey). The database names four: Mandawar, Kandla Grey, Jack Black, Rock Face Mint. Which is which?',
   ] },
   { h: 'Against Royale Stones (their site, read on 14 September)', items: [
     'On every range you both sell, your listed price is level or under theirs, before VAT. Say so once the price-match line is confirmed.',

@@ -85,6 +85,11 @@ for (const [tag, vp, mob] of [['d', { width: 1440, height: 900 }, false], ['m', 
       // a light-theme frame and the product gallery open, for the "new" section
       await p.goto(base + '#/product/raj-green'); await p.waitForTimeout(800); await p.evaluate(() => document.querySelector('.theme-btn')?.click()); await p.waitForTimeout(600); await p.screenshot({ path: join(OUT, 'new-d-product-light.png') }); await p.evaluate(() => document.querySelector('.theme-btn')?.click())
       await p.goto(base + '#/product/quartz-white'); await p.waitForTimeout(800); await p.click('.gallery .main img'); await p.waitForTimeout(500); await p.screenshot({ path: join(OUT, 'new-d-lightbox.png') })
+      // See it in 3D: Raj Green laid random from the pack, wet
+      await p.goto(base + '#/product/raj-green'); await p.waitForTimeout(1200); await p.locator('.stone3d').scrollIntoViewIfNeeded(); await p.waitForTimeout(800)
+      await p.click('.seg-row .seg:first-child button:nth-child(2)'); await p.click('.seg-row .seg:nth-child(2) button:nth-child(2)'); await p.waitForTimeout(4000)
+      await p.evaluate(() => { const el = document.querySelector('.stone3d'); window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - 150) }); await p.waitForTimeout(600)
+      await p.screenshot({ path: join(OUT, 'new-d-3d.png') })
     }
   }
   await ctx.close()

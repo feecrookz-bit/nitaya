@@ -431,6 +431,29 @@ def gallery():
     print('gallery frames:', total)
 
 
+def textures():
+    """A square-ish tileable face texture per studio-rendered product, for the
+    3D slab and laid views: t-<slug>.jpg at 768 px, white-balanced, no
+    watermark (it is wrapped around geometry, not shown as a photograph)."""
+    os.makedirs(OUT, exist_ok=True)
+    n = 0
+    for name, spec in MANIFEST.items():
+        if spec.get('mode') != 'studio':
+            continue
+        im = ImageOps.exif_transpose(Image.open(original_path(name)).convert('RGB'))
+        if spec.get('trim_bottom'):
+            im = im.crop((0, 0, im.width, int(im.height * (1 - spec['trim_bottom']))))
+        tex = white_balance(face_texture(im, spec))
+        sw, sd = spec['slab']
+        tex = crop_aspect(tex, f'{sw}:{sd}')
+        w = 768
+        tex = tex.resize((w, max(64, int(w * sd / sw))), Image.LANCZOS)
+        tex = tex.filter(ImageFilter.UnsharpMask(radius=1.0, percent=35, threshold=3))
+        tex.save(os.path.join(OUT, 't-' + name[2:] + '.jpg'), quality=72, optimize=True, progressive=True)
+        n += 1
+    print('textures:', n)
+
+
 if __name__ == '__main__':
     cmd = sys.argv[1] if len(sys.argv) > 1 else 'grade'
-    {'fetch': fetch, 'grade': grade, 'sheet': sheet, 'gallery': gallery}[cmd]()
+    {'fetch': fetch, 'grade': grade, 'sheet': sheet, 'gallery': gallery, 'textures': textures}[cmd]()

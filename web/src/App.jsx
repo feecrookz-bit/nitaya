@@ -286,7 +286,7 @@ function Editions() {
 }
 
 function Atlas() {
-  const pic = { sandstone: byId('raj-green').gallery[0] || byId('raj-green').img, limestone: byId('black-limestone').img, outdoor: byId('bodo-white').gallery[0] || byId('bodo-white').img, cladding: byId('cladding').img }
+  const pic = { sandstone: byId('raj-green').gallery[0] || byId('raj-green').img, limestone: byId('black-limestone').img, outdoor: byId('bodo-white').gallery[0] || byId('bodo-white').img, cladding: byId('cladding-kandla-grey').img }
   return (
     <div className="atlas">
       {FAMILIES.map(f => (
@@ -745,6 +745,33 @@ function OrderBox({ p, bag, setAdded, added }) {
   )
 }
 
+/* See it in 3D: the product's own face texture on a slab, laid in its pattern,
+ * dry or wet. The wet look is a simulation until the hosed photos are shot. */
+function Stone3D({ p }) {
+  const [mode, setMode] = useState('slab'), [wet, setWet] = useState(false)
+  const m = p.size.match(/(\d+)\s*×\s*(\d+)/)
+  const size = p.packing?.mode === 'mixed' ? [900, 600] : m ? [+m[1], +m[2]] : [900, 600]
+  const pattern = p.cat === 'cladding' ? 'wall' : p.packing?.mode === 'mixed' ? 'mixed' : size[0] === size[1] ? 'stack' : 'half'
+  const riven = /riven/i.test(p.finish) && p.cat !== 'outdoor'
+  const thick = parseInt(p.thick) || 20
+  const texture = p.texture || p.gallery[0] || p.img
+  return (
+    <section className="chapter" style={{ paddingBlock: 'clamp(40px,6vw,80px)', paddingTop: 0 }}><div className="wrap">
+      <div className="head-row"><div><p className="kicker">See it in 3D</p><h2>{p.name}, turned in the hand and laid on the ground.</h2></div>
+        <div className="seg-row">
+          <div className="seg" role="group" aria-label="View"><button type="button" aria-pressed={mode === 'slab'} onClick={() => setMode('slab')}>{p.cat === 'cladding' ? 'One strip' : 'One slab'}</button><button type="button" aria-pressed={mode === 'laid'} onClick={() => setMode('laid')}>{p.cat === 'cladding' ? 'On the wall' : 'Laid'}</button></div>
+          <div className="seg" role="group" aria-label="Dry or wet"><button type="button" aria-pressed={!wet} onClick={() => setWet(false)}>Dry</button><button type="button" aria-pressed={wet} onClick={() => setWet(true)}>Wet</button></div>
+        </div>
+      </div>
+      <div className={`stone3d ${wet ? 'wet' : ''}`}>
+        <Suspense fallback={<div className="hero-3d" aria-hidden="true" />}><StoneScene texture={texture} mode={mode} wet={wet} size={size} pattern={pattern} riven={riven} thick={thick} /></Suspense>
+        <div className="hero-static"><img src={p.gallery[0] || p.img} alt="" /></div>
+      </div>
+      <p className="note">Drag to turn. The face is the yard’s own photograph wrapped on the stone; {mode === 'laid' ? (p.cat === 'cladding' ? 'the wall is a running bond of 600 × 150 strips' : `laid ${pattern === 'mixed' ? 'random from the four-size pack' : pattern === 'stack' ? 'stack bond' : 'half bond'} with 10 mm pointed joints`) : 'at true proportions'}. Wet is simulated from the dry photograph until the hosed slabs are shot; real stone comes up darker and richer than any screen shows.</p>
+    </div></section>
+  )
+}
+
 function Product({ route, bag }) {
   const p = byId(route.id)
   const [added, setAdded] = useState('')
@@ -780,6 +807,7 @@ function Product({ route, bag }) {
           <OrderBox p={p} bag={bag} setAdded={setAdded} added={added} />
         </div>
       </div>
+      {p.unit !== 'per kit' && <Stone3D p={p} />}
       <ProductStory p={p} />
       {pairs.length > 0 && <section className="chapter" style={{ paddingBlock: 'clamp(40px,6vw,80px)', paddingTop: 0 }}><div className="wrap">
         <div className="head-row"><div><p className="kicker">Pairs with</p><h2>Laid next to {p.name}.</h2></div></div>
