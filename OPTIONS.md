@@ -24,8 +24,8 @@ Preview: https://feecrookz-bit.github.io/nitaya/ (password-gated)  ·  Repo: web
 Nothing technical — files and facts only.
 
 1. **Logo as a vector or large file** (AI/EPS/SVG/PDF, or a PNG at least 2,000 px wide). The demo uses the 226 px web logo, cleaned and upscaled; it holds at nav size but a vector is needed for print, the favicon and any large use.
-2. **Straight-down photos of four stones** — Bodo White, Fossil Mint, HS Beige, Himalayan White — one dry slab each, phone camera, daylight, from directly above. Every other range already has one.
-3. **One hosed-slab photo per sandstone** (Kandla Grey, Raj Green, Rippon Buff, Autumn Brown, Fossil Mint) — same slab, same framing as the dry one — for the wet/dry slider. Until then the wet side is simulated and labelled.
+2. **The photographs the yard already has** (they say they have them all): send the originals, full size, not through WhatsApp — the straight-down slab shots dry and hosed, the laid patios, any finished gardens. A shared folder or a memory stick at the yard is fine. They replace the simulated wet view, sharpen the 3D view and fill Projects.
+3. *(folded into 2)*
 4. **A 15–20 second phone video**, landscape: a hose running over a Raj Green slab, then a slow walk across a laid patio. This becomes the hero and beats every competitor's opener.
 5. **Any finished-garden photos** from customers, with the stone laid — for Projects.
 6. **Reviews**: a Google Business or Trustpilot link if one exists, and any written reviews with the customer's permission.

@@ -147,10 +147,8 @@ export const DECISIONS = [
 ]
 
 export const YARD = [
-  ['Photographs, straight down', 'One dry slab each of Bodo White, Fossil Mint, HS Beige and Himalayan White, phone camera, daylight, from directly above. Every other range already has one.'],
-  ['Hosed slabs', 'One photo of each sandstone hosed, same slab and framing as the dry one, for the wet/dry slider. Until then the wet side is simulated and labelled as such.'],
+  ['The photographs you already have', 'Send the originals, full size, not through WhatsApp: the straight-down slab shots (dry and hosed), the laid patios and any finished gardens. A shared folder or a memory stick at the yard is fine. They replace the simulated wet view, sharpen the 3D one and fill Projects.'],
   ['A twenty-second video', 'Landscape, phone: a hose over a Raj Green slab, then a slow walk across a laid patio. It becomes the opening of the site.'],
-  ['Finished gardens', 'Any customer photographs with the stone laid, for Projects.'],
   ['Reviews', 'A Google Business or Trustpilot link if there is one, and any written reviews with the customer’s permission.'],
   ['The logo as a vector or a large file', 'AI, EPS, SVG or PDF, or a PNG at least 2,000 px wide. The demo uses the small web logo cleaned up; it holds on screen but print needs the original.'],
   ['Trade', 'What an account actually includes.'],
