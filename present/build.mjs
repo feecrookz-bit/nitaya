@@ -92,7 +92,7 @@ td:first-child{color:var(--ink);font-weight:600;width:34%}
 .biz{margin-top:36px;padding-top:24px;border-top:1px solid var(--hair);display:flex;flex-wrap:wrap;gap:8px 22px;font-size:.95rem;color:var(--ink-2)}.biz b{color:var(--ink);font-family:Cinzel,serif;letter-spacing:.06em}.biz a{color:var(--ink-2)}
 .foot{padding-top:32px;color:var(--ink-3);font-size:.85rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 @media (max-width:860px){.three,.mobiles,.newgrid{grid-template-columns:1fr}.pairhead{grid-template-columns:1fr}.pair{grid-template-columns:1fr}.pair.phone{grid-template-columns:1fr 1fr}.step{grid-template-columns:1fr}.who{padding:0}td:first-child{width:40%}}
-@media print{body{padding:0;background:#fff;font-size:12.5pt}.shot img{max-height:190mm;object-fit:cover;object-position:top}.newgrid .shot img{max-height:110mm}.pair.phone .shot img{max-height:150mm}.mobiles{grid-template-columns:repeat(3,1fr)}.pair{break-inside:avoid;grid-template-columns:1fr 1fr!important;gap:8mm}.pair.phone{max-width:none}.pairhead{grid-template-columns:1fr 1.4fr!important;break-after:avoid;break-inside:avoid}.three{grid-template-columns:repeat(3,1fr)!important}.newgrid{grid-template-columns:repeat(2,1fr)!important}.newgrid>div{break-inside:avoid}.step{grid-template-columns:90px 1fr!important}.shot img{max-height:150mm}section{padding-block:8mm}.cover{padding-block:14mm}.cover img.logo{height:80px}h2{font-size:22pt}.cover{background:#fff;color:#111}.cover h1,.cover a{color:#111}.cover .sub,.cover .meta{color:#333}.shot{box-shadow:none;break-inside:avoid}section{break-inside:auto}h2,h3{break-after:avoid}.pair,.decisions>div,.step{break-inside:avoid}}
+@media print{body{padding:0;background:#fff;font-size:12.5pt}.shot img{max-height:190mm;object-fit:cover;object-position:top}.newgrid .shot img{max-height:110mm}.pair.phone .shot img{max-height:150mm}.mobiles{grid-template-columns:repeat(3,1fr)}.pair{break-inside:avoid;grid-template-columns:1fr 1fr!important;gap:8mm}.pair.phone{max-width:none}.pairhead{grid-template-columns:1fr 1.4fr!important;break-after:avoid;break-inside:avoid}.three{grid-template-columns:repeat(3,1fr)!important}.newgrid{grid-template-columns:repeat(2,1fr)!important}.newgrid>div{break-inside:avoid}.step{grid-template-columns:90px 1fr!important}.shot img{max-height:150mm}section{padding-block:8mm}.cover{padding-block:14mm}.cover img.logo{height:80px}h2{font-size:22pt}.cover{background:#fff;color:#111}.cover h1,.cover a{color:#111}.cover .sub,.cover .meta{color:#333}.shot{box-shadow:none;break-inside:avoid}section{break-inside:auto}h2,h3{break-after:avoid}.pair,.decisions>div,.step,.steps,table,section.golive,section.keep{break-inside:avoid}}
 </style>
 
 <section class="cover"><div class="wrap">
@@ -159,13 +159,13 @@ td:first-child{color:var(--ink);font-weight:600;width:34%}
   <table style="margin-top:20px"><tbody>${C.YARD.map(([k, v]) => `<tr><td>${esc(k)}</td><td>${esc(v)}</td></tr>`).join('')}</tbody></table>
 </div></section>
 
-<section><div class="wrap">
+<section class="golive"><div class="wrap">
   <p class="kicker">Going live</p>
   <h2>In order.</h2>
   <div class="steps" style="margin-top:20px">${C.GO_LIVE.map(([who, t], i) => `<div class="step"><span class="who">${i + 1} · ${esc(who)}</span><span>${esc(t)}</span></div>`).join('')}</div>
 </div></section>
 
-<section><div class="wrap">
+<section class="keep"><div class="wrap">
   <p class="kicker">Option on the table</p>
   <h2>See it laid.</h2>
   <p style="color:var(--ink-2);max-width:70ch">A customer sees the stone laid in their own garden before they order. Three ways to do it; none needed for go-live.</p>
@@ -173,7 +173,7 @@ td:first-child{color:var(--ink);font-weight:600;width:34%}
   <p class="note">${esc(C.OPTIONS_NOTE)}</p>
 </div></section>
 
-<section><div class="wrap">
+<section class="keep"><div class="wrap">
   <p class="kicker">How to view it</p>
   <h2>The preview.</h2>
   <ul class="plain" style="margin-top:20px">${C.HOW_TO_VIEW.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
