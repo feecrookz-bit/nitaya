@@ -188,7 +188,7 @@ function AreaRows({ areas, setAreas, idp }) {
 function CutAllowance({ on, setOn, pct, setPct, id }) {
   return (
     <div className="allow">
-      <label className="check"><input id={id} type="checkbox" checked={on} onChange={e => setOn(e.target.checked)} /> Add an allowance for cuts</label>
+      <label className="check" htmlFor={id}><input id={id} type="checkbox" checked={on} onChange={e => setOn(e.target.checked)} /> Add an allowance for cuts</label>
       {on && <div className="seg" role="group" aria-label="Allowance for cuts">{[5, 10, 15, 20].map(v => <button key={v} type="button" aria-pressed={pct === v} onClick={() => setPct(v)}>{v}%</button>)}</div>}
     </div>
   )
