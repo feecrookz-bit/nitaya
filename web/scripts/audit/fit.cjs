@@ -7,6 +7,7 @@ const { chromium } = require('/opt/node22/lib/node_modules/playwright');
   const findings=[];
   for (const w of widths) {
     const p = await b.newPage({viewport:{width:w,height:820}});
+    await p.addInitScript(() => { try { localStorage.setItem('nitya-offer', String(Date.now())) } catch { /* private mode */ } }) // the offer pop-up has its own test
     p.on('pageerror',e=>findings.push(`JS ERROR @${w}: ${e.message.slice(0,120)}`));
     await p.goto(base); await p.waitForTimeout(500);
     await p.evaluate(()=>{ try{localStorage.setItem('nitya-bag',JSON.stringify([{id:'bodo-white',qty:2},{id:'sample:raj-green',qty:1}]))}catch(e){} });

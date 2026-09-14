@@ -87,7 +87,7 @@ const sand = (slug, id, name, size, pack, cover, was, extra = {}) => add({
 })
 sand('kandla-grey-22mm-sandstone-mixed', 'kandla-grey', 'Kandla Grey', 'Mixed patio pack', '18.19 m² per pack', 18.19, 22.2,
   { feature: 'The calm grey for white render and grey frames', blurb: 'Kandla Grey is the calm one: light-to-mid grey with occasional buff undertones, and the sandstone most often laid around white render and grey window frames. Mixed patio pack of four sizes, laid random.' })
-sand('kandla-grey-22mm-sandstone-900', 'kandla-grey-900', 'Kandla Grey 900×600', '900 × 600 mm', '18.90 m² per pack', 18.9, 22.2,
+sand('kandla-grey-22mm-sandstone-900', 'kandla-grey-900', 'Kandla Grey 900×600', '900 × 600 mm', '21.60 m² per pack', 21.6, 22.2,
   { tag: 'Splits', blurb: 'The same Kandla Grey in a single 900×600 size for a half-bond or stack-bond lay. This is one of the two packs we’ll split.' })
 sand('raj-green', 'raj-green', 'Raj Green', 'Mixed patio pack', '18.19 m² per pack', 18.19, 22.2,
   { feature: 'The classic English-garden sandstone', blurb: 'Raj Green is a multicolour: greens, browns, greys and the occasional buff in one pack, and it comes up richer every time it rains. The classic English-garden sandstone.' })
@@ -102,7 +102,7 @@ add({ slug: 'kandla-grey-circle', id: 'kandla-circle', name: 'Kandla Grey Circle
   blurb: 'A complete 2.85 m feature circle in Kandla Grey: centre stone, two rings and the squaring-off pieces to set it into a straight field of the same stone.' })
 
 add({ slug: 'black-limestone', id: 'black-limestone', name: 'Black Limestone', cat: 'limestone', origin: 'Limestone',
-  size: '600 × 600 mm', thick: '20 mm', pack: '18.00 m² per pack', cover: 18, finish: 'Riven, hand-dressed edges', price: 19.5, was: 22.5,
+  size: '600 × 600 mm', thick: '22 mm', pack: '13.68 m² per pack', cover: 13.68, finish: 'Riven, hand-dressed edges', price: 19.5, was: 22.5,
   blurb: 'Black Limestone is a riven, hand-dressed 600×600 that lays in a tight grid. Charcoal when dry, near-black wet. Seal it and it stays that way.' })
 add({ slug: 'egyptian-sinai-pearl-600', id: 'sinai-pearl', name: 'Egyptian Sinai Pearl', cat: 'limestone', origin: 'Egyptian limestone',
   size: '600 × 600 mm', thick: '20 mm', pack: '18.00 m² per pack', cover: 18, finish: 'Honed', price: 26, was: 28,
@@ -115,14 +115,14 @@ const out900 = (slug, id, name, cover, was = 25.5, finish = 'Matt, R11', blurb) 
   slug, id, name, cat: 'outdoor', origin: 'Vitrified porcelain', size: '600 × 900 mm', thick: '20 mm',
   pack: `${cover.toFixed(2)} m² per pallet`, cover, finish, price: 19.5, was, blurb,
 })
-out900('bodo-white', 'bodo-white', 'Bodo White', 28.08, 25.5, 'Matt, R11', 'Bodo White is a bright, marble-veined 20 mm porcelain. It’s the slab in most of the modern extensions we supply: pale, rectified, and it stays that colour.')
+out900('bodo-white', 'bodo-white', 'Bodo White', 21.6, 25.5, 'Matt, R11', 'Bodo White is a bright, marble-veined 20 mm porcelain. It’s the slab in most of the modern extensions we supply: pale, rectified, and it stays that colour.')
 out900('himalayan-white', 'himalayan-white', 'Himalayan White', 21.6, 25.5, 'Matt, R11', 'Himalayan White blends pale greys and off-whites like a light natural stone, without the maintenance.')
 out900('quartz-white', 'quartz-white', 'Quartz White', 21.6, 25.5, 'Matt, R11', 'Quartz White is the cleanest of the whites: a fine, even grain and very little movement across the slab.')
 out900('crystal-gris', 'crystal-gris', 'Crystal Gris', 21.6, 25.5, 'Matt, R11', 'Crystal Gris is a mid-grey with a soft stone texture. The safe choice next to grey composite decking and anthracite frames.')
 out900('earthstone', 'earthstone-grey', 'Earthstone Grey', 21.6, 25.5, 'Matt, R11', 'Earthstone Grey blends charcoal, grey and white in a textured finish that reads as natural stone.')
 out900('kandla-grey-20mm-porcelain', 'kandla-porcelain', 'Kandla Grey Porcelain', 21.6, 24.5, 'Riven-effect, R11', 'The Kandla Grey look in a calibrated 20 mm porcelain: riven surface, no shade variation, no sealing.')
-out900('noor-grigio', 'noor-grigio', 'Noor Grigio', 28.08, 25.5, 'Matt, R11', 'Noor Grigio is a soft limestone-effect grey with subtle fossil marks.')
-out900('hs-beige', 'hs-beige', 'HS Beige', 28.08, 25.5, 'Matt, R11', 'HS Beige is a warm sand-coloured porcelain for gardens that want the Rippon Buff tone without the upkeep.')
+out900('noor-grigio', 'noor-grigio', 'Noor Grigio', 21.6, 25.5, 'Matt, R11', 'Noor Grigio is a soft limestone-effect grey with subtle fossil marks.')
+out900('hs-beige', 'hs-beige', 'HS Beige', 21.6, 25.5, 'Matt, R11', 'HS Beige is a warm sand-coloured porcelain for gardens that want the Rippon Buff tone without the upkeep.')
 out900('copper-slate', 'copper-slate', 'Copper Slate', 21.6, 25.5, 'Riven-effect, R11', 'Copper Slate is a rust-and-charcoal slate-effect porcelain with a riven face. Lay it on a full bed and point it dark.')
 const out600 = (slug, id, name, blurb) => add({
   slug, id, name, cat: 'outdoor', origin: 'Vitrified porcelain', size: '600 × 600 mm', thick: '16 mm',
@@ -153,6 +153,76 @@ indoor('unika-gris', 'unika-gris', 'Unika Gris', '300 × 600 mm', 'Unika Gris is
 add({ slug: 'stone-cladding', id: 'cladding', name: 'Stone Cladding', cat: 'cladding', origin: 'Natural stone',
   size: '600 × 150 mm', thick: '8–10 mm strips, split face', pack: 'Sold by the m²', cover: null, finish: 'Split face, running bond', price: 28.8, was: null,
   blurb: 'Split-face natural stone strips in mixed greys and buffs, laid in a running bond. Garden walls, fireplaces, the wall behind the TV.' })
+
+/* ---------- packing ----------
+ * How each range is packed, from the warehouse database (stock tracker main ·
+ * Database Products, September 2026): units per pallet, units per box and m²
+ * per unit. Coverage is computed from these, never typed in, so the calculator,
+ * the builder, the bag and the checkout can't disagree. Where the store
+ * listing and the database differ, the database wins and OPTIONS.md says so.
+ */
+const MIXED_22 = { mode: 'mixed', unit: 'slab', sizes: [['900 × 600', 16, 0.54], ['600 × 600', 16, 0.36], ['600 × 290', 16, 0.174], ['290 × 290', 12, 0.0841]] }
+const fixed = (perPack, slabM2, perBox = 0) => ({ mode: 'fixed', unit: perBox ? 'box' : 'slab', perPack, slabM2, perBox })
+const PACKING = {
+  'kandla-grey': MIXED_22, 'raj-green': MIXED_22, 'rippon-buff': MIXED_22, 'autumn-brown': MIXED_22, 'fossil-mint': MIXED_22,
+  'kandla-grey-900': fixed(40, 0.54),
+  'black-limestone': fixed(38, 0.36),
+  'sinai-pearl': { ...fixed(50, 0.36), assumed: true },          // not in the database: 18 m² at 600 × 600 is 50 slabs
+  'bodo-white': fixed(40, 0.54), 'himalayan-white': fixed(40, 0.54), 'quartz-white': fixed(40, 0.54), 'crystal-gris': fixed(40, 0.54),
+  'earthstone-grey': fixed(40, 0.54), 'kandla-porcelain': fixed(40, 0.54), 'noor-grigio': fixed(40, 0.54), 'hs-beige': fixed(40, 0.54), 'copper-slate': fixed(40, 0.54),
+  'beige-porcelain': fixed(78, 0.36, 2), 'light-grey-porcelain': fixed(78, 0.36, 2), 'black-porcelain': fixed(78, 0.36, 2), // 78 × 0.36 = 28.08, as the titles say
+  'calacatta-blanco': fixed(64, 0.72, 2), 'miracle-statuario': fixed(64, 0.72, 2), 'modern-statuario': fixed(64, 0.72, 2), 'saint-lawrence': fixed(64, 0.72, 2), 'lobbies-silver': fixed(64, 0.72, 2), 'jiniva-natural': fixed(64, 0.72, 2),
+  'brit-raven': fixed(160, 0.36, 4),
+  'aspire-grey': fixed(336, 0.18, 6), 'dark-stonella': fixed(336, 0.18, 6), 'eden-ash': fixed(336, 0.18, 6), 'rovero-dark-grey': fixed(336, 0.18, 6), 'sand-grigio': fixed(336, 0.18, 6), 'unika-gris': fixed(336, 0.18, 6),
+  'cladding': fixed(196, 0.09, 7),
+}
+export const coverOf = (k) => k.mode === 'mixed' ? +k.sizes.reduce((s, [, n, m2]) => s + n * m2, 0).toFixed(2) : +(k.perPack * k.slabM2).toFixed(2)
+const round2 = (n) => Math.round(n * 100) / 100
+for (const p of P) {
+  const k = PACKING[p.id]; if (!k) continue
+  p.packing = k
+  if (k.mode === 'mixed') {
+    p.cover = coverOf(k); p.slabs = k.sizes.reduce((s, [, n]) => s + n, 0)
+    p.pack = `${p.cover.toFixed(2)} m² per pack · ${p.slabs} slabs in four sizes`
+  } else if (k.unit === 'box' && p.cat !== 'outdoor') {
+    // Indoor tiles and cladding are sold by the box: the box is the unit, the pallet is the delivery quantity.
+    p.boxM2 = round2(k.perBox * k.slabM2); p.cover = p.boxM2
+    p.pack = `Box of ${k.perBox} · ${p.boxM2.toFixed(2)} m² · ${k.perPack} ${p.cat === 'cladding' ? 'strips' : 'tiles'} a pallet`
+  } else {
+    p.cover = coverOf(k); p.slabs = k.perPack
+    p.pack = `${p.cover.toFixed(2)} m² per ${p.cat === 'outdoor' ? 'pallet' : 'pack'} · ${k.perPack} slabs${k.perBox ? ` in boxes of ${k.perBox}` : ''}`
+  }
+  // Split packs: the store splits outdoor porcelain pallets and the Kandla Grey 900 × 600 pack. Mixed patio packs never split.
+  p.split = k.mode === 'fixed' && k.unit === 'slab' && (p.cat === 'outdoor' || p.id === 'kandla-grey-900')
+}
+
+/* Turn an area into what leaves the yard. Whole packs unless the range
+ * splits, in which case whole packs plus the fewest loose slabs. */
+export function quantify(p, m2) {
+  const k = p.packing
+  if (!k || !p.cover) return { packs: Math.max(1, Math.ceil(m2 - 1e-9)), slabs: 0, m2: Math.max(1, Math.ceil(m2 - 1e-9)) }
+  if (p.split) {
+    let packs = Math.floor(m2 / p.cover + 1e-9); const rem = m2 - packs * p.cover
+    let slabs = rem > 1e-9 ? Math.ceil(rem / k.slabM2 - 1e-9) : 0
+    if (slabs >= k.perPack) { packs += 1; slabs = 0 }
+    if (packs === 0 && slabs === 0) slabs = 1
+    return { packs, slabs, m2: round2(packs * p.cover + slabs * k.slabM2) }
+  }
+  const packs = Math.max(1, Math.ceil(m2 / p.cover - 1e-9))
+  return { packs, slabs: 0, m2: round2(packs * p.cover) }
+}
+export const m2Price = (p) => p.unit === 'per m²' ? p.price : p.unit === 'per pallet' && p.cover ? p.price / p.cover : p.price
+export const slabPrice = (p) => p.packing?.slabM2 ? round2(m2Price(p) * p.packing.slabM2) : null
+export const exVat = (p, q) => p.unit === 'per m²' && !p.cover ? q.m2 * p.price : (q.packs * (p.unit === 'per m²' ? p.price * p.cover : p.price)) + (q.slabs || 0) * (slabPrice(p) || 0)
+
+/* Working-day arithmetic for the delivery line: the store's terms say 3–5
+ * working days from payment, so the earliest day is three working days out. */
+export function workingDaysFrom(n, from = new Date()) {
+  const d = new Date(from); let c = 0
+  while (c < n) { d.setDate(d.getDate() + 1); if (d.getDay() !== 0 && d.getDay() !== 6) c++ }
+  return d
+}
+export const fmtDay = (d) => `${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()]} ${d.getDate()} ${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()]}`
 
 // Editorial picks: these four break the shop grid with a wider card and a
 // real garden photo. One per family that sells on looks.

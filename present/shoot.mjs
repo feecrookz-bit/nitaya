@@ -55,6 +55,7 @@ const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium', a
 for (const [tag, vp, mob] of [['d', { width: 1440, height: 900 }, false], ['m', { width: 400, height: 840 }, true]]) {
   const ctx = await b.newContext({ viewport: vp, hasTouch: mob, isMobile: mob, reducedMotion: 'reduce', ignoreHTTPSErrors: true })
   const p = await ctx.newPage()
+  await p.addInitScript(() => { try { localStorage.setItem('nitya-offer', String(Date.now())) } catch { /* private mode */ } }) // the offer pop-up has its own test
   if (mode === 'orig') {
     await p.route('**/*', viaCurl)
     for (const [name, path] of ORIG_PAGES) {

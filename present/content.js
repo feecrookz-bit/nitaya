@@ -32,11 +32,12 @@ export const PAIRS = [
   { key: 'product', title: 'Product page', orig: 'orig-d-product', neu: 'new-d-product', points: [
     'Every photograph the store has for the product, in a gallery with arrows, thumbnails and a full-screen view. Raj Green has six frames; Kandla Grey has seven; Quartz White has ten.',
     'A wet/dry slider, the feature list, a specification table, what is in a mixed pack (16 / 16 / 16 / 12 slabs), the description rewritten, laying and care notes, and the store’s own honesty notes about natural variation.',
-    'Add to bag with the inc-VAT total shown, a delivery estimate by postcode, a £5 sample button, what pairs with it, a price-your-area calculator and the rest of the family.',
+    'A unit table first: per m², single slab and pack, with the was and now prices. Order by the pack or by the area; ranges that split take whole packs plus loose slabs, and the area line says exactly what leaves the yard (1 × 21.60 m² + 9 × 0.54 m² = 26.46 m²). Pack sizes come from your warehouse database.',
+    'Under the button: delivery from a date three working days out, free over £500 inside the M25, collect free from Mark Road with the hours, a delivery estimate by postcode, and a £5 sample. Then what pairs with it, the area calculator and the rest of the family.',
   ] },
   { key: 'cart', title: 'Bag and checkout', orig: 'orig-d-cart', neu: 'new-d-checkout', points: [
-    'The bag shows pallets, coverage in square metres, ex-VAT and inc-VAT totals, and a delivery estimate for a postcode.',
-    'Checkout asks for name, phone, email, address, delivery or collection, and card, Klarna or pay-by-phone, exactly as the live store will.',
+    'The bag shows packs and loose slabs with their coverage in square metres, ex-VAT and inc-VAT totals, the pallet count, the earliest delivery date and a delivery estimate for a postcode.',
+    'Checkout asks for name, phone, email, address, delivery (from a date, free over £500 inside the M25) or collection from Mark Road (address, map, hours), access notes, and card, Klarna or pay-by-phone, exactly as the live store will.',
     'It stops at the last step with a plain note that nothing is charged in the demo. In the live store this step hands to your existing WooCommerce.',
   ] },
   { key: 'blog', title: 'Blog, becoming Guides', orig: 'orig-d-blog', neu: 'new-d-blog', points: [
@@ -74,7 +75,7 @@ export const NEW_ONLY = [
   { shot: 'new-d-lightbox', title: 'Full-screen photographs', text: 'Every product photograph opens full screen, swipeable, with a counter.' },
   { shot: 'new-d-product-light', title: 'Light and dark', text: 'The site opens dark, which suits the stone photography. One tap switches to a light version and the choice is remembered. Either can be the default.' },
   { shot: 'new-d-projects', title: 'Projects', text: 'Twenty-three customers’ gardens and rooms: the seven from the current About page and nine more from the listings and the blog, each tapping through to the stone or the range. Grows as you send photographs.' },
-  { shot: 'new-d-offers', title: 'Offers', text: 'Everything currently below list price in one place, from the store’s own was/now prices.' },
+  { shot: 'new-d-offers', title: 'Offers', text: 'Everything currently below list price in one place, from the store’s own was/now prices. A pop-up, once a week per visitor, tells a new visitor the biggest saving and how many ranges are on offer; it never appears on the bag or checkout.' },
   { shot: 'new-d-samples', title: 'Samples', text: '£5 samples of every range, added to the bag from the product page or from one page of all of them.' },
   { shot: 'new-m-build', title: 'The builder on a phone', text: 'Works one-handed, standing in the garden.' },
 ]
@@ -125,6 +126,21 @@ export const DECISIONS = [
     'A see-it-laid visualiser: yes, later, or no. The options are below.',
     'Projects: which stone is in each photograph? Your site names only the Quartz White terrace. The rest are captioned by what can be seen and by where you filed them (Kandla Grey, Raj Green, Copper Slate). Tell us the stone for the others and the captions change.',
     'Two grey-patio photographs on your home page carry another supplier’s file names. They are left out until you confirm they are yours.',
+  ] },
+  { h: 'Pack sizes, now from your warehouse database', items: [
+    'Kandla Grey 900 × 600: the listing says 18.90 m² a pack; the database says 40 slabs, 21.60 m². The demo uses 21.60.',
+    'Black Limestone: the listing says 18 m² at 20 mm; the database says 22 mm and 38 slabs, 13.68 m². The demo uses 13.68.',
+    'Bodo White, Noor Grigio and HS Beige: the titles say 28.08 m² a pallet; the database says 40 slabs at 20 mm, 21.60 m². The demo uses 21.60.',
+    'Fossil Mint: the database marks the mixed pack inactive and only a 900 × 600 pack of 37 slabs active. The demo still sells the mixed pack because the store lists it. Which?',
+    'Sinai Pearl is not in the database. The demo assumes 50 slabs of 600 × 600, 18 m².',
+    'Indoor tiles and cladding now sell by the box (two 600 × 1200 tiles, four 600 × 600, six 300 × 600, seven cladding strips), as the database packs them.',
+    'Steps, edging, granite setts, cobbles, jointing compounds and primer are in the database but not on the site. With prices they go on as Essentials.',
+  ] },
+  { h: 'Against Royale Stones (their site, read on 14 September)', items: [
+    'On every range you both sell, your listed price is level or under theirs, before VAT. Say so once the price-match line is confirmed.',
+    'They charge £80 to split a pallet and offer a paid cutting service. Do you? The demo splits outdoor porcelain and Kandla Grey 900 × 600 with no fee shown.',
+    'They sell the mixed patio pack in 5 m² and 10 m² sizes at a higher rate. Do you want to?',
+    'They show seventy-two reviews on one product and a Trustpilot slider. A Google Business or Trustpilot link is on the yard list.',
   ] },
 ]
 

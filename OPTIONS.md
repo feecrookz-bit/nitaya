@@ -35,6 +35,17 @@ Nothing technical — files and facts only.
 8a. **Blog, legal pages and account area**: the current site carries 45 blog posts (they bring Google traffic), Terms & Conditions, Privacy Policy, Refund & Returns, Delivery Terms, My Account, a "Designer" page (a product-designer plugin — is it used?) and a Special Deal page. None of these are in the demo. At go-live the posts move under Guides with redirects so rankings hold; the legal pages come across as they are; Special Deal becomes Offers. Nothing to do now — just know the list.
 8b. **Contact details**: confirmed against the current site — 0330 236 9227, 07932 009870 (also the WhatsApp number on the current site), info@nityastones.co.uk, 34 Mark Road HP2 7BW, Mon–Fri 08:00–18:00 and Sat 08:00–13:00. The demo links Instagram, Facebook and WhatsApp; the current site also links a Twitter/X account (@NityaStones) — say if it should be shown. LinkedIn was removed (no page of the store's own found).
 9. **Trade**: what an account actually includes (terms, pallet pricing, dedicated contact) so the Trade page states their offer rather than a typical one.
+10a. **Pack sizes now come from the warehouse database** (the "stock tracker main · Database Products" sheet, 14 September 2026). Where the sheet and the store listing disagree, the sheet wins in the demo and the difference is listed here for a yes/no:
+   - Kandla Grey 900 × 600: the listing says 18.90 m² a pack; the sheet says 40 slabs × 0.54 = **21.60 m²**.
+   - Black Limestone: the listing says 18 m² at 20 mm; the sheet says **22 mm, 38 slabs = 13.68 m²** (a small pack of 28 also exists).
+   - Bodo White, Noor Grigio, HS Beige: the titles say 28.08 m² a pallet; the sheet says 20 mm, **40 slabs = 21.60 m²** (28.08 is the 16 mm pallet of 52).
+   - Fossil Mint: the sheet marks the **mixed pack inactive** and only a 900 × 600 pack of 37 slabs (19.98 m²) active. The demo still sells the mixed pack because the store lists it. Which is right?
+   - Sinai Pearl is **not in the sheet** at all; the demo assumes 50 slabs of 600 × 600 = 18 m².
+   - The 16 mm 600 × 600 porcelain pallets (Beige, Light Grey, Black) are not in the sheet by those names; 28.08 m² is kept (78 slabs of 0.36 m²), which matches the sheet's other 600 × 600 pallets.
+   - Indoor tiles now sell **by the box** (2 × 600 × 1200 = 1.44 m²; 4 × 600 × 600 = 1.44 m²; 6 × 300 × 600 = 1.08 m²) and cladding by the box of 7 strips (0.63 m²), per the sheet's units-per-box column.
+   - The sheet also holds **steps (Kandla Grey, Quartz Grey 300 × 900), edging, granite setts and cobbles, Joint-Tec and Por-Tec jointing compounds and primer**. None are on the site. Royale Stones sells all of these next to the slab (see COMPETITOR.md); with prices they go on as "Essentials".
+10b. **Split packs and cutting** (from the Royale Stones study): they charge **£80 handling on split pallets** and offer a **paid cutting service**; they also sell the mixed patio pack in **5 m² and 10 m² sizes** at a higher per-m² price. The demo splits outdoor porcelain and Kandla Grey 900 × 600 into loose slabs with no fee shown ("confirmed with the delivery cost"). Does the yard charge for a split pack? Cut to size? Sell part packs?
+10c. **Pop-up offer**: the demo shows a once-a-week pop-up built from the store's real was/now prices ("Up to 24% off, across 22 ranges"). It never appears on the bag, checkout or builder. Keep, change the wording, or drop.
 10. **Instagram**: switch the account to a Business profile (free) if they want the feed embedded.
 
 ## What "going live" adds (the commit)

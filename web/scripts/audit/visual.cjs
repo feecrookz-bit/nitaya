@@ -12,6 +12,7 @@ const ROUTES = ['', 'shop', 'shop?cat=offers', 'product/raj-green', 'product/cal
   const base = 'file://' + process.cwd() + '/dist-single/index.html'
   for (const theme of ['dark', 'light']) for (const w of [400, 768, 1440]) {
     const p = await b.newPage({ viewport: { width: w, height: w < 500 ? 840 : 900 }, reducedMotion: 'reduce' })
+    await p.addInitScript(() => { try { localStorage.setItem('nitya-offer', String(Date.now())) } catch { /* private mode */ } }) // the offer pop-up has its own test
     await p.goto(base); await p.evaluate(t => { try { localStorage.setItem('nitya-theme', t); localStorage.setItem('nitya-bag', JSON.stringify([{ id: 'bodo-white', qty: 2 }, { id: 'sample:raj-green', qty: 1 }])) } catch (e) {} }, theme); await p.reload(); await p.waitForTimeout(400)
     for (const r of ROUTES) {
       await p.goto(base + '#/' + r); await p.waitForTimeout(500)

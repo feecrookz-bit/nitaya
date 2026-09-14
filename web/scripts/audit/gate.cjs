@@ -4,6 +4,7 @@ const { chromium } = require('/opt/node22/lib/node_modules/playwright');
   for (const mobile of [false,true]) {
   const ctx = await b.newContext(mobile?{viewport:{width:400,height:840},hasTouch:true,isMobile:true}:{viewport:{width:1440,height:900}});
   const p = await ctx.newPage();
+  await p.addInitScript(() => { try { localStorage.setItem('nitya-offer', String(Date.now())) } catch { /* private mode */ } }) // the offer pop-up has its own test
   const errs=[], bad=[];
   p.on('pageerror',e=>errs.push(e.message.slice(0,140)));
   p.on('response',r=>{ if(r.status()>=400) bad.push(r.status()+' '+r.url().slice(-60)); });

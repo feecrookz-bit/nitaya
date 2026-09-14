@@ -6,7 +6,7 @@ import { GUIDE_DIAGRAM } from './Diagrams.jsx'
 import Logo from './Logo.jsx'
 import logoPng from './assets/logo.png'
 import { HeroSlides, Marquee, CountUp, useReveal, Parallax } from './Motion.jsx'
-import { BUSINESS, IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, FAMILY_COLOUR, DELIVERY, deliveryFor, SEARCH_TAGS, COLOUR_TAGS, PAIRS, money } from './data.js'
+import { BUSINESS, IMG, CATS, CAT_LABEL, PRODUCTS, byId, SAMPLE, SCENES, MIXED, PATTERNS, FAQ, REVIEWS, EDITIONS, SEASON, FAMILIES, FAMILY_COLOUR, DELIVERY, deliveryFor, SEARCH_TAGS, COLOUR_TAGS, PAIRS, money, quantify, exVat, slabPrice, m2Price, workingDaysFrom, fmtDay } from './data.js'
 import { GUIDES, guideBySlug } from './guides.js'
 
 const PHONE = BUSINESS.phone
@@ -69,13 +69,44 @@ function useBag() {
   })
   const set = (id, qty) => setLines(ls => qty <= 0 ? ls.filter(l => l.id !== id) : ls.map(l => l.id === id ? { ...l, qty } : l))
   const clear = () => setLines([])
-  const count = lines.reduce((n, l) => n + l.qty, 0)
+  const count = lines.length
   return { lines, add, set, clear, count }
 }
-const lineProduct = (id) => id.startsWith('sample:') ? { ...SAMPLE, id, name: `Sample — ${byId(id.slice(7))?.name || ''}`, img: byId(id.slice(7))?.img } : byId(id)
+const lineProduct = (id) => id.startsWith('sample:') ? { ...SAMPLE, id, name: `Sample — ${byId(id.slice(7))?.name || ''}`, img: byId(id.slice(7))?.img }
+  : id.startsWith('slabs:') ? (() => { const b = byId(id.slice(6)); return b && { ...b, id, base: b, name: `${b.name} · loose slabs`, unit: 'per slab', cover: null, price: slabPrice(b), packing: null, split: false, slabM2: b.packing?.slabM2 } })()
+  : byId(id)
 const lineUnitPrice = (p) => p.unit === 'per m²' && p.cover ? p.price * p.cover : p.price
-const packWord = (p) => (p.cat === 'outdoor' || p.unit === 'per pallet') ? 'pallet' : 'pack'
-const lineUnitLabel = (p) => p.unit === 'per m²' ? (p.cover ? `${packWord(p)} of ${p.cover.toFixed(2)} m²` : 'per m²') : p.unit === 'per pallet' ? 'pallet' : p.unit === 'per kit' ? 'kit' : 'each'
+const packWord = (p) => p.packing?.unit === 'box' && p.cat !== 'outdoor' ? 'box' : (p.cat === 'outdoor' || p.unit === 'per pallet') ? 'pallet' : 'pack'
+const plural = (w, n) => n === 1 ? w : w === 'box' ? 'boxes' : w + 's'
+const lineUnitLabel = (p) => p.unit === 'per m²' ? (p.cover ? `${packWord(p)} of ${p.cover.toFixed(2)} m²` : 'per m²') : p.unit === 'per pallet' ? 'pallet' : p.unit === 'per kit' ? 'kit' : p.unit === 'per slab' ? `slab of ${p.slabM2} m²` : 'each'
+const num = (v, d = 0) => { const n = parseFloat(v); return isFinite(n) && n >= 0 ? n : d }
+const round2 = (n) => Math.round(n * 100) / 100
+/* A quantity is packs plus, for ranges that split, loose slabs. */
+const qtyLine = (p, q) => {
+  if (!p.cover) return `${q.m2.toFixed(2)} m², by the m²`
+  const parts = []
+  if (q.packs) parts.push(`${q.packs} × ${p.cover.toFixed(2)} m²`)
+  if (q.slabs) parts.push(`${q.slabs} × ${p.packing.slabM2} m²`)
+  return `${parts.join(' + ')} = ${q.m2.toFixed(2)} m²`
+}
+const qtyWords = (p, q) => {
+  if (!p.cover) return `${q.m2.toFixed(2)} m²`
+  const a = []
+  if (q.packs) a.push(`${q.packs} ${plural(packWord(p), q.packs)}`)
+  if (q.slabs) a.push(`${q.slabs} loose ${plural('slab', q.slabs)}`)
+  return a.join(' + ')
+}
+const addQuantity = (bag, p, q) => { if (q.packs) bag.add(p.id, q.packs); if (q.slabs) bag.add('slabs:' + p.id, q.slabs) }
+/* Pallets for the delivery estimate: boxes and loose slabs share a pallet. */
+const palletsOf = (items) => Math.max(1, Math.ceil(items.reduce((n, l) => {
+  const p = l.p; if (!p || p.unit === 'each') return n
+  if (p.unit === 'per slab') return n + l.qty / (p.base?.packing?.perPack || 40)
+  if (p.packing?.unit === 'box' && p.cat !== 'outdoor') return n + l.qty * p.packing.perBox / p.packing.perPack
+  return n + (p.cover || p.unit === 'per kit' ? l.qty : 0)
+}, 0) - 1e-9))
+function Qty({ value, set, min = 1, max = 999, label }) {
+  return <div className="qty" role="group" aria-label={label}><button type="button" onClick={() => set(Math.max(min, value - 1))} aria-label="Fewer">−</button><output aria-live="polite">{value}</output><button type="button" onClick={() => set(Math.min(max, value + 1))} aria-label="More">+</button></div>
+}
 
 /* ---------------- shared bits ---------------- */
 function Price({ p, big }) {
@@ -140,15 +171,37 @@ function Pattern({ p }) {
 }
 
 /* ---------------- calculator (shared by Home and product pages) ---------------- */
+function AreaRows({ areas, setAreas, idp }) {
+  const upd = (i, k, v) => setAreas(a => a.map((r, j) => j === i ? { ...r, [k]: v } : r))
+  return (
+    <div className="areas">
+      {areas.map((r, i) => <div key={i} className="area-row">
+        <div className="field"><label htmlFor={`${idp}L${i}`}>Length (m)</label><input id={`${idp}L${i}`} type="number" min="0" step="0.1" value={r.len} onChange={e => upd(i, 'len', e.target.value)} /></div>
+        <div className="field"><label htmlFor={`${idp}W${i}`}>Width (m)</label><input id={`${idp}W${i}`} type="number" min="0" step="0.1" value={r.wid} onChange={e => upd(i, 'wid', e.target.value)} /></div>
+        <output className="area-m2" aria-label={`Area ${i + 1}`}>{(num(r.len) * num(r.wid)).toFixed(2)} m²</output>
+        {areas.length > 1 && <button type="button" className="remove" onClick={() => setAreas(a => a.filter((_, j) => j !== i))} aria-label={`Remove area ${i + 1}`}>Remove</button>}
+      </div>)}
+      <button type="button" className="more" onClick={() => setAreas(a => [...a, { len: '', wid: '' }])}>+ Add another area</button>
+    </div>
+  )
+}
+function CutAllowance({ on, setOn, pct, setPct, id }) {
+  return (
+    <div className="allow">
+      <label className="check"><input id={id} type="checkbox" checked={on} onChange={e => setOn(e.target.checked)} /> Add an allowance for cuts</label>
+      {on && <div className="seg" role="group" aria-label="Allowance for cuts">{[5, 10, 15, 20].map(v => <button key={v} type="button" aria-pressed={pct === v} onClick={() => setPct(v)}>{v}%</button>)}</div>}
+    </div>
+  )
+}
+
 function Calculator({ initial = 'autumn-brown', bag, compact = false }) {
   const [pid, setPid] = useState(initial)
-  const [len, setLen] = useState('6'), [wid, setWid] = useState('4'), [waste, setWaste] = useState('10')
+  const [areas, setAreas] = useState([{ len: '6', wid: '4' }])
+  const [allow, setAllow] = useState(true), [pct, setPct] = useState(10)
   const p = byId(pid)
-  const num = (v, d) => { const n = parseFloat(v); return isFinite(n) && n >= 0 ? n : d }
-  const net = num(len, 0) * num(wid, 0), pct = Math.min(num(waste, 10), 40), gross = net * (1 + pct / 100)
-  const packs = p.cover ? Math.ceil(gross / p.cover) : null
-  const chargeable = p.unit === 'per m²' ? (p.cover ? packs * p.cover : gross) : (packs || 1)
-  const ex = p.unit === 'per m²' ? chargeable * p.price : (packs || 1) * p.price
+  const net = areas.reduce((t, r) => t + num(r.len) * num(r.wid), 0), gross = net * (1 + (allow ? pct : 0) / 100)
+  const q = quantify(p, gross), ex = exVat(p, q)
+  const idp = compact ? 'c2' : 'c1'
   return (
     <div className="calc"><div className="calc-grid">
       <div className="calc-in">
@@ -156,24 +209,19 @@ function Calculator({ initial = 'autumn-brown', bag, compact = false }) {
           <select id="calcRange" value={pid} onChange={e => setPid(e.target.value)}>
             {PRODUCTS.filter(x => x.unit !== 'per kit').map(x => <option key={x.id} value={x.id}>{x.name} — {CAT_LABEL[x.cat]}</option>)}
           </select></div>}
-        <div className="two">
-          <div className="field"><label htmlFor="calcLen">Length (m)</label><input id="calcLen" type="number" min="0" step="0.1" value={len} onChange={e => setLen(e.target.value)} /></div>
-          <div className="field"><label htmlFor="calcWid">Width (m)</label><input id="calcWid" type="number" min="0" step="0.1" value={wid} onChange={e => setWid(e.target.value)} /></div>
-        </div>
-        <div className="field"><label htmlFor="calcWaste">Allowance for cuts (%)</label><input id="calcWaste" type="number" min="0" max="40" step="1" value={waste} onChange={e => setWaste(e.target.value)} /></div>
-        <p className="note">10% covers a straight patio. Raise it for circles, diagonals or lots of edges. Delivery is quoted on quantity and postcode; collection from HP2 7BW is free.</p>
+        <AreaRows areas={areas} setAreas={setAreas} idp={idp} />
+        <CutAllowance on={allow} setOn={setAllow} pct={pct} setPct={setPct} id={idp + 'Allow'} />
+        <p className="note">10% covers a straight patio; circles, diagonals and lots of edges want 15–20%. {p.split ? 'This range splits: whole packs plus the loose slabs you need.' : p.cover ? `Sold in whole ${plural(packWord(p), 2)} of ${p.cover.toFixed(2)} m².` : 'Sold by the m².'}</p>
       </div>
       <div className="calc-out">
-        <div className="row"><span className="k">Area</span><span className="v">{net.toFixed(2)} m²</span></div>
-        <div className="row"><span className="k">With {pct}% for cuts</span><span className="v">{gross.toFixed(2)} m²</span></div>
-        {packs
-          ? <div className="row"><span className="k">{p.unit === 'per pallet' ? 'Pallets' : 'Packs'}</span><span className="v">{packs} × {p.cover.toFixed(2)} m² = {(packs * p.cover).toFixed(2)} m²</span></div>
-          : <div className="row"><span className="k">Supplied</span><span className="v">{gross.toFixed(2)} m², by the m²</span></div>}
+        <div className="row"><span className="k">Area{areas.length > 1 ? ` · ${areas.length} areas` : ''}</span><span className="v">{net.toFixed(2)} m²</span></div>
+        <div className="row"><span className="k">{allow ? `With ${pct}% for cuts` : 'No allowance for cuts'}</span><span className="v">{gross.toFixed(2)} m²</span></div>
+        <div className="row"><span className="k">{p.cover ? (p.split && q.slabs ? 'Packs + slabs' : plural(packWord(p), 2).replace(/^./, c => c.toUpperCase())) : 'Supplied'}</span><span className="v">{qtyLine(p, q)}</span></div>
         <div className="row"><span className="k">{p.name}, ex VAT</span><span className="v">{money(ex)}</span></div>
         <div className="row"><span className="k">VAT at 20%</span><span className="v">{money(ex * VAT)}</span></div>
         <div className="row total"><span className="k">Total inc VAT</span><span className="v">{money(ex * (1 + VAT))}</span></div>
         {bag && <div className="buy-actions" style={{ marginTop: 8 }}>
-          <button className="pill" type="button" onClick={() => { bag.add(p.id, packs || Math.ceil(gross)); go('cart') }}>Add {packs || Math.ceil(gross)} {packs ? (p.unit === 'per pallet' ? 'pallets' : 'packs') : 'm²'} to bag</button>
+          <button className="pill" type="button" onClick={() => { addQuantity(bag, p, q); go('cart') }}>Add {qtyWords(p, q)} to bag</button>
           {!compact && <a className="more" href={href('product/' + p.id)}>View {p.name}</a>}
         </div>}
       </div>
@@ -493,14 +541,12 @@ function Build({ bag }) {
   const [pat, setPat] = useState(0)
   const [msg, setMsg] = useState('')
   const p = byId(pid)
-  const num = (v, d) => { const n = parseFloat(v); return isFinite(n) && n >= 0 ? n : d }
   const net = num(len, 0) * num(wid, 0), pct = Math.min(num(waste, 10), 40), gross = net * (1 + pct / 100)
-  const packs = p.cover ? Math.ceil(gross / p.cover) : Math.ceil(gross)
-  const ex = p.unit === 'per m²' ? (p.cover ? packs * p.cover : gross) * p.price : packs * p.price
+  const q = quantify(p, gross), packs = q.packs, ex = exVat(p, q)
   const patterns = p.size.includes('Mixed') ? [PATTERNS[0]] : p.cat === 'cladding' ? [PATTERNS[3]] : p.size.includes('600 × 600') ? [PATTERNS[2], PATTERNS[1]] : [PATTERNS[1], PATTERNS[2]]
   const pattern = patterns[Math.min(pat, patterns.length - 1)]
   const persist = (list) => { setSaved(list); try { localStorage.setItem('nitya-designs', JSON.stringify(list)) } catch { /* private mode */ } }
-  const save = () => { const d = { id: Date.now(), pid, len, wid, waste, pattern: pattern.title, packs, ex }; persist([d, ...saved].slice(0, 8)); setMsg('Design saved — it’s on this device to come back to or reorder from.') }
+  const save = () => { const d = { id: Date.now(), pid, len, wid, waste, pattern: pattern.title, packs, slabs: q.slabs, ex }; persist([d, ...saved].slice(0, 8)); setMsg('Design saved — it’s on this device to come back to or reorder from.') }
   const load = (d) => { setPid(d.pid); setLen(d.len); setWid(d.wid); setWaste(d.waste); setPat(0); window.scrollTo({ top: 0 }) }
   const byFamily = CATS.map(([k, l]) => [l, PRODUCTS.filter(x => x.cat === k && x.unit !== 'per kit')])
   return (
@@ -524,7 +570,7 @@ function Build({ bag }) {
             <div className="pattern-pick">{patterns.map((q, i) => <button key={q.title} type="button" aria-pressed={i === Math.min(pat, patterns.length - 1)} onClick={() => setPat(i)}><PatternThumb p={q} /><b>{q.title}</b><span className="note">{q.sub}</span></button>)}</div>
           </div>
           {saved.length > 0 && <div className="saved"><p className="kicker" style={{ marginBottom: 0 }}>Saved designs</p>
-            {saved.map(d => { const x = byId(d.pid); return <div key={d.id} className="saved-row"><img src={x.img} alt="" /><div><b>{x.name}</b><small>{d.len} × {d.wid} m · {d.pattern} · {d.packs} {x.unit === 'per pallet' ? 'pallets' : x.cover ? 'packs' : 'm²'} · {money(d.ex * (1 + VAT))} inc VAT</small></div><div style={{ display: 'flex', gap: 8 }}><button className="more" type="button" onClick={() => load(d)}>Open</button><button className="remove" type="button" onClick={() => persist(saved.filter(s => s.id !== d.id))}>Remove</button></div></div> })}
+            {saved.map(d => { const x = byId(d.pid); return <div key={d.id} className="saved-row"><img src={x.img} alt="" /><div><b>{x.name}</b><small>{d.len} × {d.wid} m · {d.pattern} · {x.cover ? qtyWords(x, { packs: d.packs, slabs: d.slabs || 0 }) : `${d.packs} m²`} · {money(d.ex * (1 + VAT))} inc VAT</small></div><div style={{ display: 'flex', gap: 8 }}><button className="more" type="button" onClick={() => load(d)}>Open</button><button className="remove" type="button" onClick={() => persist(saved.filter(s => s.id !== d.id))}>Remove</button></div></div> })}
           </div>}
         </div>
         <aside className="design">
@@ -533,10 +579,10 @@ function Build({ bag }) {
           <div className="row"><span className="k">Stone</span><span className="v">{p.name}</span></div>
           <div className="row"><span className="k">Area</span><span className="v">{net.toFixed(2)} m² · +{pct}% = {gross.toFixed(2)} m²</span></div>
           <div className="row"><span className="k">Lay</span><span className="v">{pattern.title}</span></div>
-          <div className="row"><span className="k">{p.unit === 'per pallet' ? 'Pallets' : p.cover ? 'Packs' : 'Supplied'}</span><span className="v">{p.cover ? `${packs} × ${p.cover.toFixed(2)} m²` : `${gross.toFixed(2)} m²`}</span></div>
+          <div className="row"><span className="k">{p.cover ? (q.slabs ? 'Packs + slabs' : plural(packWord(p), 2).replace(/^./, c => c.toUpperCase())) : 'Supplied'}</span><span className="v">{qtyLine(p, q)}</span></div>
           <div className="row"><span className="k">Stone, ex VAT</span><span className="v">{money(ex)}</span></div>
           <div className="row total"><span className="k">Total inc VAT</span><span className="v">{money(ex * (1 + VAT))}</span></div>
-          <button className="pill" type="button" onClick={() => { bag.add(p.id, packs); go('cart') }}>Add to bag</button>
+          <button className="pill" type="button" onClick={() => { addQuantity(bag, p, q); go('cart') }}>Add {qtyWords(p, q)} to bag</button>
           <button className="pill ghost" type="button" onClick={save}>Save this design</button>
           {msg && <p className="note" role="status" style={{ color: 'var(--gold)' }}>{msg}</p>}
           <p className="note">Delivery is quoted on quantity and postcode before you pay. Collection from HP2 7BW is free.</p>
@@ -650,16 +696,64 @@ function ProductStory({ p }) {
   )
 }
 
+/* The order box: the unit table (per m², single slab, pack), order by the
+ * pack or by the area, loose slabs where the range splits, and the delivery
+ * and collection facts a customer wants before they add anything. */
+function OrderBox({ p, bag, setAdded, added }) {
+  const [mode, setMode] = useState('pack'), [packs, setPacks] = useState(1), [slabs, setSlabs] = useState(0), [area, setArea] = useState('')
+  const k = p.packing, w = packWord(p), cap = (t) => t.replace(/^./, c => c.toUpperCase())
+  const q = mode === 'area' ? quantify(p, num(area)) : p.cover ? { packs, slabs: p.split ? slabs : 0, m2: round2(packs * p.cover + (p.split ? slabs * k.slabM2 : 0)) } : { packs, slabs: 0, m2: packs }
+  const ex = exVat(p, q), empty = !q.packs && !q.slabs
+  const add = () => { if (empty) return; addQuantity(bag, p, q); setAdded(`Added ${qtyWords(p, q)} to your bag`) }
+  const packLabel = !k ? cap(w) : k.mode === 'mixed' ? `${cap(w)} · ${p.slabs} slabs, four sizes` : k.unit === 'box' && p.cat !== 'outdoor' ? `${cap(w)} · ${k.perBox} ${p.cat === 'cladding' ? 'strips' : 'tiles'}` : `${cap(w)} · ${k.perPack} slabs`
+  return (
+    <div className="buy">
+      {p.cover ? <table className="units"><caption className="sr-only">Prices by unit, ex VAT</caption>
+        <thead><tr><th scope="col">Unit</th><th scope="col">Covers</th><th scope="col">Price + VAT</th></tr></thead>
+        <tbody>
+          <tr><td>Per m²</td><td>1 m²</td><td>{p.was && <s>{money(p.unit === 'per pallet' ? p.was / p.cover : p.was)}</s>}<b>{money(m2Price(p))}</b></td></tr>
+          {p.split && <tr><td>Single slab</td><td>{k.slabM2} m²</td><td><b>{money(slabPrice(p))}</b></td></tr>}
+          <tr><td>{packLabel}</td><td>{p.cover.toFixed(2)} m²</td><td>{p.was && <s>{money(p.unit === 'per pallet' ? p.was : p.was * p.cover)}</s>}<b>{money(lineUnitPrice(p))}</b></td></tr>
+        </tbody></table>
+        : <div className="row"><span>{p.unit === 'per kit' ? 'Complete kit' : 'Per m²'}</span><b>{money(p.price)} + VAT</b></div>}
+      {p.cover && <div className="seg" role="group" aria-label="Order by"><button type="button" aria-pressed={mode === 'pack'} onClick={() => setMode('pack')}>By the {w}</button><button type="button" aria-pressed={mode === 'area'} onClick={() => setMode('area')}>By the area</button></div>}
+      {mode === 'pack' || !p.cover
+        ? <div className="order-row">
+          <div className="field"><span className="lbl">{p.cover ? plural(cap(w), 2) : p.unit === 'per kit' ? 'Kits' : 'm²'}</span><Qty value={packs} set={setPacks} min={p.split ? 0 : 1} label={plural(cap(w), 2)} /></div>
+          {p.split && <div className="field"><span className="lbl">Loose slabs</span><Qty value={slabs} set={setSlabs} min={0} max={k.perPack - 1} label="Loose slabs" /></div>}
+        </div>
+        : <div className="order-row area">
+          <div className="field"><label htmlFor="obArea">Area to cover (m²)</label><input id="obArea" type="number" min="0" step="0.1" placeholder="e.g. 24" value={area} onChange={e => setArea(e.target.value)} /></div>
+          <p className="deliv-out">{num(area) > 0 ? <>Supplied as <b>{qtyLine(p, q)}</b>{p.split ? '' : ` — whole ${plural(w, 2)} only`}. Add 10% for cuts if you haven’t.</> : 'Type the area, with any allowance for cuts.'}</p>
+        </div>}
+      <div className="row"><span>{empty ? 'Nothing selected' : qtyWords(p, q)}{!empty && p.cover ? ` · ${q.m2.toFixed(2)} m²` : ''}</span><b>{money(ex)} + VAT</b></div>
+      <div className="buy-actions">
+        <button className="pill" type="button" onClick={add} disabled={empty}>Add to bag · {money(ex * (1 + VAT))} inc VAT</button>
+        <span className="added" role="status" aria-live="polite">{added}</span>
+      </div>
+      <ul className="facts-list">
+        <li>Delivery from <b>{fmtDay(workingDaysFrom(3))}</b>: 3–5 working days from payment, kerbside on a tail-lift, we ring on the day.</li>
+        <li>Orders over £500 inside the M25 travel free. Elsewhere, an indicative cost by postcode below, confirmed by phone before you pay.</li>
+        <li>Collect free from {BUSINESS.address[0]}, {BUSINESS.postcode}: {BUSINESS.hoursShort}. No minimum.</li>
+        {p.split ? <li>Loose slabs travel on the same pallet. Any split-pack handling is confirmed with the delivery cost.</li> : p.cover && p.packing?.unit !== 'box' ? <li>Sold in whole {plural(w, 2)} only.</li> : null}
+      </ul>
+      <DeliveryEstimate pallets={palletsOf([{ p, qty: q.packs }, ...(q.slabs ? [{ p: lineProduct('slabs:' + p.id), qty: q.slabs }] : [])])} />
+      <div className="buy-actions">
+        <button className="more" type="button" onClick={() => { bag.add('sample:' + p.id, 1); setAdded('Sample added to your bag — £5') }}>Order a 100×100 mm sample · £5</button>
+      </div>
+    </div>
+  )
+}
+
 function Product({ route, bag }) {
   const p = byId(route.id)
-  const [qty, setQty] = useState(1)
   const [added, setAdded] = useState('')
   useEffect(() => { if (!p) return; document.body.classList.add('has-sticky'); return () => document.body.classList.remove('has-sticky') }, [p])
   if (!p) return <div className="wrap empty"><h2>Not found</h2><p style={{ marginTop: 12 }}><a className="more" href={href('shop')}>Back to the shop</a></p></div>
   const unitPrice = lineUnitPrice(p)
   const related = PRODUCTS.filter(x => x.cat === p.cat && x.id !== p.id).slice(0, 4)
   const pairs = (PAIRS[p.id] || []).map(byId).filter(Boolean)
-  const addToBag = () => { bag.add(p.id, qty); setAdded(`Added ${qty} × ${lineUnitLabel(p)} to your bag`) }
+  const addToBag = () => { bag.add(p.id, 1); setAdded(`Added 1 × ${lineUnitLabel(p)} to your bag`) }
   return (
     <>
       <div className="wrap pdp">
@@ -680,21 +774,10 @@ function Product({ route, bag }) {
             <div><dt>Thickness</dt><dd>{p.thick}</dd></div>
             <div><dt>Finish</dt><dd>{p.finish}</dd></div>
             <div><dt>Sold as</dt><dd>{p.pack}</dd></div>
-            <div><dt>Delivery</dt><dd>3–5 working days, quoted by postcode · free collection from HP2 7BW</dd></div>
-            <div><dt>Split packs</dt><dd>{p.tag === 'Splits' || (p.cat === 'outdoor' && p.thick === '20 mm') ? 'Yes' : 'No — sold as a full ' + (p.unit === 'per pallet' ? 'pallet' : 'pack')}</dd></div>
+            <div><dt>Delivery</dt><dd>From {fmtDay(workingDaysFrom(3))} · 3–5 working days · free over £500 inside the M25 · collect free from HP2 7BW</dd></div>
+            <div><dt>Split packs</dt><dd>{p.split ? 'Yes — whole packs plus loose slabs' : p.packing?.unit === 'box' && p.cat !== 'outdoor' ? 'Sold by the box' : p.cover ? 'No — sold as a full ' + packWord(p) : 'No'}</dd></div>
           </dl>
-          <div className="buy">
-            <div className="row"><span>{p.unit === 'per m²' && p.cover ? `Pack of ${p.cover.toFixed(2)} m²` : p.unit === 'per m²' ? 'Per m²' : p.unit === 'per pallet' ? `Pallet of ${p.cover.toFixed(2)} m²` : 'Complete kit'}</span><b>{money(unitPrice)} + VAT</b></div>
-            <div className="buy-actions">
-              <div className="qty" role="group" aria-label="Quantity"><button type="button" onClick={() => setQty(q => Math.max(1, q - 1))} aria-label="Fewer">−</button><output aria-live="polite">{qty}</output><button type="button" onClick={() => setQty(q => q + 1)} aria-label="More">+</button></div>
-              <button className="pill" type="button" onClick={addToBag}>Add to bag · {money(unitPrice * qty * (1 + VAT))} inc VAT</button>
-            </div>
-            <DeliveryEstimate />
-            <div className="buy-actions">
-              <button className="more" type="button" onClick={() => { bag.add('sample:' + p.id, 1); setAdded('Sample added to your bag — £5') }}>Order a 100×100 mm sample · £5</button>
-              <span className="added" role="status" aria-live="polite">{added}</span>
-            </div>
-          </div>
+          <OrderBox p={p} bag={bag} setAdded={setAdded} added={added} />
         </div>
       </div>
       <ProductStory p={p} />
@@ -746,7 +829,7 @@ function Bag({ bag }) {
           {items.map(l => (
             <div key={l.id} className="line">
               <img src={l.p.img} alt="" />
-              <div><div className="name">{l.p.name}</div><div className="meta">{lineUnitLabel(l.p)} · {money(lineUnitPrice(l.p))} + VAT{l.p.cover ? <> · <b>{l.qty} {packWord(l.p)}{l.qty === 1 ? '' : 's'} = {(l.qty * l.p.cover).toFixed(2)} m²</b></> : null}</div>
+              <div><div className="name">{l.p.name}</div><div className="meta">{lineUnitLabel(l.p)} · {money(lineUnitPrice(l.p))} + VAT{l.p.cover ? <> · <b>{l.qty} {plural(packWord(l.p), l.qty)} = {(l.qty * l.p.cover).toFixed(2)} m²</b></> : l.p.unit === 'per slab' ? <> · <b>{l.qty} {plural('slab', l.qty)} = {(l.qty * l.p.slabM2).toFixed(2)} m²</b></> : null}</div>
                 <div className="qty" style={{ marginTop: 10 }}><button type="button" onClick={() => bag.set(l.id, l.qty - 1)} aria-label="Fewer">−</button><output>{l.qty}</output><button type="button" onClick={() => bag.set(l.id, l.qty + 1)} aria-label="More">+</button></div></div>
               <div className="right"><span className="sum">{money(lineUnitPrice(l.p) * l.qty)}</span><button className="remove" type="button" onClick={() => bag.set(l.id, 0)}>Remove</button></div>
             </div>
@@ -757,9 +840,9 @@ function Bag({ bag }) {
         <h3>Summary</h3>
         <div className="row"><span className="k">Goods, ex VAT</span><span className="v">{money(ex)}</span></div>
         <div className="row"><span className="k">VAT at 20%</span><span className="v">{money(ex * VAT)}</span></div>
-        <div className="row"><span className="k">Delivery</span><span className="v">{items.reduce((n, l) => n + (l.p.cover ? l.qty : 0), 0) || 0} {items.reduce((n, l) => n + (l.p.cover ? l.qty : 0), 0) === 1 ? 'pallet' : 'pallets'} · see below</span></div>
+        <div className="row"><span className="k">Delivery</span><span className="v">{palletsOf(items)} {palletsOf(items) === 1 ? 'pallet' : 'pallets'} · from {fmtDay(workingDaysFrom(3))}</span></div>
         <div className="row total"><span className="k">Total inc VAT</span><span className="v">{money(ex * (1 + VAT))}</span></div>
-        <DeliveryEstimate pallets={items.reduce((n, l) => n + (l.p.cover ? l.qty : 0), 0) || 1} compact />
+        <DeliveryEstimate pallets={palletsOf(items)} compact />
         <a className="pill" href={href('checkout')}>Checkout</a>
         <a className="more" href={href('shop')} style={{ justifySelf: 'center' }}>Keep shopping</a>
       </aside>
@@ -786,13 +869,14 @@ function Checkout({ bag }) {
         </div>
         <div className="panel"><h3>Delivery or collection</h3>
           <div className="choice">
-            <label><input type="radio" name="method" checked={f.method === 'delivery'} onChange={() => setF({ ...f, method: 'delivery' })} /><div><b>Deliver it</b><span>3–5 working days from payment, 8am–6pm, we call on the day. Cost confirmed by phone before you’re charged.</span></div></label>
-            <label><input type="radio" name="method" checked={f.method === 'collection'} onChange={() => setF({ ...f, method: 'collection' })} /><div><b>Collect from Mark Road</b><span>Free, no minimum. {BUSINESS.address.join(', ')}. {BUSINESS.hoursShort.replace(' · ', ', ')}.</span></div></label>
+            <label><input type="radio" name="method" checked={f.method === 'delivery'} onChange={() => setF({ ...f, method: 'delivery' })} /><div><b>Deliver it · from {fmtDay(workingDaysFrom(3))}</b><span>3–5 working days from payment, 8am–6pm, kerbside on a tail-lift, we call on the day. Free over £500 inside the M25; elsewhere the cost is confirmed by phone before you’re charged.</span></div></label>
+            <label><input type="radio" name="method" checked={f.method === 'collection'} onChange={() => setF({ ...f, method: 'collection' })} /><div><b>Collect from Mark Road</b><span>Free, no minimum. {BUSINESS.address.join(', ')} (<a href={BUSINESS.maps} target="_blank" rel="noreferrer">map</a>). {BUSINESS.hoursShort.replace(' · ', ', ')}. We ring when it’s ready, usually the same day.</span></div></label>
           </div>
           {f.method === 'delivery' && <>
             <div className="field"><label htmlFor="coLine1">Address</label><input id="coLine1" autoComplete="address-line1" value={f.line1} onChange={set('line1')} /></div>
             <div className="two"><div className="field"><label htmlFor="coTown">Town</label><input id="coTown" autoComplete="address-level2" value={f.town} onChange={set('town')} /></div><div className="field"><label htmlFor="coPost">Postcode</label><input id="coPost" autoComplete="postal-code" value={f.postcode} onChange={set('postcode')} /></div></div>
-            {f.postcode && (() => { const r = deliveryFor(f.postcode); const pallets = items.reduce((n, l) => n + (l.p.cover ? l.qty : 0), 0) || 1; return <p className="deliv-out">{!r ? 'Check the postcode.' : r.ask ? <>Priced by the job for this postcode — we’ll ring you with the cost.</> : <>Indicative: <b>{money(r.band.perPallet)} per pallet</b> × {pallets} = <b>{money(r.band.perPallet * pallets)}</b> ({r.band.name}). Confirmed by phone before payment.</>}</p> })()}
+            {f.postcode && (() => { const r = deliveryFor(f.postcode); const pallets = palletsOf(items); const free = r && !r.ask && r.band.key === 'london' && ex * (1 + VAT) > 500; return <p className="deliv-out">{!r ? 'Check the postcode.' : r.ask ? <>Priced by the job for this postcode — we’ll ring you with the cost.</> : free ? <>Inside the M25 and over £500: <b>delivery is free</b>. Kerbside, {pallets} {pallets === 1 ? 'pallet' : 'pallets'}.</> : <>Indicative: <b>{money(r.band.perPallet)} per pallet</b> × {pallets} = <b>{money(r.band.perPallet * pallets)}</b> ({r.band.name}). Confirmed by phone before payment.</>}</p> })()}
+            {items.some(l => l.p.unit === 'per slab') && <p className="deliv-out">Loose slabs travel on the same pallet as the packs. Any split-pack handling is confirmed with the delivery cost.</p>}
             <div className="field"><label htmlFor="coNotes">Access notes</label><input id="coNotes" placeholder="Narrow drive, no kerb, leave on the lawn…" value={f.notes} onChange={set('notes')} /></div>
           </>}
         </div>
@@ -809,7 +893,7 @@ function Checkout({ bag }) {
       </div>
       <h2 className="sr-only">Order summary</h2><aside className="summary">
         <h3>{bag.count} {bag.count === 1 ? 'item' : 'items'}</h3>
-        {items.map(l => <div key={l.id} className="row"><span className="k">{l.qty} × {l.p.name}</span><span className="v">{money(lineUnitPrice(l.p) * l.qty)}</span></div>)}
+        {items.map(l => <div key={l.id} className="row"><span className="k">{l.qty} × {l.p.name}{l.p.cover ? <small> · {(l.qty * l.p.cover).toFixed(2)} m²</small> : l.p.unit === 'per slab' ? <small> · {(l.qty * l.p.slabM2).toFixed(2)} m²</small> : null}</span><span className="v">{money(lineUnitPrice(l.p) * l.qty)}</span></div>)}
         <div className="row"><span className="k">VAT at 20%</span><span className="v">{money(ex * VAT)}</span></div>
         <div className="row total"><span className="k">Total inc VAT</span><span className="v">{money(ex * (1 + VAT))}</span></div>
       </aside>
@@ -916,6 +1000,43 @@ function ThemeButton({ theme, toggle }) {
   )
 }
 
+/* Offer pop-up: the biggest real saving on the site, from the store's own
+ * was/now prices. Once a week per browser, after a pause or when the mouse
+ * heads for the tab bar, never on the bag, checkout or builder. */
+function OfferPopup({ route }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+  const offers = useMemo(() => PRODUCTS.filter(x => x.was && x.was > x.price).map(x => ({ x, pct: Math.round((1 - x.price / x.was) * 100) })).sort((a, b) => b.pct - a.pct), [])
+  const quiet = ['checkout', 'cart', 'build', 'notfound'].includes(route.page)
+  useEffect(() => {
+    if (!offers.length || quiet) return
+    let seen = 0; try { seen = +localStorage.getItem('nitya-offer') || 0 } catch { /* private mode */ }
+    if (Date.now() - seen < 7 * 864e5) return
+    let t = 0
+    const show = () => { window.clearTimeout(t); document.removeEventListener('mouseleave', leave); try { localStorage.setItem('nitya-offer', String(Date.now())) } catch { /* private mode */ } setOpen(true) }
+    const leave = (e) => { if (e.clientY <= 0) show() }
+    t = window.setTimeout(show, 9000)
+    document.addEventListener('mouseleave', leave)
+    return () => { window.clearTimeout(t); document.removeEventListener('mouseleave', leave) }
+  }, [quiet, offers.length])
+  useEffect(() => { if (!open) return; ref.current?.focus(); const key = (e) => { if (e.key === 'Escape') setOpen(false) }; window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key) }, [open])
+  if (!open || quiet || !offers.length) return null
+  const top = offers[0]
+  return createPortal(
+    <div className="offer-pop" onClick={e => { if (e.target === e.currentTarget) setOpen(false) }}>
+      <div className="offer-card" role="dialog" aria-modal="true" aria-labelledby="offerT" tabIndex={-1} ref={ref}>
+        <img src={top.x.img} alt="" />
+        <div className="offer-body">
+          <p className="kicker">Offers on now</p>
+          <h2 id="offerT">Up to {top.pct}% off, across {offers.length} ranges.</h2>
+          <p>{top.x.name} is {money(top.x.price)} {top.x.unit} + VAT, down from {money(top.x.was)}. Sale prices as listed at the yard, no code needed.</p>
+          <div className="buy-actions"><a className="pill" href={href('shop?cat=offers')} onClick={() => setOpen(false)}>See the offers</a><button className="more" type="button" onClick={() => setOpen(false)}>Not now</button></div>
+        </div>
+        <button className="offer-close" type="button" aria-label="Close" onClick={() => setOpen(false)}>×</button>
+      </div>
+    </div>, document.body)
+}
+
 export default function App() {
   const route = useRoute()
   useStructuredData()
@@ -945,6 +1066,7 @@ export default function App() {
         <nav className={`drawer ${menu ? 'open' : ''}`} aria-label="Mobile">{NAV.map(([k, l]) => <a key={k} href={href(k)} onClick={() => setMenu(false)}>{l}</a>)}<a href={PHONE_HREF}>Call {PHONE}</a></nav>
       </div></header>
       <main>{page}</main>
+      <OfferPopup route={route} />
       <footer><div className="wrap">
         <div className="foot">
           <div><Logo /><p style={{ marginTop: 14, maxWidth: '32ch' }}>Wholesale and retail suppliers of outdoor and indoor porcelain, sandstone, limestone and cladding. {BUSINESS.address.join(', ')}.</p></div>

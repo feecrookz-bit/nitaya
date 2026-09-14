@@ -11,6 +11,7 @@ const ok = (cond, msg) => { if (!cond) F.push(msg) }
   const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium', args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] })
   const base = 'file://' + process.cwd() + '/dist-single/index.html'
   const p = await b.newPage({ viewport: { width: 1280, height: 900 } })
+  await p.addInitScript(() => { try { localStorage.setItem('nitya-offer', String(Date.now())) } catch { /* private mode */ } }) // the offer pop-up has its own test
   const errs = []; p.on('pageerror', e => errs.push(e.message.slice(0, 160)))
 
   // --- business details on every page: footer carries phone, mobile, email, address, hours; JSON-LD present once
@@ -36,6 +37,7 @@ const ok = (cond, msg) => { if (!cond) F.push(msg) }
 
   // --- keyboard: skip to nav, drawer at 400px, Escape closes, focus visible
   const m = await b.newPage({ viewport: { width: 400, height: 840 }, hasTouch: true, isMobile: true })
+  await m.addInitScript(() => { try { localStorage.setItem('nitya-offer', String(Date.now())) } catch { /* private mode */ } }) // the offer pop-up has its own test
   m.on('pageerror', e => errs.push('m:' + e.message.slice(0, 160)))
   await m.goto(base); await m.waitForTimeout(500)
   await m.click('.menu-btn'); await m.waitForTimeout(250)
@@ -92,11 +94,13 @@ const ok = (cond, msg) => { if (!cond) F.push(msg) }
   ok(await p.evaluate(() => document.documentElement.dataset.theme === 'light'), 'theme not applied from storage')
   // --- reduced motion: no Ken Burns animation
   const rm = await b.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' }); await rm.goto(base); await rm.waitForTimeout(500)
+  await rm.addInitScript(() => { try { localStorage.setItem('nitya-offer', String(Date.now())) } catch { /* private mode */ } }) // the offer pop-up has its own test
   ok(await rm.evaluate(() => [...document.querySelectorAll('.slides img, .slide')].every(e => getComputedStyle(e).animationName === 'none' || getComputedStyle(e).animationDuration === '0s')), 'hero animates under reduced motion')
   await rm.close()
 
   // --- gate: wrong password, session remember, deep link
   const g = await b.newPage({ viewport: { width: 400, height: 840 }, hasTouch: true, isMobile: true })
+  await g.addInitScript(() => { try { localStorage.setItem('nitya-offer', String(Date.now())) } catch { /* private mode */ } }) // the offer pop-up has its own test
   await g.goto('http://localhost:8765/nitaya/#/guides'); await g.waitForTimeout(300)
   await g.fill('#pw', 'wrong'); await g.click('#go'); await g.waitForTimeout(2500)
   ok((await g.locator('#err').textContent()).length > 5, 'gate: wrong password gives no message')
@@ -106,7 +110,21 @@ const ok = (cond, msg) => { if (!cond) F.push(msg) }
   ok(await g.evaluate(() => !!document.querySelector('.nav-in')), 'gate: session not remembered on reload')
   ok(await g.evaluate(async () => { await document.fonts.ready; const fs = [...document.fonts]; return fs.length >= 4 && fs.every(f => f.status !== 'error') && fs.some(f => f.family.replace(/"/g, '') === 'Cinzel' && f.status === 'loaded') }), 'gate: site fonts not loaded after unlock')
   await g.close()
-  await b.close()
+    // Offer pop-up: shows once after a pause, is a labelled dialog, closes on Escape and stays away for a week.
+  {
+    const o = await b.newPage({ viewport: { width: 1280, height: 900 } })
+    await o.goto(base + '#/shop'); await o.evaluate(() => localStorage.removeItem('nitya-offer')); await o.reload(); await o.waitForTimeout(9800)
+    const shown = await o.locator('.offer-card[role="dialog"]').count()
+    const labelled = shown && await o.locator('.offer-card').getAttribute('aria-labelledby')
+    const focused = shown && await o.evaluate(() => document.activeElement?.classList.contains('offer-card'))
+    await o.keyboard.press('Escape'); await o.waitForTimeout(200)
+    const gone = await o.locator('.offer-card').count() === 0
+    await o.reload(); await o.waitForTimeout(9800)
+    const again = await o.locator('.offer-card').count()
+    if (!shown || !labelled || !focused || !gone || again) F.push(`offer pop-up: shown ${shown} labelled ${labelled} focused ${focused} closed ${gone} reappeared ${again}`)
+    await o.close()
+  }
+await b.close()
   ok(errs.length === 0, 'page errors: ' + errs.join(' | '))
   console.log(F.length ? F.map(f => 'FINDING ' + f).join('\n') : 'NO FINDINGS')
 })().catch(e => { console.error('FAIL', e.message.slice(0, 300)); process.exit(1) })

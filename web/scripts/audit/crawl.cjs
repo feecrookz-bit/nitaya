@@ -3,6 +3,7 @@ const { chromium } = require('/opt/node22/lib/node_modules/playwright');
   const b = await chromium.launch({executablePath:'/opt/pw-browsers/chromium', args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
   const ctx = await b.newContext({viewport:{width:1280,height:900}});
   const p = await ctx.newPage();
+  await p.addInitScript(() => { try { localStorage.setItem('nitya-offer', String(Date.now())) } catch { /* private mode */ } }) // the offer pop-up has its own test
   const base='file://'+process.cwd()+'/dist-single/index.html';
   const problems=[]; const errs=[];
   p.on('pageerror',e=>errs.push(e.message.slice(0,200)));
@@ -64,6 +65,7 @@ const { chromium } = require('/opt/node22/lib/node_modules/playwright');
   flow.push('contact copy status: '+(await p.textContent('.copied')).slice(0,40));
   // mobile menu
   const m = await ctx.newPage(); await m.setViewportSize({width:400,height:820}); await m.goto(base); await m.waitForTimeout(600);
+  await m.addInitScript(() => { try { localStorage.setItem('nitya-offer', String(Date.now())) } catch { /* private mode */ } }) // the offer pop-up has its own test
   await m.click('.menu-btn'); await m.waitForTimeout(200);
   flow.push('mobile drawer visible: '+await m.locator('.drawer.open').isVisible());
   await m.click('.drawer a:has-text("Guides")'); await m.waitForTimeout(500);

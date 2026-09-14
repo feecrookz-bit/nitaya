@@ -13,6 +13,7 @@ const SEL = '.scene figcaption b, .scene figcaption span, .banner h1, .banner h2
   const ONLY = process.env.ONLY ? JSON.parse(process.env.ONLY) : null;
   for (const theme of ONLY ? [ONLY.theme] : ['dark', 'light']) for (const [w, h] of ONLY ? [[ONLY.w, 840]] : [[1440, 900], [400, 840]]) {
     const p = await b.newPage({ viewport: { width: w, height: h } });
+    await p.addInitScript(() => { try { localStorage.setItem('nitya-offer', String(Date.now())) } catch { /* private mode */ } }) // the offer pop-up has its own test
     for (const route of ONLY ? [ONLY.route] : ['/', '/projects', '/shop', '/collections', '/product/raj-green']) {
       await p.goto('file:///home/user/nitaya/web/dist-single/index.html#' + route);
       await p.evaluate(t => localStorage.setItem('nitya-theme', t), theme); await p.reload(); await p.waitForTimeout(800);
