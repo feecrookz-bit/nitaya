@@ -119,6 +119,15 @@ Connected. The site does not talk to WooCommerce or to the warehouse stock track
 14. A Google Business or Trustpilot link if one exists, and any written reviews with the customer's permission.
 15. Prices for the fifteen Essentials lines (Joint-Tec and Por-Tec jointing compounds, primer, step treads, edging, granite setts and cobbles). They are on the site now from the warehouse sheet, marked "priced at the counter"; a customer can ask for a price with their order. With prices they become ordinary products.
 
+### Hosting and ownership
+
+The site is a static build and needs no server of its own. The preview runs on GitHub Pages, which is right for a password-gated demo and wrong for the live site (no redirect rules, no custom-domain tooling, a bandwidth cap). For go-live:
+
+- **Cloudflare Pages**, in an account created with a Nitya Stones email, with Fee and Coleisha as members. Free for commercial use; builds from GitHub on every push as the preview does now; custom domain, HTTPS and redirect rules for the old blog addresses; server functions on the same plan if one is ever needed. Vercel would work but its free tier forbids commercial use.
+- **The GitHub repository** transferred to an organisation the company owns, or Coleisha added as a collaborator until then.
+- **WordPress stays** as the till and the blog, moved to a subdomain; the new site takes the main address. Nothing is deleted until the redirects are in.
+- **No secrets in the front end.** The WooCommerce key and the stock tracker's shared secret never go in the site's code. The stock tracker syncs with WooCommerce (orders out by WooCommerce webhook, stock in by a timed push from the script), and the site talks only to WooCommerce's public Store API. See `present/Nitya-Stones-Stock-Tracker-Link.pdf`.
+
 ### Going live, in order
 
 1. Copy confirmed and corrected (Nitya Stones, Coleisha).
