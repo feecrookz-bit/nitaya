@@ -628,7 +628,7 @@ function Shop({ route }) {
 }
 
 function Gallery({ p }) {
-  const pics = [{ src: p.img, alt: `${p.name} studio render` }, ...p.gallery.map((src, i) => ({ src, alt: `${p.name} photo ${i + 1}` }))]
+  const pics = [{ src: p.img, alt: `${p.name} studio render` }, ...(p.unit !== 'per kit' ? [{ src: p.img, alt: `${p.name} in 3D, drag to turn`, kind: '3d' }] : []), ...p.gallery.map((src, i) => ({ src, alt: `${p.name} photo ${i + 1}` }))]
   const [i, setI] = useState(0)
   const [open, setOpen] = useState(false)
   const touch = useRef(null)
@@ -643,21 +643,25 @@ function Gallery({ p }) {
     onTouchStart: (e) => { touch.current = e.touches[0].clientX },
     onTouchEnd: (e) => { if (touch.current == null) return; const dx = e.changedTouches[0].clientX - touch.current; touch.current = null; if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1) },
   }
-  const frame = (big) => (
-    <div className={big ? 'lb-main' : 'main'} {...swipe}>
-      <img src={pics[i].src} alt={pics[i].alt} onClick={() => !big && setOpen(true)} />
+  const frame = (big) => {
+    const three = pics[i].kind === '3d' && !big
+    return (
+    <div className={(big ? 'lb-main' : 'main') + (three ? ' g3d' : '')} {...(three ? {} : swipe)}>
+      {three
+        ? <><Suspense fallback={<div className="hero-3d" aria-hidden="true" />}><StoneScene {...stoneProps(p)} mode="slab" /></Suspense><span className="g-hint" aria-hidden="true">Drag to turn</span></>
+        : <img src={pics[i].src} alt={pics[i].alt} onClick={() => !big && setOpen(true)} />}
       {pics.length > 1 && <>
         <button type="button" className="g-nav prev" aria-label="Previous photo" onClick={(e) => { e.stopPropagation(); go(-1) }}>‹</button>
         <button type="button" className="g-nav next" aria-label="Next photo" onClick={(e) => { e.stopPropagation(); go(1) }}>›</button>
         <span className="g-count">{i + 1} / {pics.length}</span>
       </>}
-      {!big && <span className="g-zoom" aria-hidden="true">Tap to enlarge</span>}
+      {!big && !three && <span className="g-zoom" aria-hidden="true">Tap to enlarge</span>}
     </div>
-  )
+  ) }
   return (
     <div className="gallery">
       {frame(false)}
-      {pics.length > 1 && <div className="thumbs" aria-label="Photos">{pics.map((x, k) => <button key={k} type="button" aria-pressed={i === k} aria-label={x.alt} onClick={() => setI(k)}><img src={x.src} alt="" loading="lazy" /></button>)}</div>}
+      {pics.length > 1 && <div className="thumbs" aria-label="Photos">{pics.map((x, k) => <button key={k} type="button" aria-pressed={i === k} aria-label={x.alt} onClick={() => setI(k)} className={x.kind === '3d' ? 'is3d' : ''}><img src={x.src} alt="" loading="lazy" />{x.kind === '3d' && <span className="g-badge" aria-hidden="true">3D</span>}</button>)}</div>}
       {open && createPortal(<div className="lightbox" role="dialog" aria-modal="true" aria-label={`${p.name} photos`} onClick={() => setOpen(false)}>
         <button type="button" className="lb-close" aria-label="Close" onClick={() => setOpen(false)}>×</button>
         <div onClick={(e) => e.stopPropagation()}>{frame(true)}<p className="lb-cap">{pics[i].alt} · {p.name}</p></div>
@@ -747,14 +751,14 @@ function OrderBox({ p, bag, setAdded, added }) {
 
 /* See it in 3D: the product's own face texture on a slab, laid in its pattern,
  * dry or wet. The wet look is a simulation until the hosed photos are shot. */
-function Stone3D({ p }) {
-  const [mode, setMode] = useState('slab'), [wet, setWet] = useState(false)
+const stoneProps = (p) => {
   const m = p.size.match(/(\d+)\s*×\s*(\d+)/)
   const size = p.packing?.mode === 'mixed' ? [900, 600] : m ? [+m[1], +m[2]] : [900, 600]
-  const pattern = p.cat === 'cladding' ? 'wall' : p.packing?.mode === 'mixed' ? 'mixed' : size[0] === size[1] ? 'stack' : 'half'
-  const riven = /riven/i.test(p.finish) && p.cat !== 'outdoor'
-  const thick = parseInt(p.thick) || 20
-  const texture = p.texture || p.gallery[0] || p.img
+  return { size, pattern: p.cat === 'cladding' ? 'wall' : p.packing?.mode === 'mixed' ? 'mixed' : size[0] === size[1] ? 'stack' : 'half', riven: /riven/i.test(p.finish) && p.cat !== 'outdoor', thick: parseInt(p.thick) || 20, texture: p.texture || p.gallery[0] || p.img }
+}
+function Stone3D({ p }) {
+  const [mode, setMode] = useState('slab'), [wet, setWet] = useState(false)
+  const { size, pattern, riven, thick, texture } = stoneProps(p)
   return (
     <section className="chapter" style={{ paddingBlock: 'clamp(40px,6vw,80px)', paddingTop: 0 }}><div className="wrap">
       <div className="head-row"><div><p className="kicker">See it in 3D</p><h2>{p.name}, turned in the hand and laid on the ground.</h2></div>
