@@ -1,0 +1,30 @@
+name = "nitya-stock-api"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "nitya-stock"
+database_id = "replace-with-the-id-wrangler-d1-create-prints"
+migrations_dir = "migrations"
+
+[vars]
+# The Cloudflare Access team domain and the application's audience tag, from
+# Zero Trust → Access → Applications. Empty in local dev: DEV_USER is used instead.
+ACCESS_TEAM_DOMAIN = ""
+ACCESS_AUD = ""
+# Local development only: the email the Worker treats as signed in. Never set in production.
+DEV_USER = ""
+# Comma-separated origins allowed to call the public routes (the site).
+PUBLIC_ORIGINS = "https://nityastones.co.uk,https://www.nityastones.co.uk"
+
+[env.dev.vars]
+DEV_USER = "fee@example.test"
+PUBLIC_ORIGINS = "http://localhost:5173,http://localhost:8788"
+
+# Environments do not inherit bindings; the dev environment needs the database too.
+[[env.dev.d1_databases]]
+binding = "DB"
+database_name = "nitya-stock"
+database_id = "replace-with-the-id-wrangler-d1-create-prints"
+migrations_dir = "migrations"

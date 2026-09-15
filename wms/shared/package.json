@@ -1,0 +1,11 @@
+{
+  "name": "@nitya/packing",
+  "version": "0.1.0",
+  "description": "Pack maths shared by the Nitya Stones site and stock system: coverage, split packs, mixed-pack loose sets.",
+  "type": "module",
+  "main": "packing.js",
+  "exports": "./packing.js",
+  "scripts": { "test": "node --test" },
+  "license": "UNLICENSED",
+  "private": true
+}

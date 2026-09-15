@@ -15,6 +15,7 @@ Reference for the new nityastones.co.uk, written 14 September 2026 for review on
 | [9. Rules, decisions and open items](09-decisions.md) | The rules the site is built to, what the yard still owes, where those lists live |
 | [10. Glossary](10-glossary.md) | The words used in the code and the documents |
 | [11. History](11-history.md) | The build day by day, from the commit log |
+| [12. Stock system](12-stock-system.md) | The yard's own ledger: plan, seed, shared maths, the Worker API, phase status |
 
 The other documents in the repository, and what each is for:
 

@@ -1,0 +1,17 @@
+{
+  "name": "nitya-stock-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Nitya Stones stock system: the Worker API over D1.",
+  "scripts": {
+    "dev": "wrangler dev --local --port 8787",
+    "seed": "node scripts/seed.mjs",
+    "migrate:local": "wrangler d1 migrations apply nitya-stock --local --env dev",
+    "migrate": "wrangler d1 migrations apply nitya-stock --remote",
+    "deploy": "wrangler deploy",
+    "test": "node --test test/"
+  },
+  "dependencies": { "@nitya/packing": "file:../shared" },
+  "devDependencies": { "wrangler": "^4.42.0" }
+}
