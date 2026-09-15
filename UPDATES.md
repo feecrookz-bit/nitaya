@@ -43,7 +43,7 @@ The owner pack describes the site as it stood at the meeting. This is the separa
 
 - The shop filters by colour (Blacks, Whites, Greens and multi, Browns and rust, Creams and buffs, Greys), size and finish, as chips above the grid with a count and a "Clear filters" link. The filters live in the address, so a filtered view can be sent to a customer.
 - A search box in the header on wide screens and in the menu everywhere, feeding the shop's existing search.
-- A floating WhatsApp button, bottom left, on every page except checkout, plus a "WhatsApp the yard" row in the menu. It opens the yard's own number.
+- A floating WhatsApp button, bottom right, on every page except checkout, plus a "WhatsApp the yard" row in the menu. It opens the yard's own number.
 
 ## What the yard still needs to give (short form)
 1. WooCommerce REST API key; payment plugins and their test keys; shipping rates; a WordPress admin or staging login; sheet access and the script's web-app URL; DNS access nearer the day.

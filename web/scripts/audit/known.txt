@@ -27,3 +27,9 @@ Instagram
 WhatsApp
 SBR
 Dawg
+device-width
+initial-scale
+decrypted
+geist
+sans-serif
+two-part

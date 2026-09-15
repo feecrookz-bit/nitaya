@@ -16,6 +16,24 @@ Run before the owner presentation, against the build that is now live behind the
 | Gate on the live host, desktop and phone viewports | `scratchpad/gatefull.js` | Clean |
 | Go-live: gate up or down as expected, safety headers, fallback 200, immutable assets, all 114 redirects and the two wildcards, the invisible-character addresses, old addresses landing on the right product in a browser | `scripts/audit/golive.cjs` (`BASE=` the deployed address, `EXPECT=open` after go-live) | Passes against the local Cloudflare-style server (`npm run preview:pages`), open and gated |
 
+## Readiness audit, 15 September 2026
+
+Fresh builds, every script, and the end-to-end checks run three times over to see they hold steady.
+
+| Check | Result |
+|---|---|
+| typo | 0 findings after three lines of small print (drag hint, "per m² + VAT, from", the shop count) went from 13.4–13.8 px to 14 px |
+| fit | Clean after the segmented buttons (by the pack / by the area, one slab / laid, dry / wet, the 5–20% allowance) and the filter chips went back to 44 px tall; a rule added in the ordering rework had shrunk them to 36 px on desktop |
+| axe | 0 violations, both themes, four runs (one run reported a single violation that did not recur in three further runs) |
+| crawl | 69 routes, no problems |
+| spelling | 0 across 936 strings; six code words (device-width, initial-scale, decrypted, geist, sans-serif, two-part) added to the allow-list |
+| overphoto | 404 measured, 0 below threshold. First run found the floating WhatsApp button sitting over the bottom-left captions of the project photographs on a phone (white text measured against the green); the button now sits bottom-right |
+| flows | NO FINDINGS × 3 |
+| gate | Clean × 3 |
+| golive (local Cloudflare-style server) | NO FINDINGS × 3 on the open build, × 1 on the gated build |
+
+Fee's side is complete up to the switchover. What remains is the yard's: the facts and assets in HANDOVER.md, closed by Coleisha, then the Cloudflare project and the connections at go-live.
+
 ## What was found and fixed
 
 **Fonts and type**
