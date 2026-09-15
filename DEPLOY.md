@@ -16,7 +16,7 @@ Do this first; Cloudflare connects to wherever the repository ends up.
 
 In a Cloudflare account created with a Nitya Stones email, with Fee and Coleisha added as members (Manage Account → Members).
 
-**The way it is set up now (no dashboard clicks):** `.github/workflows/cloudflare.yml` builds the site and uploads it to the Pages project `nitya-stones` with wrangler on every push to `main`, creating the project the first time. It needs two repository secrets, `CLOUDFLARE_API_TOKEN` (an API token with Account → Cloudflare Pages → Edit) and `CLOUDFLARE_ACCOUNT_ID`. Moving to the company's account is changing those two secrets and the fallback id in the workflow; the next push re-creates the project there. The gate follows the same variables as the GitHub preview (`PUBLIC_PREVIEW`, `SITE_PASSWORD`, and `PUBLIC_SITE` for go-live). Custom domains are still added in the dashboard (section 5).
+**The way it is set up now (no dashboard clicks):** the site runs as a Cloudflare Worker serving the static build (`web/wrangler.jsonc`: assets from `publish/`, unknown paths served by `index.html` for the router). `.github/workflows/cloudflare.yml` builds and deploys it with wrangler on every push to `main`; by hand it is `npx wrangler deploy` from `web/`. It needs two repository secrets, `CLOUDFLARE_API_TOKEN` (an API token with Account → Workers Scripts → Edit) and `CLOUDFLARE_ACCOUNT_ID`. First deployed 15 September 2026 into the company's own account (Coleisha's company email), at https://nitya-stones.coleisha.workers.dev, open with a noindex tag like the GitHub preview; the go-live audit against it reports no findings. The gate follows the same variables as the GitHub preview (`PUBLIC_PREVIEW`, `SITE_PASSWORD`, and `PUBLIC_SITE` for go-live). Custom domains are added in the dashboard under the Worker's Settings → Domains & Routes (section 5).
 
 **The dashboard way, if preferred instead:**
 
@@ -70,6 +70,8 @@ To check, once the project has its `pages.dev` address:
 
 The other thirty-eight product addresses are ordinary letters and dashes and need no check.
 
+**Found on the first Cloudflare deploy (15 September 2026):** browsers send the invisible character's encoding in capitals (`%E2%81%A0`) and Cloudflare matches the rule text literally, so a rule written in lower case only worked from tools like curl. Both spellings are now in the file, and the audit checks both. Nothing further to do here.
+
 ## 3a. The staff address: admin.nityastones.co.uk
 
 The stock system (`wms/`) lives at `admin.nityastones.co.uk`, in the same Cloudflare account, once the domain's DNS is on Cloudflare:
@@ -97,7 +99,7 @@ It prints one line per check and "NO FINDINGS" at the end, or a FAILED list sayi
 1. Copy, prices and photographs confirmed (HANDOVER.md, "What we need").
 2. WooCommerce connected and a test order placed end to end on the `pages.dev` address.
 3. WordPress moved to the subdomain chosen in step 3 above; `_redirects` updated; WooCommerce's own address settings updated to match.
-4. In Cloudflare Pages → Custom domains, add `nityastones.co.uk` and `www.nityastones.co.uk`. Cloudflare shows the DNS records needed. If the domain's DNS is moved to Cloudflare (recommended: one place for DNS, the site and the WordPress subdomain), it does this itself.
+4. In Cloudflare, Workers & Pages → nitya-stones → Settings → Domains & Routes, add `nityastones.co.uk` and `www.nityastones.co.uk`. Cloudflare shows the DNS records needed. If the domain's DNS is moved to Cloudflare (recommended: one place for DNS, the site and the WordPress subdomain), it does this itself.
 5. Switch `SITE_PASSWORD` for `PUBLIC_SITE=true` and redeploy. Check the home page, a product page, an old product address and an old blog address.
 6. Leave the old site reachable on its subdomain until the owner says otherwise. Submit the new address in Google Search Console.
 

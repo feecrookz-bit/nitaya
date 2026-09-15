@@ -102,3 +102,7 @@ node scripts/audit/fit.cjs
 node scripts/audit/visual.cjs                   # frames in scripts/audit/out/
 node scripts/audit/strings.mjs > /tmp/strings.txt
 ```
+
+## First Cloudflare deploy (15 September 2026)
+
+The site was deployed into the company's Cloudflare account as a Worker serving the static build (`web/wrangler.jsonc`), at https://nitya-stones.coleisha.workers.dev, open with a noindex tag. `scripts/audit/golive.cjs` run against it (`BASE=… EXPECT=open`) found one thing, now fixed: the two old product addresses that begin with an invisible character were only redirected when the encoding was written in lower case (`%e2%81%a0`). Browsers send it in capitals and Cloudflare matches `_redirects` literally, so the upper-case spelling was added for both addresses and the audit now checks both. Re-run: NO FINDINGS. The audit launches Chromium through `HTTPS_PROXY` when set, so it can be run against a live address from the build container.

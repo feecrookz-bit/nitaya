@@ -1,0 +1,11 @@
+{
+  // The public site on Cloudflare: a Worker that serves the static build in
+  // publish/ (see scripts/pages.mjs). Deployed by .github/workflows/cloudflare.yml
+  // on every push to main, or by hand with `npx wrangler deploy` from web/.
+  // _redirects and _headers in publish/ are honoured. Unknown paths serve
+  // index.html with a 200, which the hash router relies on.
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "nitya-stones",
+  "compatibility_date": "2026-09-11",
+  "assets": { "directory": "publish", "not_found_handling": "single-page-application" }
+}

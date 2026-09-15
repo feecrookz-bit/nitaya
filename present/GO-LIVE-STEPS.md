@@ -17,7 +17,7 @@ Anything secret (keys, passwords, logins) goes by phone or WhatsApp. Never in an
 
 ## Stage 1. Accounts in the company's name (Coleisha, about 40 minutes)
 
-1. **Cloudflare.** At dash.cloudflare.com, create an account on the company email. Free plan. Manage Account → Members → invite Fee as Administrator. If an account already exists, just add Fee.
+1. **Cloudflare.** Done. The company's account exists on Coleisha's company email, and the new site is already deployed into it (stage 3). Manage Account → Members → invite Fee as Administrator so the DNS work in stage 5 can be done without passing tokens around.
 2. **GitHub.** At github.com, create an organisation (or an account) on the company email. Add Fee and Coleisha's own login as members. Fee then transfers the site's code into it.
 3. **A test email address.** An address on the domain for test orders, sign-ins and developer accounts: ask the developer to add test@nityastones.co.uk in the existing host's mail panel (free). If that is not possible, a free Gmail in the company's name does for now. Once the domain is on Cloudflare, a free forwarding address on the domain replaces either.
 
@@ -32,18 +32,18 @@ These three are the only things nothing else can start without.
 5. **The WordPress subdomain.** The blog, the legal pages and My Account keep running on WordPress at a subdomain after go-live. The redirects use wp.nityastones.co.uk as the working name. Confirm that name or give another, and confirm the host can serve the site on it.
 6. **The registrar.** Who holds the login where nityastones.co.uk is renewed. The nameserver change in stage 5 needs it.
 
-## Stage 3. Transfer the code and build the new home (Fee, one day)
+## Stage 3. Build the new home and transfer the code (Fee; the build is done)
 
-1. Transfer the repository from Fee's GitHub to the company organisation. GitHub keeps redirects from the old address, so nothing breaks. Re-add the two Actions settings that do not transfer (the preview password secret and the open-preview variable) and check the preview still comes up at the new owner's address.
-2. In Cloudflare: Workers and Pages → Create → Pages → Connect to Git → the transferred repository, production branch main. Root directory `web`, build command `npm run pages`, output directory `publish`. Set `SITE_PASSWORD` for now, so the copy is gated exactly like the preview.
-3. Deploy. The site appears on a pages.dev address. Run the go-live audit against it. It checks every one of the 118 old-address redirects, including the two old product addresses that begin with an invisible character, plus the headers and the pages.
+1. **Done 15 September.** The site is deployed into the company's Cloudflare account at https://nitya-stones.coleisha.workers.dev, open with a noindex tag like the GitHub preview. The go-live audit against it reports no findings: every old-address redirect (including the two old product addresses that begin with an invisible character), the headers and the pages.
+2. Every push to the code now redeploys it, once the deploy token is stored as a GitHub secret (`CLOUDFLARE_API_TOKEN`, an API token with Workers Scripts → Edit). Until then Fee deploys by hand.
+3. Transfer the repository from Fee's GitHub to the company organisation. GitHub keeps redirects from the old address, so nothing breaks. Re-add the Actions secrets and variables that do not transfer (the preview password, the open-preview variable, the Cloudflare token and account id) and check both previews still come up.
 
 ## Stage 4. Connect WooCommerce (Fee, about a week)
 
 1. Products, prices and stock on the new site read from the store through the REST key. The preview then shows the store's live prices.
 2. Checkout hands to WooCommerce on the test-mode payment keys, carrying the bag, delivery or collection and the chosen day. Trial orders are placed and checked in WooCommerce.
 3. Real shipping rates entered. Blog and legal pages moved onto the WordPress subdomain; the redirects file updated with the confirmed subdomain name.
-4. The owner sees the final site on the pages.dev address and agrees the go-live day.
+4. The owner sees the final site on the workers.dev address and agrees the go-live day.
 
 ## Stage 5. Move the domain to Cloudflare (Fee and the developer, one day plus a day to settle)
 
@@ -54,17 +54,17 @@ These three are the only things nothing else can start without.
 
 ## Stage 6. Go-live morning (Fee, one morning, reversible)
 
-1. In the Pages project → Custom domains, add nityastones.co.uk and www.nityastones.co.uk. Cloudflare sets the records itself now that DNS is with it.
-2. Swap `SITE_PASSWORD` for `PUBLIC_SITE=true` in the project's environment variables and redeploy. The build refuses to run with neither set, so a lost variable can never publish the site open by accident.
+1. In Cloudflare, Workers & Pages → nitya-stones → Settings → Domains & Routes, add nityastones.co.uk and www.nityastones.co.uk. Cloudflare sets the records itself now that DNS is with it.
+2. Set the repository variable `PUBLIC_SITE` to `true` (and remove `PUBLIC_PREVIEW`), and push or run the Cloudflare workflow, so the build loses the noindex tag. The build refuses to run with neither set, so a lost variable can never publish the site open by accident.
 3. Check the home page, a product page, an old product address and an old blog address in a browser. Run the go-live audit against https://nityastones.co.uk. It must report no findings.
 4. Place a real order and refund it.
 5. Submit the new address in Google Search Console. Leave the old site reachable on its subdomain until the owner says otherwise.
 
-Rolling back: up to stage 6, nothing has changed for customers, so rolling back is not doing the next step. After stage 6, it is changing the two custom-domain records back to the old host, a few minutes.
+Rolling back: up to stage 6, nothing has changed for customers, so rolling back is not doing the next step. After stage 6, it is removing the two custom domains from the Worker and pointing the records back at the old host, a few minutes.
 
 ## Stage 7. After go-live
 
-- **The stock system** at admin.nityastones.co.uk goes into the same Cloudflare account: a second Pages project, a Worker with its database, and Cloudflare Access in front so only staff emails get in. It is a separate job of about fifteen working days, after the connection.
+- **The stock system** at admin.nityastones.co.uk goes into the same Cloudflare account: a second Worker for the staff app, one for the API with its database, and Cloudflare Access in front so only staff emails get in. It is a separate job of about fifteen working days, after the connection.
 - **Changes to the site** are arranged through Coleisha from then on. Once the build is paid for, Nitya Stones owns everything on the site.
 
 ## Time scale
@@ -73,7 +73,7 @@ Working days, one person, from the day the keys and accounts arrive.
 
 | Days | What | Done when |
 |---|---|---|
-| 1 | Stage 3: transfer and the Cloudflare project | The gated site is on its pages.dev address and the audit reports no findings |
+| 1 | Stage 3: the deploy token in GitHub, the repository transfer | Every push redeploys the workers.dev copy; the audit reports no findings |
 | 2–5 | Stage 4: WooCommerce read, checkout on test keys, trial orders | A test order placed on the new site appears in WooCommerce with the right lines, day and address |
 | 6–7 | Stage 4: blog and legal pages, shipping rates, redirects confirmed | Every old address lands on the right page |
 | 8–9 | Stage 5: domain onto Cloudflare, nameservers settled | The old site still serves normally, from Cloudflare DNS |

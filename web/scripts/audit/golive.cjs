@@ -49,16 +49,22 @@ const get = (u, opts = {}) => fetch(u, { redirect: 'manual', ...opts })
   }
   pass(`${good} of ${lines.filter(l => !l.split(/\s+/)[0].includes('*')).length} redirects fire correctly`)
   for (const w of ['/blog/anything/', '/my-account/lost-password/']) { const r = await get(base + w); (r.status === 301 && /wp\./.test(r.headers.get('location') || '')) ? pass(`wildcard ${w}`) : fail(`wildcard ${w}: ${r.status} ${r.headers.get('location')}`) }
-  const odd = lines.filter(l => l.includes('%e2%81%a0')); odd.length === 2 ? pass('the two invisible-character addresses are in the list') : fail(`expected 2 invisible-character redirects, found ${odd.length}`)
+  // Both spellings of the encoding: browsers send %E2%81%A0, other clients may send %e2%81%a0, and Cloudflare matches the text literally.
+  const odd = lines.filter(l => l.toLowerCase().includes('%e2%81%a0')); odd.length === 4 ? pass('the two invisible-character addresses are in the list, in both encodings') : fail(`expected 4 invisible-character redirect lines (two addresses, two encodings), found ${odd.length}`)
 
   // 5. In a browser: the redirects land on the right product, and old paths without the # work
   if (!gated) {
-    const b = await chromium.launch({ executablePath: process.env.CHROMIUM || '/opt/pw-browsers/chromium' }); const p = await b.newPage()
+    // Behind an HTTPS proxy (as in the build container) Chromium needs the proxy and must accept its certificate.
+    const proxy = process.env.HTTPS_PROXY && (process.env.BASE || '').startsWith('https')
+    const b = await chromium.launch({ executablePath: process.env.CHROMIUM || '/opt/pw-browsers/chromium', ...(proxy ? { proxy: { server: process.env.HTTPS_PROXY }, args: ['--ignore-certificate-errors'] } : {}) })
+    const p = await (await b.newContext(proxy ? { ignoreHTTPSErrors: true } : {})).newPage()
     await p.addInitScript(() => { try { localStorage.setItem('nitya-offer', String(Date.now())) } catch (e) {} })
     const land = async (u, h1) => { await p.goto(base + u); await p.waitForTimeout(900); const t = (await p.evaluate(() => document.querySelector('h1')?.textContent || '')).trim(); return t.includes(h1) ? pass(`${u} -> "${h1}"`) : fail(`${u} landed on "${t.slice(0, 40)}", expected "${h1}"`) }
     await land('/product/raj-green-mixed-patio-pack-22mm/', 'Raj Green')
     await land('/product/%e2%81%a0noor-grigio-porcelain/', 'Noor Grigio')
+    await land('/product/%E2%81%A0noor-grigio-porcelain/', 'Noor Grigio')
     await land('/product/%e2%81%a0light-grey-porcelain/', 'Light Grey')
+    await land('/product/%E2%81%A0light-grey-porcelain/', 'Light Grey')
     await land('/product/raj-green', 'Raj Green')
     await land('/guide/laying-indian-sandstone/', 'How to lay Indian sandstone')
     await land('/product-category/sandstones/', 'Sandstone')
