@@ -378,7 +378,7 @@ details p{padding-bottom:22px;color:var(--ink-2);max-width:64ch}
 
 footer{padding-block:44px 52px;color:var(--on-black-2);font-size:.8rem;background:var(--black)}
 .foot{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:28px}
-.foot h3.foot-h{margin:0 0 10px;font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-black);font-weight:600}
+.foot h2.foot-h{margin:0 0 10px;font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-black);font-weight:600}
 .foot a{display:block;text-decoration:none;color:var(--on-black-2);padding-block:3px}
 .foot a:hover{color:var(--on-black)}
 .foot-bottom{margin-top:30px;padding-top:18px;border-top:1px solid rgba(255,255,255,.12);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
@@ -635,7 +635,7 @@ h1,h2,h3{color:var(--ink);letter-spacing:.015em}
 
 /* footer: deeper, gold mark */
 footer{padding-block:64px 56px;background:#111}
-.foot h3.foot-h{color:rgba(245,243,240,.9)}
+.foot h2.foot-h{color:rgba(245,243,240,.9)}
 .foot a{color:rgba(245,243,240,.6)}
 .foot a:hover{color:#fff}
 .foot-bottom{margin-top:44px}

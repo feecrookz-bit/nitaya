@@ -7,7 +7,7 @@ export const META = {
   heading: 'The website upgrade',
   sub: 'A working demonstration of the new nityastones.co.uk, built before any backend is connected, so the decision can be made on the real thing.',
   link: 'https://feecrookz-bit.github.io/nitaya/',
-  password: 'nitya2026!!',
+  password: 'PaymentNeeded',
   date: 'September 2026',
 }
 

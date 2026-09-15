@@ -92,11 +92,20 @@ const FINISH = {
   matt: { rough: 0.74, bump: 0.004, env: 0.34 },
   polished: { rough: 0.22, bump: 0.0015, env: 0.8 },
 }
-function StoneMaterial({ map, wet, flat, finish = 'matt' }) {
+const WET = new THREE.Color('#c9c5be'), DRY = new THREE.Color('#ffffff')
+function StoneMaterial({ map, wet, flat, finish = 'matt', tint }) {
   const f = FINISH[finish] || FINISH.matt
+  const color = useMemo(() => { const c = (wet ? WET : DRY).clone(); if (tint) c.multiply(tint); return c }, [wet, tint])
   return wet
-    ? <meshPhysicalMaterial map={map} bumpMap={map} bumpScale={f.bump * 0.7} color="#c9c5be" roughness={Math.min(f.rough, 0.5)} metalness={0} clearcoat={1} clearcoatRoughness={0.12} envMapIntensity={1.1} flatShading={flat} />
-    : <meshPhysicalMaterial map={map} bumpMap={map} bumpScale={f.bump} color="#ffffff" roughness={f.rough} metalness={0} envMapIntensity={f.env} flatShading={flat} />
+    ? <meshPhysicalMaterial map={map} bumpMap={map} bumpScale={f.bump * 0.7} color={color} roughness={Math.min(f.rough, 0.5)} metalness={0} clearcoat={1} clearcoatRoughness={0.12} envMapIntensity={1.1} flatShading={flat} />
+    : <meshPhysicalMaterial map={map} bumpMap={map} bumpScale={f.bump} color={color} roughness={f.rough} metalness={0} envMapIntensity={f.env} flatShading={flat} />
+}
+/* Natural stone varies slab to slab; porcelain hardly at all. A small, seeded
+ * lightness and warmth shift per slab so a laid field reads as a pack, not a
+ * print. */
+function slabTint(r, natural) {
+  const l = natural ? 0.9 + r() * 0.16 : 0.98 + r() * 0.04, w = natural ? (r() - 0.5) * 0.05 : 0
+  return new THREE.Color(l * (1 + w), l, l * (1 - w))
 }
 
 function Slab({ spin, texture, wet, size, riven, thick, finish }) {
@@ -117,7 +126,7 @@ function Slab({ spin, texture, wet, size, riven, thick, finish }) {
 
 /* Lay out a field of slabs in millimetres, then place each with its own
  * offset into the texture so no two faces read the same. */
-function layout(pattern, size, W = 4200, D = 3000, joint = 10) {
+function layout(pattern, size, W = 4800, D = 4200, joint = 10) {
   const r = rng(11), out = []
   if (pattern === 'mixed') {
     for (let y = 0; y < D;) {
@@ -151,6 +160,8 @@ function Field({ texture, wet, size, pattern, riven, thick, finish }) {
     rects.forEach((q, i) => { const k = geoKey(q, i); if (!cache[k]) cache[k] = slabGeometry(q.w / MM, h, q.d / MM, riven, i % 3, 14) })
     return cache
   }, [rects, h, riven])
+  const tints = useMemo(() => { const r = rng(17); return rects.map(() => slabTint(r, riven)) }, [rects, riven])
+  const lift = useMemo(() => { const r = rng(29); return rects.map(() => riven ? (r() - 0.5) * 0.006 : 0) }, [rects, riven])
   const maps = useMemo(() => {
     const r = rng(5)
     return rects.map(q => {
@@ -164,36 +175,64 @@ function Field({ texture, wet, size, pattern, riven, thick, finish }) {
       return m
     })
   }, [rects, map, size])
-  const W = 4200 / MM, D = 3000 / MM
+  const W = 4800 / MM, D = 4200 / MM
   return (
     <group position={[-W / 2, 0, -D / 2]}>
       {/* the pointed joints: a dark bed under everything */}
       <mesh position={[W / 2, -h / 2 - 0.005, D / 2]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[W + 0.4, D + 0.4]} />
-        <meshStandardMaterial color={wet ? '#1f1e1c' : '#3a3834'} roughness={1} />
+        <planeGeometry args={[W + 1.2, D + 1.2]} />
+        {/* jointing compound: buff-grey between natural stone, mid grey between porcelain; darker wet */}
+        <meshStandardMaterial color={wet ? (riven ? '#3a352d' : '#33322f') : (riven ? '#6f685c' : '#5f5e5b')} roughness={1} />
       </mesh>
       {rects.map((q, i) => (
-        <mesh key={i} geometry={geos[geoKey(q, i)]} position={[(q.x + q.w / 2) / MM, 0, (q.y + q.d / 2) / MM]} receiveShadow>
-          <StoneMaterial map={maps[i]} wet={wet} flat={riven} finish={finish} />
+        <mesh key={i} geometry={geos[geoKey(q, i)]} position={[(q.x + q.w / 2) / MM, lift[i], (q.y + q.d / 2) / MM]} castShadow receiveShadow>
+          <StoneMaterial map={maps[i]} wet={wet} flat={riven} finish={finish} tint={tints[i]} />
         </mesh>
       ))}
     </group>
   )
 }
 
-/* Cladding: a wall of strips, the photograph repeated at true strip scale. */
+/* Cladding: a wall of 600 × 150 strips in a running bond, each strip its own
+ * box with its own projection (split-face cladding never sits flush) and its
+ * own band of the colourway photograph, so no two strips read the same and
+ * the raking light throws real shadows between the courses. The photograph
+ * is taken as about 1200 × 900 mm of built wall; its bottom edge is skipped
+ * where the mark sits. */
 function Wall({ texture, wet }) {
   const map = useMap(texture)
-  const m = useMemo(() => { const t = map.clone(); t.repeat.set(2.2, 1.7); t.needsUpdate = true; return t }, [map])
+  const W = 4.8, H = 3.0, SW = 600 / MM, SH = 150 / MM
+  const strips = useMemo(() => {
+    const r = rng(23), out = []
+    let row = 0
+    for (let y = 0; y < H - 1e-6; y += SH, row++) {
+      const off = ((row % 3) * SW) / 3
+      for (let x = -off; x < W; x += SW) {
+        const x0 = Math.max(0, x), x1 = Math.min(W, x + SW)
+        if (x1 - x0 < 0.08) continue
+        const m = map.clone(); m.needsUpdate = true
+        const uw = ((x1 - x0) / SW) * 0.5, vh = 150 / 900
+        m.repeat.set(uw, vh); m.offset.set(r() * (1 - uw), 0.14 + r() * (0.86 - vh))
+        out.push({ x: (x0 + x1) / 2 - W / 2, y: y + SH / 2 - H / 2, w: x1 - x0, d: 0.05 + r() * 0.07, tint: slabTint(r, true), map: m })
+      }
+    }
+    return out
+  }, [map])
   return (
     <group position={[0, 0.2, 0]}>
-      <mesh castShadow receiveShadow>
-        <boxGeometry args={[4.6, 3, 0.12]} />
-        <StoneMaterial map={m} wet={wet} flat={false} finish="riven" />
+      <mesh position={[0, 0, -0.06]} receiveShadow>
+        <boxGeometry args={[W + 0.02, H + 0.02, 0.1]} />
+        <meshStandardMaterial color="#26241f" roughness={1} />
       </mesh>
-      <mesh position={[0, -1.55, 0.6]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[7, 3]} />
-        <meshStandardMaterial color="#3a3834" roughness={1} />
+      {strips.map((s, i) => (
+        <mesh key={i} position={[s.x, s.y, s.d / 2]} castShadow receiveShadow>
+          <boxGeometry args={[s.w, SH - 0.008, s.d]} />
+          <StoneMaterial map={s.map} wet={wet} flat={false} finish="riven" tint={s.tint} />
+        </mesh>
+      ))}
+      <mesh position={[0, -H / 2 - 0.005, 0.9]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[8, 3]} />
+        <meshStandardMaterial color="#4a4640" roughness={1} />
       </mesh>
     </group>
   )
@@ -272,7 +311,7 @@ class Boundary extends Component {
 const CAMERA = {
   slab: { position: [0, 1.7, 6.4], fov: 26 },
   laid: { position: [0, 5.2, 7.4], fov: 32 },
-  wall: { position: [0.6, 0.9, 6.4], fov: 32 },
+  wall: { position: [1.6, 0.7, 6.2], fov: 32 },
 }
 
 // `texture` is passed in by the app so this lazy chunk shares nothing with

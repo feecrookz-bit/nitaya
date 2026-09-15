@@ -9,7 +9,7 @@ const { chromium } = require('/opt/node22/lib/node_modules/playwright');
   p.on('pageerror',e=>errs.push(e.message.slice(0,140)));
   p.on('response',r=>{ if(r.status()>=400) bad.push(r.status()+' '+r.url().slice(-60)); });
   await p.goto('http://localhost:8765/nitaya/',{waitUntil:'load'}); await p.waitForTimeout(300);
-  await p.fill('#pw','nitya2026!!'); await p.click('#go');
+  await p.fill('#pw','PaymentNeeded'); await p.click('#go');
   for(let i=0;i<60;i++){ await p.waitForTimeout(300); if(await p.evaluate(()=>!!document.querySelector('.nav-in'))) break; }
   console.log((mobile?'M':'D'),'unlocked', await p.evaluate(()=>!!document.querySelector('.nav-in')), 'gate size', await p.evaluate(()=>performance.getEntriesByType('navigation')[0]?.transferSize));
   await p.waitForTimeout(2500);

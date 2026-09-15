@@ -104,7 +104,7 @@ const ok = (cond, msg) => { if (!cond) F.push(msg) }
   await g.goto('http://localhost:8765/nitaya/#/guides'); await g.waitForTimeout(300)
   await g.fill('#pw', 'wrong'); await g.click('#go'); await g.waitForTimeout(2500)
   ok((await g.locator('#err').textContent()).length > 5, 'gate: wrong password gives no message')
-  await g.fill('#pw', 'nitya2026!!'); await g.click('#go'); for (let i = 0; i < 60; i++) { await g.waitForTimeout(300); if (await g.evaluate(() => !!document.querySelector('.nav-in'))) break }
+  await g.fill('#pw', 'PaymentNeeded'); await g.click('#go'); for (let i = 0; i < 60; i++) { await g.waitForTimeout(300); if (await g.evaluate(() => !!document.querySelector('.nav-in'))) break }
   ok((await g.title()).includes('Guides'), 'gate: deep link not honoured after unlock: ' + await g.title())
   await g.reload(); for (let i = 0; i < 60; i++) { await g.waitForTimeout(300); if (await g.evaluate(() => !!document.querySelector('.nav-in'))) break }
   ok(await g.evaluate(() => !!document.querySelector('.nav-in')), 'gate: session not remembered on reload')

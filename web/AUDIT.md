@@ -18,7 +18,7 @@ Run before the owner presentation, against the build that is now live behind the
 
 ## 3D rebuild, 15 September 2026
 
-The slab, laid and wall views rebuilt to match the stone sold. Checked by measuring the rendered top face against the texture's mean colour on six ranges (Raj Green, Kandla Grey 900, Black Limestone, Quartz White, Copper Slate, Calacatta Blanco): before, the warm lights and tint put every face 10–30% off and yellow; after, all within a few percent (1.01–1.19, the limestone's facets accounting for the high end). The cause of a stubborn 25% overexposure was the environment map, which the material's intensity setting does not scale; it is now scaled at scene level. Re-run after: crawl clean, flows no findings, gate clean, axe 0.
+The slab, laid and wall views rebuilt to match the stone sold. Checked by measuring the rendered top face against the texture's mean colour on six ranges (Raj Green, Kandla Grey 900, Black Limestone, Quartz White, Copper Slate, Calacatta Blanco): before, the warm lights and tint put every face 10–30% off and yellow; after, all within a few percent (1.01–1.19, the limestone's facets accounting for the high end). The cause of a stubborn 25% overexposure was the environment map, which the material's intensity setting does not scale; it is now scaled at scene level. Re-run after: crawl clean, flows no findings, gate clean, axe 0. Later the same day the laid field (per-slab tone and height, jointing-compound bed, deeper field) and the cladding wall (individual strips with projection and per-strip texture bands) were rebuilt; the same four checks re-run clean.
 
 ## Readiness audit, 15 September 2026
 
