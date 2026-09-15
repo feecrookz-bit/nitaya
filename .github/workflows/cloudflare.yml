@@ -1,0 +1,71 @@
+name: Deploy to Cloudflare Pages
+
+# Builds the site at the domain root (web/scripts/pages.mjs) and uploads it
+# straight to a Cloudflare Pages project with wrangler, so no Git connection
+# has to be set up in the Cloudflare dashboard. Needs two repository secrets:
+#   CLOUDFLARE_API_TOKEN   an API token with Account → Cloudflare Pages → Edit
+#   CLOUDFLARE_ACCOUNT_ID  the account id (falls back to the id below)
+# When the site moves to the company's Cloudflare account, change the two
+# secrets (and the fallback id) and the next push re-creates the project there.
+#
+# Gate: the same rules as pages.yml. PUBLIC_PREVIEW=true (repository variable)
+# publishes open with a noindex tag; else SITE_PASSWORD gates it; PUBLIC_SITE
+# (repository variable) is the go-live switch. With none set the build refuses.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cloudflare
+  cancel-in-progress: true
+
+env:
+  PROJECT: nitya-stones
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Check the Cloudflare token exists
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::error::No CLOUDFLARE_API_TOKEN secret. Add it in Settings → Secrets and variables → Actions (an API token with Cloudflare Pages → Edit)."
+            exit 1
+          fi
+
+      - run: npm ci --legacy-peer-deps
+        working-directory: web
+
+      - name: Build
+        working-directory: web
+        env:
+          SITE_PASSWORD: ${{ secrets.SITE_PASSWORD }}
+          PUBLIC_PREVIEW: ${{ vars.PUBLIC_PREVIEW }}
+          PUBLIC_SITE: ${{ vars.PUBLIC_SITE }}
+        run: npm run pages
+
+      - name: Deploy
+        working-directory: web
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID || vars.CLOUDFLARE_ACCOUNT_ID || 'a7cb4eb73075a79525de7a848de7dedf' }}
+        run: |
+          set -o pipefail
+          # Create the project the first time; afterwards this step reports it exists and moves on.
+          npx --yes wrangler@4 pages project create "$PROJECT" --production-branch main 2>&1 | tee create.log || grep -qi 'already exists' create.log
+          npx --yes wrangler@4 pages deploy publish --project-name "$PROJECT" --branch main --commit-dirty=true
+          echo "Deployed to https://$PROJECT.pages.dev"
