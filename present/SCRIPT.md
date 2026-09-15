@@ -1,6 +1,6 @@
 # Presenter script — Nitya Stones website upgrade
 
-Twelve minutes with the demo open on a laptop and a phone in your hand. One thing to point at, one line to say, one question to ask at each stop. Link: https://feecrookz-bit.github.io/nitaya/ · password `PaymentNeeded` (enter it on both devices before you start; it remembers for the tab).
+Twelve minutes with the demo open on a laptop and a phone in your hand. One thing to point at, one line to say, one question to ask at each stop. Link: https://feecrookz-bit.github.io/nitaya/ (open, no password since 15 September; not listed by search engines).
 
 Open with: **"Everything you're about to see is your stock, your prices and your photographs. Nothing's invented. It doesn't take payments yet — that's the next step, and it's your call."**
 

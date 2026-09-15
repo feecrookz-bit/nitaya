@@ -102,7 +102,7 @@ td:first-child{color:var(--ink);font-weight:600;width:34%}
   <p class="sub">${esc(C.META.sub)}</p>
   <div class="meta">
     <div><b>Private preview</b><a href="${C.META.link}">${esc(C.META.link)}</a></div>
-    <div><b>Password</b><code>${esc(C.META.password)}</code></div>
+    <div><b>Access</b><code>${esc(C.META.password || 'Open, no password')}</code></div>
     <div><b>Opens on</b>Any phone or computer</div>
   </div>
 </div></section>
@@ -177,9 +177,9 @@ td:first-child{color:var(--ink);font-weight:600;width:34%}
   <p class="kicker">How to view it</p>
   <h2>The preview.</h2>
   <ul class="plain" style="margin-top:20px">${C.HOW_TO_VIEW.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
-  <p style="margin-top:24px"><a href="${C.META.link}" style="color:var(--gold);font-weight:600">${esc(C.META.link)}</a> · password <code style="font-family:ui-monospace,Menlo,Consolas,monospace">${esc(C.META.password)}</code></p>
+  <p style="margin-top:24px"><a href="${C.META.link}" style="color:var(--gold);font-weight:600">${esc(C.META.link)}</a> · ${C.META.password ? 'password <code style="font-family:ui-monospace,Menlo,Consolas,monospace">' + esc(C.META.password) + '</code>' : 'open, no password'}</p>
   <div class="biz"><b>Nitya Stones</b><span>34 Mark Road, Hemel Hempstead HP2 7BW</span><span><a href="tel:03302369227">0330 236 9227</a> · <a href="tel:07932009870">07932 009870</a></span><span><a href="mailto:info@nityastones.co.uk">info@nityastones.co.uk</a></span><span>Mon–Fri 08:00–18:00 · Sat 08:00–13:00</span></div>
-  <div class="foot"><span>Prepared for the owner of Nitya Stones · ${esc(C.META.date)}</span><span>Private. Please don’t forward the password.</span></div>
+  <div class="foot"><span>Prepared for the owner of Nitya Stones · ${esc(C.META.date)}</span><span>${C.META.password ? 'Private. Please don’t forward the password.' : 'Private to Nitya Stones.'}</span></div>
 </div></section>
 `
 // Every non-ASCII character becomes a numeric entity, so the page reads

@@ -11,7 +11,7 @@ Written 14 September 2026. Everything below is true of the `main` branch on that
 ### What it is and where it lives
 
 - **The code**: github.com/feecrookz-bit/nitaya, branch `main`. Every push to `main` rebuilds and redeploys the preview by itself in about half a minute (GitHub Actions, `.github/workflows/pages.yml`).
-- **The preview**: https://feecrookz-bit.github.io/nitaya/ behind a password (`PaymentNeeded`). The password lives as a repository secret called `SITE_PASSWORD`; change it there, never in the code. Don't forward the password in email chains; give it by phone or in person.
+- **The preview**: https://feecrookz-bit.github.io/nitaya/, open since 15 September 2026 (the owner's decision after the first payment) and kept out of search engines with a noindex tag. To gate it again, remove the repository variable `PUBLIC_PREVIEW` in Settings → Secrets and variables → Actions → Variables; the `SITE_PASSWORD` secret then applies again. Never put a password in the code, and never forward one in an email chain.
 - **The owner pack**: `present/Nitya-Stones-Website-Upgrade-Pack.pdf`, and the presenter one-pager `present/SCRIPT.md`.
 - **The lists that matter**: `OPTIONS.md` (every decision and asset still needed from the yard), `COMPETITOR.md` (the Royale Stones study), `AUDIT.md` (what has been checked and how to re-run it), `DEPLOY.md` (the GitHub transfer, Cloudflare Pages, old-address redirects and go-live).
 

@@ -7,7 +7,7 @@ export const META = {
   heading: 'The website upgrade',
   sub: 'A working demonstration of the new nityastones.co.uk, built before any backend is connected, so the decision can be made on the real thing.',
   link: 'https://feecrookz-bit.github.io/nitaya/',
-  password: 'PaymentNeeded',
+  password: '',   // the preview is open since 15 September 2026
   date: 'September 2026',
 }
 
@@ -160,7 +160,7 @@ export const GO_LIVE = [
   ['Us', 'Connect the demo to your existing WooCommerce: products, stock, payments, orders and emails come from it. The same fields you use now.'],
   ['Us', 'Move the blog articles under Guides and bring the legal pages across, with redirects from every old address.'],
   ['Us', 'Put your real delivery rates in.'],
-  ['You and us', 'Point nityastones.co.uk at the new site and remove the preview password. The old site stays available until you are happy.'],
+  ['You and us', 'Point nityastones.co.uk at the new site. The old site stays available until you are happy.'],
 ]
 
 export const OPTIONS = [
@@ -171,7 +171,7 @@ export const OPTIONS = [
 export const OPTIONS_NOTE = 'Recommendation if you want it: build it into the site, add the free single-slab view, and trial a licensed tool alongside as a comparison. None of this is needed for go-live.'
 
 export const HOW_TO_VIEW = [
-  'Open the link on a phone or a computer and enter the password. The page decrypts in your browser; nothing is sent anywhere.',
+  'Open the link on a phone or a computer. Nothing is charged, nothing is sent anywhere, and the page is not listed by search engines.',
   'Tap the sun/moon button in the header to switch between dark and light.',
   'Add things to the bag and go through checkout; nothing is charged and nothing is stored beyond your own device.',
   'Everything you see is a real screen. If a detail is wrong, it is a five-minute change.',
