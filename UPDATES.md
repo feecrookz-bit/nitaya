@@ -27,6 +27,7 @@ The owner pack describes the site as it stood at the meeting. This is the separa
 ## 6. The stone in 3D
 - **See it in 3D** on every product page: one slab turned in the hand, or laid in its pattern with pointed joints (a wall for cladding), dry or wet. The face is the product's own photograph.
 - The turning slab is also a slide in every product's photo gallery, with a "3D" badge on its thumbnail.
+- 15 September: the 3D stone rebuilt to look like the stone sold. True thickness (a 22 mm slab is 22 mm, not the chunky block it was), neutral light with no tone mapping so the face shows the photograph's own colour (measured: within a few percent of the texture on every range checked), fine relief taken from the photograph itself, a soft studio environment so wet and polished stone reflect properly, and twelve textures re-cut to a single clean slab face where the store's photograph showed joints, neighbouring tiles or a border (Black Limestone, Autumn Brown, Fossil Mint, Bodo White, Crystal Gris, Himalayan White, HS Beige, Sinai Pearl mixed, Calacatta Blanco, both Statuarios, Eden Ash). Textures now 1280 px.
 - Wet is simulated until the hosed photographs come in; the yard has them, we need the originals.
 
 ## 7. Essentials

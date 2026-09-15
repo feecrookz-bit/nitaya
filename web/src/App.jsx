@@ -781,11 +781,11 @@ function OrderBox({ p, bag, setAdded, added }) {
 const stoneProps = (p) => {
   const m = p.size.match(/(\d+)\s*×\s*(\d+)/)
   const size = p.packing?.mode === 'mixed' ? [900, 600] : m ? [+m[1], +m[2]] : [900, 600]
-  return { size, pattern: p.cat === 'cladding' ? 'wall' : p.packing?.mode === 'mixed' ? 'mixed' : size[0] === size[1] ? 'stack' : 'half', riven: /riven/i.test(p.finish) && p.cat !== 'outdoor', thick: parseInt(p.thick) || 20, texture: p.texture || p.gallery[0] || p.img }
+  return { size, pattern: p.cat === 'cladding' ? 'wall' : p.packing?.mode === 'mixed' ? 'mixed' : size[0] === size[1] ? 'stack' : 'half', riven: /riven/i.test(p.finish) && p.cat !== 'outdoor', finish: /riven/i.test(p.finish) && p.cat !== 'outdoor' ? 'riven' : /polish|gloss/i.test(p.finish) ? 'polished' : 'matt', thick: parseInt(p.thick) || 20, texture: p.texture || p.gallery[0] || p.img }
 }
 function Stone3D({ p }) {
   const [mode, setMode] = useState('slab'), [wet, setWet] = useState(false)
-  const { size, pattern, riven, thick, texture } = stoneProps(p)
+  const { size, pattern, riven, thick, texture, finish } = stoneProps(p)
   return (
     <section className="chapter" style={{ paddingBlock: 'clamp(40px,6vw,80px)', paddingTop: 0 }}><div className="wrap">
       <div className="head-row"><div><p className="kicker">See it in 3D</p><h2>{p.name}, turned in the hand and laid on the ground.</h2></div>
@@ -795,7 +795,7 @@ function Stone3D({ p }) {
         </div>
       </div>
       <div className={`stone3d ${wet ? 'wet' : ''}`}>
-        <Suspense fallback={<div className="hero-3d" aria-hidden="true" />}><StoneScene texture={texture} mode={mode} wet={wet} size={size} pattern={pattern} riven={riven} thick={thick} /></Suspense>
+        <Suspense fallback={<div className="hero-3d" aria-hidden="true" />}><StoneScene texture={texture} mode={mode} wet={wet} size={size} pattern={pattern} riven={riven} thick={thick} finish={finish} /></Suspense>
         <div className="hero-static"><img src={p.gallery[0] || p.img} alt="" /></div>
       </div>
       <p className="note">Drag to turn. The face is the yard’s own photograph wrapped on the stone; {mode === 'laid' ? (p.cat === 'cladding' ? 'the wall is a running bond of 600 × 150 strips' : `laid ${pattern === 'mixed' ? 'random from the four-size pack' : pattern === 'stack' ? 'stack bond' : 'half bond'} with 10 mm pointed joints`) : 'at true proportions'}. Wet is simulated from the dry photograph until the hosed slabs are shot; real stone comes up darker and richer than any screen shows.</p>

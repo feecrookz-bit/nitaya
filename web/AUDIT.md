@@ -16,6 +16,10 @@ Run before the owner presentation, against the build that is now live behind the
 | Gate on the live host, desktop and phone viewports | `scratchpad/gatefull.js` | Clean |
 | Go-live: gate up or down as expected, safety headers, fallback 200, immutable assets, all 114 redirects and the two wildcards, the invisible-character addresses, old addresses landing on the right product in a browser | `scripts/audit/golive.cjs` (`BASE=` the deployed address, `EXPECT=open` after go-live) | Passes against the local Cloudflare-style server (`npm run preview:pages`), open and gated |
 
+## 3D rebuild, 15 September 2026
+
+The slab, laid and wall views rebuilt to match the stone sold. Checked by measuring the rendered top face against the texture's mean colour on six ranges (Raj Green, Kandla Grey 900, Black Limestone, Quartz White, Copper Slate, Calacatta Blanco): before, the warm lights and tint put every face 10–30% off and yellow; after, all within a few percent (1.01–1.19, the limestone's facets accounting for the high end). The cause of a stubborn 25% overexposure was the environment map, which the material's intensity setting does not scale; it is now scaled at scene level. Re-run after: crawl clean, flows no findings, gate clean, axe 0.
+
 ## Readiness audit, 15 September 2026
 
 Fresh builds, every script, and the end-to-end checks run three times over to see they hold steady.

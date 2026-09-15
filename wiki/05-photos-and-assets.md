@@ -9,7 +9,7 @@ Every image on the site is the yard's own, taken from its WordPress media librar
 | `python3 scripts/photos.py fetch` | Downloads the originals listed in `photos.json` into `scripts/originals/` (not committed) |
 | `python3 scripts/photos.py grade` | Grades each original and writes `src/assets/<name>.jpg` |
 | `python3 scripts/photos.py gallery` | Builds the per-product gallery frames from `gallery.json` |
-| `python3 scripts/photos.py textures` | Cuts a 768 px square texture from each studio render for the 3D views |
+| `python3 scripts/photos.py textures` | Cuts a 1280 px face texture from each studio original for the 3D views; `face_box` in the manifest picks one clean slab where the photograph shows several |
 | `python3 scripts/photos.py sheet` | A before/after contact sheet for checking the grade |
 
 The grade is the same pass for every image so the cards read as one shoot: grey-world white balance at 60%, auto-levels on the 0.5/99.5 percentiles, a gentle S-curve, +6% saturation, an unsharp mask, then a crop to the target aspect. A single tile on a plain ground is first cropped to the tile itself, which is what turns a phone snap on the yard floor into a product shot. Per-image overrides live in `photos.json`: `trim_top` and `trim_bottom` remove baked-in captions, `grade: false` skips the tonal work for texture maps.

@@ -446,10 +446,10 @@ def textures():
         tex = white_balance(face_texture(im, spec))
         sw, sd = spec['slab']
         tex = crop_aspect(tex, f'{sw}:{sd}')
-        w = 768
+        w = 1280
         tex = tex.resize((w, max(64, int(w * sd / sw))), Image.LANCZOS)
-        tex = tex.filter(ImageFilter.UnsharpMask(radius=1.0, percent=35, threshold=3))
-        tex.save(os.path.join(OUT, 't-' + name[2:] + '.jpg'), quality=72, optimize=True, progressive=True)
+        tex = tex.filter(ImageFilter.UnsharpMask(radius=1.0, percent=30, threshold=3))
+        tex.save(os.path.join(OUT, 't-' + name[2:] + '.jpg'), quality=76, optimize=True, progressive=True)
         n += 1
     print('textures:', n)
 

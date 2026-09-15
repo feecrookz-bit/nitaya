@@ -41,7 +41,7 @@ Stone, dimensions, one of four patterns drawn to scale in SVG, allowance, whole 
 
 ## See it in 3D (`Stone3D`, `StoneScene.jsx`)
 
-Two modes: one slab turned in the hand, or the stone laid in its pattern with pointed joints (a wall for cladding). Dry or wet. The face is the product's own texture (page 5) wrapped on a slab with a riven displacement for sandstone; the laid field gives each slab its own window on the texture, mirrored and rotated, so no two slabs read the same. The camera rig changes with the mode without remounting the canvas, which is what kept WebGL from losing its context. The wet look is a material change and is labelled simulated.
+Two modes: one slab turned in the hand, or the stone laid in its pattern with pointed joints (a wall for cladding). Dry or wet. Everything is at true scale: a 22 mm slab is 22 mm thick against a 900 mm face. The face is the product's own texture (page 5) on a physical material that also takes its fine relief from the photograph as a bump map; sandstone and limestone get a cleft, flat-shaded top on top of that. Lighting is neutral with no tone mapping, calibrated so the top face shows the photograph's colour within a few percent, plus a small studio environment (drawn from light panels, no file fetched) for the reflections wet and polished stone need. The environment's share is set at scene level, because the material-level intensity does not scale it in this three.js. Wet is a darker base under a clear coat. The laid field gives each slab its own window on the texture, mirrored and rotated, so no two slabs read the same. The camera rig changes with the mode without remounting the canvas, which is what kept WebGL from losing its context. The wet look is labelled simulated.
 
 ## Gallery (`Gallery`)
 
