@@ -8,7 +8,7 @@ Do this first; Cloudflare connects to wherever the repository ends up.
 
 1. The company creates a GitHub organisation (or a GitHub account in the business's name) and adds Fee and Coleisha as members.
 2. On github.com/feecrookz-bit/nitaya: Settings → General → Danger Zone → **Transfer**. Type the new owner. GitHub keeps redirects from the old address, so clones and the Pages workflow keep working.
-3. **Secrets do not transfer.** Straight after: Settings → Secrets and variables → Actions → add `SITE_PASSWORD` again. Without it the preview workflow stops with an error rather than publishing the site open; that is by design.
+3. **Secrets and variables do not transfer.** Straight after: Settings → Secrets and variables → Actions → add the secret `SITE_PASSWORD` again, and the repository variable `PUBLIC_PREVIEW` = `true` if the preview is to stay open. With neither set the preview workflow stops with an error rather than publishing the site open; that is by design.
 4. Settings → Pages: confirm the source is the `gh-pages` branch, root. The preview address becomes `https://<new-owner>.github.io/nitaya/`; the build path `/nitaya/` is unchanged. Pass the new address on to whoever has the old one.
 5. Push any commit (or run the workflow by hand under Actions) and check the preview unlocks.
 
