@@ -31,7 +31,7 @@ Left, in the dashboard (about ten minutes, needs an account owner):
 
 The public routes (`/public/*`) take no sign-in and answer only the site's origin (`PUBLIC_ORIGINS`). Put a Cloudflare rate-limit rule in front of them.
 
-To redeploy after a change: `npm run build` in `../app` (if the app changed), then `npm run deploy` here, with `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in the environment (the same token as the site's deploy workflow, which needs D1 → Edit as well as Workers Scripts → Edit).
+Redeploys are automatic: the `stock` job in `.github/workflows/cloudflare.yml` builds the app, applies any new migrations and deploys this Worker on every push to `main` (once the `CLOUDFLARE_API_TOKEN` secret exists; the token needs D1 → Edit as well as Workers Scripts → Edit). By hand it is `npm run build` in `../app`, then `npm run migrate` and `npm run deploy` here, with `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in the environment.
 
 ## Routes (Phase 0)
 
