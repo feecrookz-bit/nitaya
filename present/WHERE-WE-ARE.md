@@ -23,6 +23,20 @@ Nitya Stones website upgrade, 15 September 2026. One page on what is done, what 
 3. Real delivery rates entered.
 4. Go-live day: the domain switches, the password comes off, the go-live audit runs against the real address. The old site stays up until the owner says otherwise.
 
+## Time scale, from the day the keys arrive
+
+Working days, one person, assuming the Cloudflare and GitHub accounts exist and the yard's answers come in alongside.
+
+| Days | Work | Done when |
+|---|---|---|
+| 1–2 | Cloudflare Pages project, Worker, the site on its temporary address; WooCommerce read on the test key: products, prices and stock on the site come from the store | The preview shows the store's live prices and stock |
+| 3–5 | Checkout hands to WooCommerce on test-mode payments; cart, delivery, collection and the chosen day carried through; trial orders placed and seen in WooCommerce | A test order placed on the new site appears in WooCommerce with the right lines, day and address |
+| 6–7 | Blog and legal pages moved, redirects live, real shipping rates in, the go-live audit run against the temporary address | Every old address lands on the right page; the audit reports no findings |
+| 8 | Nameservers settled, custom domain added, the switch rehearsed and the password taken off on a staging copy | The owner has seen the final site and agreed the day |
+| Go-live day | Domain switched in the morning, the go-live audit run against nityastones.co.uk, a real order placed and refunded, the old site left up | Live |
+
+About two working weeks from the keys to go-live, with the switch itself a morning. What stretches it: a payment plugin that needs its own hosted page (Klarna usually does; Stripe does not), nameservers taking a day to settle, and answers from the yard arriving late (the copy confirmations and the five listings to correct must be in before the switch).
+
 ## After the connection: the stock system
 
 A stock system of the yard's own is planned and its foundation built, so the yard's own tracker no longer holds anything up. It runs in the same Cloudflare account at admin.nityastones.co.uk: a ledger of every movement, products seeded from the warehouse sheet with a code per line, orders, deliveries with proof, and four staff roles behind a sign-in by email. The first screens exist and the pack maths is shared with the site. It is an after-connection job: roughly fifteen working days of build, in phases, each tested before the next.
