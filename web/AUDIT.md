@@ -20,6 +20,10 @@ Run before the owner presentation, against the build that is now live behind the
 
 The slab, laid and wall views rebuilt to match the stone sold. Checked by measuring the rendered top face against the texture's mean colour on six ranges (Raj Green, Kandla Grey 900, Black Limestone, Quartz White, Copper Slate, Calacatta Blanco): before, the warm lights and tint put every face 10–30% off and yellow; after, all within a few percent (1.01–1.19, the limestone's facets accounting for the high end). The cause of a stubborn 25% overexposure was the environment map, which the material's intensity setting does not scale; it is now scaled at scene level. Re-run after: crawl clean, flows no findings, gate clean, axe 0. Later the same day the laid field (per-slab tone and height, jointing-compound bed, deeper field) and the cladding wall (individual strips with projection and per-strip texture bands) were rebuilt; the same four checks re-run clean.
 
+## Testing the live gate: a trap
+
+A gate page fetched on its own, without the site's asset files beside it, decrypts and then fails to load the site, which the gate reports as a wrong password. Test the live gate with the built assets next to it (copy `publish/assets` alongside the downloaded `index.html` and serve the folder), or decrypt the page offline. On 15 September this produced a false "wrong password" for an hour before the cause was found; the secret had been right all along. While the preview is open (`PUBLIC_PREVIEW=true`) there is no gate to test on the live address; `gate.cjs` still runs against the local gated build.
+
 ## Readiness audit, 15 September 2026
 
 Fresh builds, every script, and the end-to-end checks run three times over to see they hold steady.

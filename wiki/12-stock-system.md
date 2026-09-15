@@ -11,6 +11,8 @@ The yard's own stock system, planned on 15 September 2026 when the existing trac
 | Shared pack maths | `wms/shared` (`@nitya/packing`) | `coverOf`, `mixFill`, `quantify`, `packFrom`; nine tests pass |
 | API | `wms/api` | Cloudflare Worker over D1: schema, seed migration, Access sign-in with roles, products, quantify, stock, users, public availability |
 | Staff app | `wms/app` | First screens: Today, Stock, a product (packing, stock, the area calculator, movements), Users. Builds; runs against the local Worker |
+| Import | `wms/api/scripts/import.mjs` | Turns an opening count and a transactions export into ledger movements; refuses a file with a problem and names the lines. Sample files in `wms/seed/samples` |
+| For Simar | `wms/SIMAR.md`, `wms/SIMAR-AI.md` and their PDFs in `present/` | The features note with the eleven flagged rows, and the four tasks written for his AI with exact file formats |
 
 ## Phase 0: done
 
@@ -30,6 +32,10 @@ Two things learned on the way, both now in the code:
 The site keeps its own product file for copy and photographs; the stock system is the authority on packing and availability. `site_id` on a product row ties the two. The site's `PACKING` table and the seed agree today; when the shared package is imported by the site (a small change, later), there is one source.
 
 WooCommerce is not in the system. When it joins, its order webhook posts to the web-order route and the Worker pushes availability into its stock field, both on the same Worker.
+
+## What Simar owes
+
+No code. The flagged-row decisions, an opening stock count in base units on one day, the code column on his sheet, and optionally an export of his transactions. His AI has the steps and the formats; our import checks and loads the files.
 
 ## Next
 

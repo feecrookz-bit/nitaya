@@ -47,6 +47,14 @@ The owner pack describes the site as it stood at the meeting. This is the separa
 - A search box in the header on wide screens and in the menu everywhere, feeding the shop's existing search.
 - A floating WhatsApp button, bottom right, on every page except checkout, plus a "WhatsApp the yard" row in the menu. It opens the yard's own number.
 
+## 11. The preview opened
+
+- After the first payment, the preview is open at the same address with no password, kept out of search engines. One repository variable turns the gate back on.
+
+## 12. The yard's own stock system
+
+- Planned and started as an after-connection job: a ledger of every movement, products seeded from the warehouse sheet with a code per line, orders, deliveries with proof, four staff roles behind an email sign-in, at admin.nityastones.co.uk once the company's Cloudflare account exists. The foundation and the first staff screens are built and tested locally. Simar's remaining jobs need no code and are written for his AI, with the exact files our import loads.
+
 ## What the yard still needs to give (short form)
 1. WooCommerce REST API key; payment plugins and their test keys; shipping rates; a WordPress admin or staging login; sheet access and the script's web-app URL; DNS access nearer the day.
 2. Cladding colourway names; delivery terms and any split-pack or cutting charge; the copy confirmations; the five listings to correct; Sinai Pearl added to the sheet; whether WooCommerce stays as the till.

@@ -2,7 +2,7 @@
 
 Two readers: **Coleisha**, who takes over day-to-day changes to the site using Claude Code, and **Nitya Stones**, who need to know what exists, what it still needs from them, and who is doing what. Fee keeps the DNS switch and the API connections.
 
-Written 14 September 2026. Everything below is true of the `main` branch on that date.
+Written 14 September 2026, kept current to 15 September. Everything below is true of the `main` branch on that date.
 
 ---
 
@@ -140,6 +140,7 @@ The site is a static build and needs no server of its own. The preview runs on G
 ### Reading
 
 - `wiki/README.md`: the build wiki, the reference for everything here in more depth.
+- `wms/PLAN.md`: the stock system; `present/Nitya-Stones-Where-We-Are.pdf`: the one-page status with the time scale; `present/BACKEND-REQUEST.md`: what the company's backend side must provide.
 - `COMPETITOR.md`: Royale Stones, what they do well, what the site took from them and what it left alone, and the yard's price position against them.
 - `OPTIONS.md`: the full decisions list, in more detail than above.
 - `AUDIT.md`: every check the site has passed and how to run it again.

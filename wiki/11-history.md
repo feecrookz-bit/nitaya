@@ -1,6 +1,6 @@
 # 11. History
 
-Sixty-two commits over five days, from the commit log.
+80 commits over six days, from the commit log.
 
 ## 10 September: from a page to a store
 
@@ -21,3 +21,7 @@ Every photograph the store has, on the product pages, with the detail from the l
 ## 14 September: the meeting and after
 
 The seven customer photographs from About and nine more from listings and the blog. Captions over photographs made readable. Then the ordering rework: by the pack or by the area, loose slabs, the unit table, delivery dates, the offer pop-up, pack sizes from the warehouse database. See it in 3D on every product; cladding as six colourways; the 3D slide in the gallery. Pack sizes settled by the sheet. The handover. The allowance for cuts as a tick box. Essentials. The checkout calendar. Every pack splits, mixed packs in their four sizes. `UPDATES.md`. Shop filters, header search, the WhatsApp button. The stock tracker brief for Coleisha and Simar. Hosting and ownership in the handover. The Cloudflare preparation: build script, redirects, headers, path shim, `DEPLOY.md`. The go-live audit and this wiki.
+
+## 15 September: readiness, the stone made real, the stock system
+
+The readiness audit with the end-to-end loop, and its fixes (touch targets, small print, the WhatsApp button off the captions, footer headings). The 3D stone rebuilt to match the stone sold: true thickness, neutral light, textures re-cut; then the laid field and the cladding wall. The password rotated, then the preview opened after the first payment. The stock system: plan, seed from the warehouse sheet, shared pack maths, the Worker over D1 with sign-in and roles, the first staff screens, the import for Simar's files, the notes and steps for him and his AI. The backend request, the one-page status with the time scale, the wiki and its PDF.

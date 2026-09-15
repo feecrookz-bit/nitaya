@@ -23,7 +23,7 @@ Two scripts, both under "things not to touch" in the handover:
 
 ## GitHub Pages (the preview)
 
-`.github/workflows/pages.yml` runs on every push to `main`: install, build under `/nitaya/`, inline, protect with the `SITE_PASSWORD` secret, add `404.html` and `.nojekyll`, publish to the `gh-pages` branch. If the secret is missing it stops with an error rather than publishing the site open; a repository variable `PUBLIC_PREVIEW=true` is the only way past that. A deploy takes about half a minute; the audit compares the size of the live gate page with the local build to confirm it landed.
+`.github/workflows/pages.yml` runs on every push to `main`: install, build under `/nitaya/`, inline, protect with the `SITE_PASSWORD` secret, add `404.html` and `.nojekyll`, publish to the `gh-pages` branch. If the secret is missing it stops with an error rather than publishing the site open. The repository variable `PUBLIC_PREVIEW=true` publishes it open on purpose, with a noindex tag; the preview has been open since 15 September 2026 (the owner's decision after the first payment). Remove the variable and the gate returns on the next deploy. A deploy takes about half a minute; the audit compares the size of the live gate page with the local build to confirm it landed.
 
 ## Cloudflare Pages (the live site)
 

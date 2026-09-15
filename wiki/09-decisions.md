@@ -36,3 +36,5 @@ From the Royale Stones study (`COMPETITOR.md`): showrooms, the £80 split-pallet
 - WooCommerce stays as the till, with the sheet syncing to it, rather than the site talking to the sheet.
 - Cloudflare Pages for the live site, GitHub Pages for the preview; no Vercel.
 - The blog moves under Guides with redirects rather than being dropped.
+- The preview is open (15 September, after the first payment), with a noindex tag; the gate can be restored by removing one variable.
+- The yard gets a stock system of its own rather than waiting on the tracker; the tracker's data seeds it, and its maintainer's remaining jobs need no code.

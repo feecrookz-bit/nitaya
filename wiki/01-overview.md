@@ -21,14 +21,14 @@ It replaces a WordPress/WooCommerce store whose listings contradict each other a
 | Photographs | 109 gallery frames, 23 project photographs, 36 studio renders, 36 textures, all from the yard's own images |
 | Guides | 9, with drawings to scale |
 | Routes | 69 crawled |
-| Source | about 3,700 lines across 11 files in `web/src` |
-| Commits | 62, 10 to 14 September 2026 |
+| Source | about 3,700 lines across 11 files in `web/src`; the stock system adds a Worker, a schema, a shared package and a staff app under `wms/` |
+| Commits | 80, 10 to 15 September 2026 |
 | Gated page weight | about 1.1 MB to unlock; images and the 3D code load on demand |
 
 ## Where everything lives
 
 - Code: github.com/feecrookz-bit/nitaya, branch `main`. Every push rebuilds the preview by itself.
-- Preview: https://feecrookz-bit.github.io/nitaya/ behind a password. The password is a repository secret named SITE_PASSWORD and is given by phone, never in an email chain.
+- Preview: https://feecrookz-bit.github.io/nitaya/, open since 15 September 2026 and kept out of search engines. A repository variable turns the password gate back on.
 - Owner pack: `present/Nitya-Stones-Website-Upgrade-Pack.pdf`, 23 pages, with `present/SCRIPT.md` for the presenter.
 - Stock tracker brief: `present/Nitya-Stones-Stock-Tracker-Link.pdf`.
 - Private web copies of the site, the pack, the handover and the updates list exist as Claude artifacts; Fee holds the links.
