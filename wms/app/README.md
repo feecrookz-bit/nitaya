@@ -14,10 +14,7 @@ You are signed in as the Worker's `DEV_USER` (an admin), so every screen shows.
 
 ## Put it live
 
-1. Workers & Pages → Create → Pages → connect the repository. Root directory `wms/app`, build command `npm run build`, output `dist`.
-2. Custom domains → add `admin.nityastones.co.uk` (the domain's DNS must be on Cloudflare; DEPLOY.md).
-3. The Worker's route `admin.nityastones.co.uk/api/*` (in `../api/wrangler.toml`) puts the API next to the app on the same hostname, so calls are same-origin and carry the sign-in cookie.
-4. Zero Trust → Access → Applications → one self-hosted application for `admin.nityastones.co.uk` (covering `/api/*` too). Policy: the staff emails or the company's Google Workspace domain. Its audience tag goes into the Worker's `ACCESS_AUD`.
+The app is served by the API Worker (`../api/wrangler.toml`, `[assets]` block) from this folder's `dist`, so there is no separate project: `npm run build` here, then `npm run deploy` in `../api`. Live at https://nitya-stock-api.coleisha.workers.dev; `admin.nityastones.co.uk` is added as a custom domain on that Worker once the domain's DNS is on Cloudflare. Sign-in is one Cloudflare Access application on the hostname, covering `/api/*` too (see `../api/README.md`, "What is done and what is left").
 
 ## Screens (Phase 0)
 

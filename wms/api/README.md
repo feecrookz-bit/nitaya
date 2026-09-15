@@ -16,18 +16,22 @@ Local development signs you in as `DEV_USER` (see `wrangler.toml`, `[env.dev]`);
 
 ## The staff address
 
-`admin.nityastones.co.uk`: the staff app (a Cloudflare Pages project with that custom domain) at the root, this Worker under `/api/*` (a route in `wrangler.toml`), and one Cloudflare Access application covering the hostname so both are behind the same sign-in. Both need the domain's DNS on Cloudflare, which DEPLOY.md sets up; until then the Worker deploys to its `workers.dev` address and the app to its `pages.dev` address, and Access is put on those.
+One Worker serves both: the staff app's built files (`../app/dist`, the `[assets]` block in `wrangler.toml`) at the root, and this API under `/api/*` (`run_worker_first`). Same hostname, so the app's calls are same-origin and carry the sign-in cookie. **Live since 15 September 2026 at https://nitya-stock-api.coleisha.workers.dev** in the company's Cloudflare account, database created and migrations applied. Once the domain's DNS is on Cloudflare, add `admin.nityastones.co.uk` as a custom domain on this Worker (Settings → Domains & Routes); nothing else changes.
 
-## Put it live (once, in the company's Cloudflare account)
+## What is done and what is left
 
-1. `npx wrangler login`, then `npx wrangler d1 create nitya-stock`. Paste the id it prints into `wrangler.toml` under `database_id`.
-2. Edit `migrations/0003_first_admin.sql` to the real first admin's email, then `npm run migrate`.
-3. Zero Trust → Access → Applications → Add a self-hosted application for the staff address (the Pages project the app will deploy to, and this Worker's route). Policy: allow the emails of the staff, or the company's Google Workspace domain. Copy the application's **Audience tag** and the team domain (`<team>.cloudflareaccess.com`).
-4. `npx wrangler secret put ACCESS_AUD` and set `ACCESS_TEAM_DOMAIN` in `wrangler.toml` (or as a secret). Leave `DEV_USER` empty.
-5. `npm run deploy`. Check `/health` opens and `/me` returns the first admin after signing in through Access.
-6. Add the rest of the staff with `POST /users` (the app's Users screen, once built) with their role.
+Done: `wrangler d1 create nitya-stock` (id in `wrangler.toml`), `npm run migrate` (0001 schema, 0002 seed, 0003 first admin, whose email was then set to the real first admin's with one `UPDATE`), `npm run build` in `../app`, `npm run deploy`. `/api/public/availability` answers from the seeded stock; every other route answers 401 until Access is in front.
+
+Left, in the dashboard (about ten minutes, needs an account owner):
+
+1. Zero Trust → **Enable Access** (choose a team name; the free plan covers this). The account has never had it on.
+2. Access → Applications → Add a self-hosted application for the Worker's hostname (later the custom domain too). Policy: allow the staff emails, or the company's Google Workspace domain if it has one. Sign-in by one-time code to email needs nothing else.
+3. Copy the application's **Audience tag** and the team domain (`<team>.cloudflareaccess.com`) into `wrangler.toml` (`ACCESS_AUD`, `ACCESS_TEAM_DOMAIN`), leave `DEV_USER` empty, `npm run deploy`.
+4. Check `/api/me` returns the first admin after signing in, then add the rest of the staff on the Users screen with their roles.
 
 The public routes (`/public/*`) take no sign-in and answer only the site's origin (`PUBLIC_ORIGINS`). Put a Cloudflare rate-limit rule in front of them.
+
+To redeploy after a change: `npm run build` in `../app` (if the app changed), then `npm run deploy` here, with `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in the environment (the same token as the site's deploy workflow, which needs D1 → Edit as well as Workers Scripts → Edit).
 
 ## Routes (Phase 0)
 

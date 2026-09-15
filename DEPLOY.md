@@ -74,14 +74,14 @@ The other thirty-eight product addresses are ordinary letters and dashes and nee
 
 ## 3a. The staff address: admin.nityastones.co.uk
 
-The stock system (`wms/`) lives at `admin.nityastones.co.uk`, in the same Cloudflare account, once the domain's DNS is on Cloudflare:
+The stock system (`wms/`) is one Worker, `nitya-stock-api`, serving the staff app's files at the root and the API under `/api/*`. **Deployed 15 September 2026** into the company's Cloudflare account at https://nitya-stock-api.coleisha.workers.dev, with its D1 database `nitya-stock` created and the migrations applied. The API refuses everything except the site's public availability route until Access is in front of it.
 
-1. A second Pages project from the same repository: root directory `wms/app`, build command `npm run build`, output `dist`; custom domain `admin.nityastones.co.uk`.
-2. The Worker (`wms/api`): `npx wrangler d1 create nitya-stock`, the id into `wrangler.toml`, `npm run migrate`, `npm run deploy`. Its route `admin.nityastones.co.uk/api/*` is in the file, so the API sits next to the app on one hostname.
-3. Zero Trust → Access → Applications → a self-hosted application for `admin.nityastones.co.uk`, policy: the staff emails or the company's Google Workspace domain. Its audience tag becomes the Worker's `ACCESS_AUD`. Nobody outside that policy sees a byte of the staff app or the API.
-4. The first admin's email is in `wms/api/migrations/0003_first_admin.sql` before the migrations run; that admin adds everyone else from the Users screen.
+Left to do:
 
-Until the DNS is on Cloudflare there is no `admin.nityastones.co.uk`: the app deploys to its `pages.dev` address and the Worker to its `workers.dev` address, and Access goes on those instead. The step-by-step is in `wms/api/README.md` and `wms/app/README.md`.
+1. Zero Trust → Enable Access, then Access → Applications → a self-hosted application for the Worker's hostname; policy: the staff emails or the company's Google Workspace domain. Its audience tag and the team domain go into `wms/api/wrangler.toml` (`ACCESS_AUD`, `ACCESS_TEAM_DOMAIN`); redeploy. Nobody outside that policy then sees a byte of the staff app or the API. This needs the dashboard: the account has never had Access switched on, and the deploy token cannot do it.
+2. Once the domain's DNS is on Cloudflare: Workers & Pages → nitya-stock-api → Settings → Domains & Routes → add `admin.nityastones.co.uk`, and add the same hostname to the Access application.
+
+The step-by-step is in `wms/api/README.md`.
 
 ## 4. The final audit
 

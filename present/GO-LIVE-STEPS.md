@@ -64,7 +64,7 @@ Rolling back: up to stage 6, nothing has changed for customers, so rolling back 
 
 ## Stage 7. After go-live
 
-- **The stock system** at admin.nityastones.co.uk goes into the same Cloudflare account: a second Worker for the staff app, one for the API with its database, and Cloudflare Access in front so only staff emails get in. It is a separate job of about fifteen working days, after the connection.
+- **The stock system.** Its foundation is already deployed in the same Cloudflare account, at https://nitya-stock-api.coleisha.workers.dev: the staff app, the API and the database with every product from the warehouse sheet. Two things remain: switch on Cloudflare Access in the dashboard and put the staff emails in its policy (ten minutes, an account owner), and add admin.nityastones.co.uk to it once the domain is on Cloudflare. The rest of the build is a separate job of about fifteen working days after the connection.
 - **Changes to the site** are arranged through Coleisha from then on. Once the build is paid for, Nitya Stones owns everything on the site.
 
 ## Time scale

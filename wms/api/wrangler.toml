@@ -2,15 +2,21 @@ name = "nitya-stock-api"
 main = "src/index.js"
 compatibility_date = "2026-09-01"
 
+# One Worker serves both the staff app (static files from wms/app/dist, built
+# first with `npm run build` in wms/app) and the API under /api/*. Deployed
+# 15 September 2026 to https://nitya-stock-api.coleisha.workers.dev. Once the
+# domain's DNS is on Cloudflare, add admin.nityastones.co.uk as a custom domain
+# on this Worker (Settings → Domains & Routes); no route line is needed.
+[assets]
+directory = "../app/dist"
+not_found_handling = "single-page-application"
+run_worker_first = ["/api/*"]
+
 [[d1_databases]]
 binding = "DB"
 database_name = "nitya-stock"
-database_id = "replace-with-the-id-wrangler-d1-create-prints"
+database_id = "2c9a08c2-37cc-4ca2-8960-4fb4280ccc1a"
 migrations_dir = "migrations"
-
-# Production: the API answers under the staff address, next to the staff app.
-# Needs the domain's DNS on Cloudflare (DEPLOY.md); until then deploy without routes and use the workers.dev address.
-routes = [{ pattern = "admin.nityastones.co.uk/api/*", zone_name = "nityastones.co.uk" }]
 
 [vars]
 # The Cloudflare Access team domain and the application's audience tag, from
@@ -30,5 +36,5 @@ PUBLIC_ORIGINS = "http://localhost:5173,http://localhost:8788"
 [[env.dev.d1_databases]]
 binding = "DB"
 database_name = "nitya-stock"
-database_id = "replace-with-the-id-wrangler-d1-create-prints"
+database_id = "2c9a08c2-37cc-4ca2-8960-4fb4280ccc1a"
 migrations_dir = "migrations"
