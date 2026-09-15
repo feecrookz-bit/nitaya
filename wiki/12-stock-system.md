@@ -10,7 +10,7 @@ The yard's own stock system, planned on 15 September 2026 when the existing trac
 | Seed | `wms/seed/products.csv` | The warehouse sheet with a code per line: 109 rows, 72 active codes, 11 flagged |
 | Shared pack maths | `wms/shared` (`@nitya/packing`) | `coverOf`, `mixFill`, `quantify`, `packFrom`; nine tests pass |
 | API | `wms/api` | Cloudflare Worker over D1: schema, seed migration, Access sign-in with roles, products, quantify, stock, users, public availability |
-| Staff app | `wms/app` | Not started (Phase 1) |
+| Staff app | `wms/app` | First screens: Today, Stock, a product (packing, stock, the area calculator, movements), Users. Builds; runs against the local Worker |
 
 ## Phase 0: done
 
@@ -20,6 +20,10 @@ Two things learned on the way, both now in the code:
 
 - The sheet rounds m² per slab to two decimals (0.17 for 600 × 290, 0.08 for 290 × 290), which shrinks a mixed pack to 18.08 m². The seed computes m² from the stated dimensions instead, exact to the millimetre, and uses the sheet's figure only where there are no dimensions.
 - Wrangler environments do not inherit bindings; the dev environment declares the database again.
+
+## Where it lives
+
+`admin.nityastones.co.uk`: the staff app at the root (a Pages project with that custom domain), the Worker under `/api/*` (a route in `wrangler.toml`), one Cloudflare Access application over the hostname so both share the sign-in. It needs the domain's DNS on Cloudflare; until then the `pages.dev` and `workers.dev` addresses stand in. DEPLOY.md section 3a has the steps.
 
 ## How it fits
 

@@ -8,6 +8,10 @@ database_name = "nitya-stock"
 database_id = "replace-with-the-id-wrangler-d1-create-prints"
 migrations_dir = "migrations"
 
+# Production: the API answers under the staff address, next to the staff app.
+# Needs the domain's DNS on Cloudflare (DEPLOY.md); until then deploy without routes and use the workers.dev address.
+routes = [{ pattern = "admin.nityastones.co.uk/api/*", zone_name = "nityastones.co.uk" }]
+
 [vars]
 # The Cloudflare Access team domain and the application's audience tag, from
 # Zero Trust → Access → Applications. Empty in local dev: DEV_USER is used instead.
@@ -16,7 +20,7 @@ ACCESS_AUD = ""
 # Local development only: the email the Worker treats as signed in. Never set in production.
 DEV_USER = ""
 # Comma-separated origins allowed to call the public routes (the site).
-PUBLIC_ORIGINS = "https://nityastones.co.uk,https://www.nityastones.co.uk"
+PUBLIC_ORIGINS = "https://nityastones.co.uk,https://www.nityastones.co.uk,https://admin.nityastones.co.uk"
 
 [env.dev.vars]
 DEV_USER = "fee@example.test"

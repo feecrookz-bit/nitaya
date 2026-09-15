@@ -14,6 +14,10 @@ node scripts/smoke.mjs   # Phase 0 acceptance, in another terminal
 
 Local development signs you in as `DEV_USER` (see `wrangler.toml`, `[env.dev]`); `migrations/0003_first_admin.sql` gives that email the admin role. Nothing is verified locally. In production `DEV_USER` is empty and every staff request must carry a Cloudflare Access token.
 
+## The staff address
+
+`admin.nityastones.co.uk`: the staff app (a Cloudflare Pages project with that custom domain) at the root, this Worker under `/api/*` (a route in `wrangler.toml`), and one Cloudflare Access application covering the hostname so both are behind the same sign-in. Both need the domain's DNS on Cloudflare, which DEPLOY.md sets up; until then the Worker deploys to its `workers.dev` address and the app to its `pages.dev` address, and Access is put on those.
+
 ## Put it live (once, in the company's Cloudflare account)
 
 1. `npx wrangler login`, then `npx wrangler d1 create nitya-stock`. Paste the id it prints into `wrangler.toml` under `database_id`.

@@ -104,6 +104,7 @@ const publicRoutes = [
 export default {
   async fetch(req, env, ctx) {
     const url = new URL(req.url)
+    if (url.pathname.startsWith('/api/')) url.pathname = url.pathname.slice(4) // served as admin.nityastones.co.uk/api/*
     const corsHeaders = cors(env, req)
     if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: corsHeaders })
     try {
