@@ -140,7 +140,7 @@ The site is a static build and needs no server of its own. The preview runs on G
 ### Reading
 
 - `wiki/README.md`: the build wiki, the reference for everything here in more depth.
-- `wms/PLAN.md`: the stock system; `present/Nitya-Stones-Where-We-Are.pdf`: the one-page status with the time scale; `present/BACKEND-REQUEST.md`: what the company's backend side must provide.
+- `wms/PLAN.md`: the stock system; `present/Nitya-Stones-Where-We-Are.pdf`: the one-page status with the time scale; `present/BACKEND-REQUEST.md`: what the company's backend side must provide; `present/Nitya-Stones-Finishing-The-Job.pdf` (source `present/GO-LIVE-STEPS.md`): every step from the preview to go-live, stage by stage, with who does each.
 - `COMPETITOR.md`: Royale Stones, what they do well, what the site took from them and what it left alone, and the yard's price position against them.
 - `OPTIONS.md`: the full decisions list, in more detail than above.
 - `AUDIT.md`: every check the site has passed and how to run it again.
