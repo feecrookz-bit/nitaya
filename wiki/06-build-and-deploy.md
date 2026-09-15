@@ -25,17 +25,19 @@ Two scripts, both under "things not to touch" in the handover:
 
 `.github/workflows/pages.yml` runs on every push to `main`: install, build under `/nitaya/`, inline, protect with the `SITE_PASSWORD` secret, add `404.html` and `.nojekyll`, publish to the `gh-pages` branch. If the secret is missing it stops with an error rather than publishing the site open. The repository variable `PUBLIC_PREVIEW=true` publishes it open on purpose, with a noindex tag; the preview has been open since 15 September 2026 (the owner's decision after the first payment). Remove the variable and the gate returns on the next deploy. A deploy takes about half a minute; the audit compares the size of the live gate page with the local build to confirm it landed.
 
-## Cloudflare Pages (the live site)
+## Cloudflare (the live site)
 
-`scripts/pages.mjs` does the same job at the domain root, for Cloudflare to run on each push: gated when `SITE_PASSWORD` is set, open only when `PUBLIC_SITE=true`, and it refuses with neither. It writes no `404.html` on purpose: without one, Cloudflare serves the site with a 200 for any address, which the router and the path shim rely on.
+`scripts/pages.mjs` does the same job at the domain root: gated when `SITE_PASSWORD` is set, open with a noindex tag when `PUBLIC_PREVIEW=true`, open for real only when `PUBLIC_SITE=true`, and it refuses with none of them. It writes no `404.html` on purpose: unknown paths are served `index.html` with a 200, which the router and the path shim rely on.
 
-Project settings: root directory `web`, build command `npm run pages`, output `publish`. Everything else is in the repository.
+The site runs as a Cloudflare Worker serving the static build (`web/wrangler.jsonc`), because Cloudflare now creates new projects as Workers rather than Pages. `.github/workflows/cloudflare.yml` builds and deploys it with wrangler on every push to `main` (job `site`), and a second job (`stock`) builds the staff app, applies any new database migrations and deploys the stock system's Worker. Both need the repository secret `CLOUDFLARE_API_TOKEN` (Workers Scripts → Edit and D1 → Edit); the account id is in the workflow. No Git connection is set up in the Cloudflare dashboard.
+
+First deployed 15 September 2026 into the company's own Cloudflare account: the site at https://nitya-stones.coleisha.workers.dev, the stock system at https://nitya-stock-api.coleisha.workers.dev. The go-live audit against the site reports no findings. Custom domains are added on each Worker (Settings → Domains & Routes) once the domain's DNS is on Cloudflare.
 
 ## Old addresses
 
 `web/public/_redirects` maps every address on the current store: 40 products to their new pages, the four samples to Samples, categories to the filtered shop, about, contact, wholesale, FAQs, designer and services to their new pages, and the 45 blog posts, the legal pages and My Account to WordPress on a subdomain. The subdomain is written as `wp.nityastones.co.uk`, a working name to replace once decided.
 
-Two of the old product addresses begin with an invisible character (`%e2%81%a0`); `DEPLOY.md` explains the check to run on the first deploy and the one-line fix if it fails.
+Two of the old product addresses begin with an invisible character (`%e2%81%a0`). The first Cloudflare deploy showed that browsers send the encoding in capitals and Cloudflare matches the rule text literally, so both spellings are in the file and the go-live audit checks both.
 
 `web/public/_headers` caches the hashed asset files for a year and sets the usual safety headers.
 

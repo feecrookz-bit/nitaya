@@ -55,6 +55,12 @@ The owner pack describes the site as it stood at the meeting. This is the separa
 
 - Planned and started as an after-connection job: a ledger of every movement, products seeded from the warehouse sheet with a code per line, orders, deliveries with proof, four staff roles behind an email sign-in, at admin.nityastones.co.uk once the company's Cloudflare account exists. The foundation and the first staff screens are built and tested locally. Simar's remaining jobs need no code and are written for his AI, with the exact files our import loads.
 
+## 13. On Cloudflare
+
+- 15 September, evening: the site deployed into the company's own Cloudflare account, as a Worker serving the static build, at https://nitya-stones.coleisha.workers.dev, open with the noindex tag. The go-live audit against it found one thing, fixed the same hour: the two old product addresses beginning with an invisible character only redirected when the encoding was written in lower case; both spellings are now in the file and the audit checks both. Second run: no findings.
+- The stock system's foundation deployed beside it at https://nitya-stock-api.coleisha.workers.dev: the staff app, the API and the database with all 88 products from the warehouse sheet. Sign-in waits on Cloudflare Access being switched on in the dashboard (Coleisha) with the staff emails.
+- One workflow now deploys both on every push to the code, once the deploy token is stored as a GitHub secret. Until then Fee deploys by hand.
+
 ## What the yard still needs to give (short form)
 1. WooCommerce REST API key; payment plugins and their test keys; shipping rates; a WordPress admin or staging login; sheet access and the script's web-app URL; DNS access nearer the day.
 2. Cladding colourway names; delivery terms and any split-pack or cutting charge; the copy confirmations; the five listings to correct; Sinai Pearl added to the sheet; whether WooCommerce stays as the till.

@@ -7,11 +7,11 @@ Nitya Stones website upgrade, 15 September 2026. One page on what is done, what 
 - **The site.** A complete new front end for nityastones.co.uk: every range and price from the store, 136 of the yard's own photographs, ordering by the pack or by the area from the warehouse's pack sizes, split packs, a patio builder, calculator, guides, projects, trade, offers, filters and search, dark and light themes, and every stone in 3D, dry or wet. Viewable at the preview address; password by phone.
 - **Checked.** Behaviour, accessibility, typography, layout at five widths, spelling, text over photographs and the password gate all pass by script, re-run after every change.
 - **The documents.** The owner pack (PDF), the presenter script, the handover for Coleisha and the company, the deploy guide, the competitor study, the decisions list, the build wiki, all in the repository.
-- **Ready to host.** The site builds for Cloudflare Pages, every old store address has a redirect to the new site, and a go-live audit checks the live site in one command.
+- **On Cloudflare.** The site is deployed into the company's own Cloudflare account (https://nitya-stones.coleisha.workers.dev), every old store address redirects to the new site, and the go-live audit against it reports no findings. The stock system's foundation is deployed beside it (https://nitya-stock-api.coleisha.workers.dev).
 
 ## Waiting on the company
 
-- A Cloudflare account and a GitHub organisation in the company's name, with Fee added (Coleisha, on the company email).
+- A GitHub organisation in the company's name with Fee added, and the repository transferred into it (Coleisha, on the company email). The Cloudflare account exists and Fee should be added as a member of it too. Cloudflare Access switched on in that account's dashboard, with the staff emails, so the stock system's sign-in works.
 - WooCommerce: a REST API key, the payment plugins and their test keys, shipping rates, an administrator login (the WordPress administrator).
 - The domain's nameservers moved to Cloudflare (whoever holds the registrar login).
 - The yard's answers and assets: cladding colour names, delivery terms, the copy confirmations, five listings to correct, prices for the fifteen Essentials, the photograph originals, the logo as a vector (Coleisha closes these across the counter).
@@ -29,7 +29,7 @@ Working days, one person, assuming the Cloudflare and GitHub accounts exist and 
 
 | Days | Work | Done when |
 |---|---|---|
-| 1–2 | Cloudflare Pages project, Worker, the site on its temporary address; WooCommerce read on the test key: products, prices and stock on the site come from the store | The preview shows the store's live prices and stock |
+| 1–2 | WooCommerce read on the test key: products, prices and stock on the site come from the store (the Cloudflare side is already up) | The preview shows the store's live prices and stock |
 | 3–5 | Checkout hands to WooCommerce on test-mode payments; cart, delivery, collection and the chosen day carried through; trial orders placed and seen in WooCommerce | A test order placed on the new site appears in WooCommerce with the right lines, day and address |
 | 6–7 | Blog and legal pages moved, redirects live, real shipping rates in, the go-live audit run against the temporary address | Every old address lands on the right page; the audit reports no findings |
 | 8 | Nameservers settled, custom domain added, the switch rehearsed and the password taken off on a staging copy | The owner has seen the final site and agreed the day |
@@ -39,7 +39,7 @@ About two working weeks from the keys to go-live, with the switch itself a morni
 
 ## After the connection: the stock system
 
-A stock system of the yard's own is planned and its foundation built, so the yard's own tracker no longer holds anything up. It runs in the same Cloudflare account at admin.nityastones.co.uk: a ledger of every movement, products seeded from the warehouse sheet with a code per line, orders, deliveries with proof, and four staff roles behind a sign-in by email. The first screens exist and the pack maths is shared with the site. It is an after-connection job: roughly fifteen working days of build, in phases, each tested before the next.
+A stock system of the yard's own is planned, its foundation built and deployed into the company's Cloudflare account, so the yard's own tracker no longer holds anything up. It will answer at admin.nityastones.co.uk once the domain is on Cloudflare: a ledger of every movement, products seeded from the warehouse sheet with a code per line, orders, deliveries with proof, and four staff roles behind a sign-in by email. The first screens exist and the pack maths is shared with the site. It is an after-connection job: roughly fifteen working days of build, in phases, each tested before the next.
 
 ## Who does what
 

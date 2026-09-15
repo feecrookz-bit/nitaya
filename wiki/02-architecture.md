@@ -10,7 +10,7 @@
 | Styling | One stylesheet, `web/src/index.css`, tokens at the top; no CSS framework |
 | Type | Geist 400/500/700 and Cinzel 600, self-hosted from `web/src/fonts` |
 | Lint | oxlint |
-| Hosting | GitHub Pages (preview), Cloudflare Pages (live), both static |
+| Hosting | GitHub Pages (preview), Cloudflare Workers serving the static build (live) |
 | Backend | None. See page 8 for how WooCommerce and the stock tracker attach without one |
 
 No TypeScript, no state library, no router library, no component library. The whole site is eleven source files.
@@ -58,7 +58,7 @@ nitaya/
 | Command (from `web/`) | Output | For |
 |---|---|---|
 | `BASE_PATH=/nitaya/ npm run build` | `dist/` | GitHub Pages preview, served under `/nitaya/` |
-| `npm run pages` | `publish/` | Cloudflare Pages at the domain root (page 6) |
+| `npm run pages` | `publish/` | Cloudflare, at the domain root (page 6) |
 | `SINGLE=1 npm run build` | `dist-single/index.html` | One self-contained file with every image inlined; the audits and the pack screenshots run from it over `file://` |
 
 A fourth, `BASE_PATH=./ OUT_DIR=dist-artifact npm run build`, makes a relative-path build for the private web copy.

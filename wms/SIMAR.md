@@ -17,7 +17,7 @@ Nitya Stones now has a stock system of its own, built from the warehouse sheet y
 
 ## Where it will live
 
-`admin.nityastones.co.uk`, once the company's Cloudflare account exists and the domain's DNS has moved to it (Coleisha is setting these up). It is not on the internet yet. When it is, you sign in with your email address after an admin adds you; there is no password to keep.
+It is on the internet now, in the company's Cloudflare account, at https://nitya-stock-api.coleisha.workers.dev. It moves to admin.nityastones.co.uk once the domain's DNS is on Cloudflare. You sign in with your email address after an admin adds you; there is no password to keep. Until the sign-in is switched on (a dashboard step for Coleisha) the address shows the app but lets nobody in.
 
 ## The product codes
 

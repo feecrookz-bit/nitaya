@@ -9,7 +9,7 @@ Reference for the new nityastones.co.uk, written 14 September 2026 for review on
 | [3. Data model](03-data-model.md) | Products, packing and the quantity maths, prices, essentials, delivery bands, filters and search |
 | [4. Pages and features](04-pages-and-features.md) | Every route and what is on it; the order box, calculator, builder, 3D, gallery, pop-up, checkout calendar |
 | [5. Photographs and assets](05-photos-and-assets.md) | The photo pipeline, manifests, studio renders, textures, logo, fonts |
-| [6. Build and deploy](06-build-and-deploy.md) | Commands, the password gate, GitHub Pages, Cloudflare Pages, redirects, the path shim |
+| [6. Build and deploy](06-build-and-deploy.md) | Commands, the password gate, GitHub Pages, Cloudflare, redirects, the path shim |
 | [7. Audits](07-audits.md) | Every check, what it catches, how to run it, the go-live audit |
 | [8. Integrations](08-integrations.md) | WooCommerce, the stock tracker, the no-secrets rule, the field list |
 | [9. Rules, decisions and open items](09-decisions.md) | The rules the site is built to, what the yard still owes, where those lists live |
@@ -20,7 +20,7 @@ Reference for the new nityastones.co.uk, written 14 September 2026 for review on
 The other documents in the repository, and what each is for:
 
 - `HANDOVER.md`: for Coleisha (working on the site) and for the company (where things stand, who does what, what is needed).
-- `DEPLOY.md`: the GitHub transfer, Cloudflare Pages, old-address redirects, go-live order, ownership.
+- `DEPLOY.md`: the GitHub transfer, Cloudflare, old-address redirects, go-live order, ownership.
 - `OPTIONS.md`: every decision and asset still needed from the yard, in full.
 - `COMPETITOR.md`: the Royale Stones study and what was taken from it.
 - `UPDATES.md`: what changed after the owner meeting, separate from the pack.

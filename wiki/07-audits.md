@@ -26,7 +26,7 @@ Tests are the definition of done here. Every check is a script in `web/scripts/a
 `golive.cjs` runs against the deployed site rather than a local build:
 
 ```
-BASE=https://<project>.pages.dev node scripts/audit/golive.cjs
+BASE=https://nitya-stones.coleisha.workers.dev EXPECT=open node scripts/audit/golive.cjs
 BASE=https://nityastones.co.uk EXPECT=open node scripts/audit/golive.cjs
 ```
 

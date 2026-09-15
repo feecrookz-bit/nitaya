@@ -31,7 +31,7 @@ Sinai Pearl is missing from the sheet; the six cladding colourways are one row. 
 ## Order of connection
 
 1. Simar's test copy of the sheet and script, with made-up stock.
-2. The site's `pages.dev` address pointed at a WooCommerce staging copy; a test order end to end.
+2. The site's `workers.dev` address pointed at a WooCommerce staging copy; a test order end to end.
 3. Live sheet and live WooCommerce.
 
 Fee does this work as part of the build, up to and including go-live, and is paid for it. Once the build is paid for, Nitya Stones owns everything on the site. Upgrades and changes after that are arranged through Coleisha.

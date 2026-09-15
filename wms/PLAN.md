@@ -30,7 +30,7 @@ The system the yard uses today, read from the screen Simar showed: a products li
 
 | Part | Choice | Why |
 |---|---|---|
-| Staff app | A second small React app in this repo (`wms/app`), deployed as its own Cloudflare Pages project at a staff address | Same tooling as the site, same design tokens, same audits |
+| Staff app | A second small React app in this repo (`wms/app`), served by the API Worker from the same staff address | Same tooling as the site, same design tokens, same audits |
 | API | A Cloudflare Worker (`wms/api`) with a handful of routes | Runs in the same account, no server, scales to nothing when idle |
 | Database | Cloudflare D1 (SQLite) | Free tier covers a yard many times over; one file to back up; SQL that any developer reads |
 | Files | Cloudflare R2 for delivery-proof photos and signatures | Same account; cheap; private by default |

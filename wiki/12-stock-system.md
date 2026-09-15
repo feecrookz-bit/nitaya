@@ -25,7 +25,7 @@ Two things learned on the way, both now in the code:
 
 ## Where it lives
 
-`admin.nityastones.co.uk`: the staff app at the root (a Pages project with that custom domain), the Worker under `/api/*` (a route in `wrangler.toml`), one Cloudflare Access application over the hostname so both share the sign-in. It needs the domain's DNS on Cloudflare; until then the `pages.dev` and `workers.dev` addresses stand in. DEPLOY.md section 3a has the steps.
+One Worker, `nitya-stock-api`: the staff app's built files at the root and the API under `/api/*`, so both share one hostname and one sign-in. **Deployed 15 September 2026** into the company's Cloudflare account at https://nitya-stock-api.coleisha.workers.dev, database `nitya-stock` created and migrated, the first admin set. The `stock` job in the Cloudflare workflow redeploys it on every push. Until Cloudflare Access is switched on in the dashboard and an application with the staff emails covers the hostname, the API answers 401 to everything but the site's public availability route. Once the domain's DNS is on Cloudflare, `admin.nityastones.co.uk` is added as a custom domain on the Worker and to the Access application. DEPLOY.md section 3a and `wms/api/README.md` have the steps.
 
 ## How it fits
 

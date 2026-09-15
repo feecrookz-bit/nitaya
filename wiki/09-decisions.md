@@ -34,7 +34,7 @@ From the Royale Stones study (`COMPETITOR.md`): showrooms, the £80 split-pallet
 - Cladding is six products, one per colourway photograph.
 - Dark is the default theme; the owner can choose light.
 - WooCommerce stays as the till, with the sheet syncing to it, rather than the site talking to the sheet.
-- Cloudflare Pages for the live site, GitHub Pages for the preview; no Vercel.
+- Cloudflare for the live site (a Worker serving the static build, since Cloudflare now creates new projects as Workers rather than Pages), GitHub Pages for the preview; no Vercel. Deployed 15 September into the company's own account.
 - The blog moves under Guides with redirects rather than being dropped.
 - The preview is open (15 September, after the first payment), with a noindex tag; the gate can be restored by removing one variable.
 - The yard gets a stock system of its own rather than waiting on the tracker; the tracker's data seeds it, and its maintainer's remaining jobs need no code.
