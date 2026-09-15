@@ -25,4 +25,4 @@ The other documents in the repository, and what each is for:
 - `UPDATES.md`: what changed after the owner meeting, separate from the pack.
 - `web/AUDIT.md`: what has been checked, what was found, how to re-run.
 - `web/PHOTOGRAPHY.md`: where better photographs come from, range by range.
-- `present/`: the owner pack (PDF and source), the presenter script, the stock tracker brief.
+- `present/`: the owner pack (PDF and source), the presenter script, the stock tracker brief, and a PDF copy of this wiki (`Nitya-Stones-Build-Wiki.pdf`).

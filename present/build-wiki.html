@@ -1,0 +1,349 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Nitya Stones Build Wiki</title>
+
+<style>@font-face{font-family:Geist;src:url(file:///home/user/nitaya/web/src/fonts/Geist-400.ttf);font-weight:400}@font-face{font-family:Geist;src:url(file:///home/user/nitaya/web/src/fonts/Geist-500.ttf);font-weight:500}@font-face{font-family:Geist;src:url(file:///home/user/nitaya/web/src/fonts/Geist-700.ttf);font-weight:600}@font-face{font-family:Cinzel;src:url(file:///home/user/nitaya/web/src/fonts/Cinzel-600.ttf);font-weight:600}
+:root{--ground:#F6F3EE;--panel:#FFFDF9;--ink:#1C1A17;--ink-2:#4A463F;--muted:#6F6A61;--rule:#E2DDD3;--gold:#8A6D1E;--gold-soft:#F1E9D3;--mono-bg:#EFEBE3}
+
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:Geist,-apple-system,"Helvetica Neue",Arial,sans-serif;font-size:16.5px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-inline:clamp(16px,4vw,40px);padding-block:0 80px}
+.top{max-width:1120px;margin:0 auto;padding:40px 0 24px;border-bottom:1px solid var(--rule)}
+.eyebrow{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:0 0 10px}
+.top h1{font-family:Cinzel,Georgia,serif;font-weight:600;font-size:clamp(1.9rem,4.5vw,2.8rem);line-height:1.08;margin:0 0 10px;text-wrap:balance}
+.top p{color:var(--ink-2);max-width:66ch;margin:0}
+.layout{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:230px minmax(0,1fr);gap:48px;align-items:start}
+nav{position:sticky;top:16px;padding-top:28px;font-size:.9rem}
+nav .lab{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+nav a{display:block;color:var(--ink-2);text-decoration:none;padding:5px 0 5px 12px;border-left:2px solid var(--rule);line-height:1.3}
+nav a:hover,nav a:focus-visible{color:var(--gold);border-left-color:var(--gold);outline:none}
+main{min-width:0;padding-top:8px}
+section{padding:36px 0;border-bottom:1px solid var(--rule)}
+section:last-child{border-bottom:0}
+h1{font-family:Cinzel,Georgia,serif;font-weight:600;font-size:clamp(1.45rem,3vw,1.9rem);margin:0 0 16px;text-wrap:balance}
+h2{font-family:Cinzel,Georgia,serif;font-weight:600;font-size:1.18rem;margin:30px 0 10px;text-wrap:balance}
+h3{font-size:1rem;font-weight:600;margin:22px 0 8px}
+p{margin:0 0 12px;max-width:68ch;color:var(--ink-2)}
+ul,ol{margin:0 0 14px;padding-left:22px;max-width:68ch;color:var(--ink-2)}
+li{margin-bottom:7px}
+li::marker{color:var(--gold)}
+b{color:var(--ink);font-weight:600}
+a{color:var(--gold)}
+code{font-family:"Geist Mono",ui-monospace,Menlo,Consolas,monospace;font-size:.86em;background:var(--mono-bg);padding:1px 6px;border-radius:5px;color:var(--ink)}
+pre{background:var(--mono-bg);padding:14px 16px;border-radius:8px;overflow-x:auto;margin:0 0 16px;font-size:.84rem;line-height:1.5}
+pre code{background:none;padding:0;font-size:inherit}
+.tw{overflow-x:auto;margin:0 0 18px}
+table{border-collapse:collapse;width:100%;font-size:.92rem;font-variant-numeric:tabular-nums}
+th{text-align:left;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500;padding:6px 12px 6px 0;border-bottom:1px solid var(--rule)}
+td{padding:8px 12px 8px 0;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-2)}
+td:first-child{color:var(--ink)}
+tr:last-child td{border-bottom:0}
+thead tr th:first-child,td:first-child{white-space:normal}
+@media (max-width:860px){.layout{grid-template-columns:1fr;gap:0}nav{position:static;padding:20px 16px;background:var(--panel);border:1px solid var(--rule);border-radius:10px;margin-top:20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0 18px}nav .lab{grid-column:1/-1}nav a{padding:6px 0 6px 10px}}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+
+:root{--ground:#fff;--panel:#fff;--ink:#1C1A17;--ink-2:#2E2B27;--muted:#6A655C;--rule:#D9D4CA;--gold:#8A6D1E;--mono-bg:#F1EEE7}
+body{font-size:10.6pt;line-height:1.45;padding:0}
+.top{padding:0 0 16px;margin-bottom:0}
+.top h1{font-size:26pt}
+.layout{display:block}
+nav{position:static;padding:14px 0 0;font-size:10pt;border:0;background:none;margin:0;display:block;column-count:2;column-gap:32px}
+nav .lab{margin-bottom:6px}
+nav a{border-left:0;padding:2px 0;color:var(--ink-2);text-decoration:none;break-inside:avoid}
+section{page-break-before:always;padding:0 0 12px;border:0}
+section#index{page-break-before:auto;padding-top:0}
+h1{font-size:18pt;margin:0 0 12px}
+h2{font-size:12.5pt;margin:18px 0 6px;page-break-after:avoid}
+h3{page-break-after:avoid}
+p,ul,ol{max-width:none}
+table{font-size:9.4pt;page-break-inside:auto}
+tr{page-break-inside:avoid}
+th{font-size:7.2pt}
+td,th{padding:4px 10px 4px 0}
+pre{font-size:8.6pt;page-break-inside:avoid}
+code{font-size:.86em}
+a{color:var(--gold);text-decoration:none}
+</style></head><body>
+<header class="top"><p class="eyebrow">Nitya Stones &#183; website upgrade</p><h1>The build wiki</h1><p>The reference for the new nityastones.co.uk as it stands on 14 September 2026: what was built, how it works, how it ships, how it is checked, and what is still owed. Written for review once the deal is done and for use afterwards. The same pages live in the repository under <code>wiki/</code>, and as a private web page.</p></header>
+<div class="layout"><nav aria-label="Sections"><p class="lab">Sections</p><a href="#index">Start here</a><a href="#p01">1. Overview</a><a href="#p02">2. Architecture</a><a href="#p03">3. Data model</a><a href="#p04">4. Pages and features</a><a href="#p05">5. Photographs and assets</a><a href="#p06">6. Build and deploy</a><a href="#p07">7. Audits</a><a href="#p08">8. Integrations</a><a href="#p09">9. Rules, decisions and open items</a><a href="#p10">10. Glossary</a><a href="#p11">11. History</a></nav><main><section id="index"><h1>Start here</h1>
+<p>Reference for the new nityastones.co.uk, written 14 September 2026 for review once the deal is done and for use afterwards. Everything here describes the <code>main</code> branch on that date. Where a fact is a decision still owed by the yard, it says so and points at <code>OPTIONS.md</code>.</p>
+<div class="tw"><table><thead><tr><th>Page</th><th>What it covers</th></tr></thead><tbody><tr><td><a href="#p01">1. Overview</a></td><td>What was built, what it is not yet, the numbers, where everything lives</td></tr><tr><td><a href="#p02">2. Architecture</a></td><td>Stack, file map, the three builds, routing, state, themes, type</td></tr><tr><td><a href="#p03">3. Data model</a></td><td>Products, packing and the quantity maths, prices, essentials, delivery bands, filters and search</td></tr><tr><td><a href="#p04">4. Pages and features</a></td><td>Every route and what is on it; the order box, calculator, builder, 3D, gallery, pop-up, checkout calendar</td></tr><tr><td><a href="#p05">5. Photographs and assets</a></td><td>The photo pipeline, manifests, studio renders, textures, logo, fonts</td></tr><tr><td><a href="#p06">6. Build and deploy</a></td><td>Commands, the password gate, GitHub Pages, Cloudflare Pages, redirects, the path shim</td></tr><tr><td><a href="#p07">7. Audits</a></td><td>Every check, what it catches, how to run it, the go-live audit</td></tr><tr><td><a href="#p08">8. Integrations</a></td><td>WooCommerce, the stock tracker, the no-secrets rule, the field list</td></tr><tr><td><a href="#p09">9. Rules, decisions and open items</a></td><td>The rules the site is built to, what the yard still owes, where those lists live</td></tr><tr><td><a href="#p10">10. Glossary</a></td><td>The words used in the code and the documents</td></tr><tr><td><a href="#p11">11. History</a></td><td>The build day by day, from the commit log</td></tr></tbody></table></div>
+<p>The other documents in the repository, and what each is for:</p>
+<ul>
+<li><code>HANDOVER.md</code>: for Coleisha (working on the site) and for the company (where things stand, who does what, what is needed).</li>
+<li><code>DEPLOY.md</code>: the GitHub transfer, Cloudflare Pages, old-address redirects, go-live order, ownership.</li>
+<li><code>OPTIONS.md</code>: every decision and asset still needed from the yard, in full.</li>
+<li><code>COMPETITOR.md</code>: the Royale Stones study and what was taken from it.</li>
+<li><code>UPDATES.md</code>: what changed after the owner meeting, separate from the pack.</li>
+<li><code>web/AUDIT.md</code>: what has been checked, what was found, how to re-run.</li>
+<li><code>web/PHOTOGRAPHY.md</code>: where better photographs come from, range by range.</li>
+<li><code>present/</code>: the owner pack (PDF and source), the presenter script, the stock tracker brief.</li>
+</ul></section><section id="p01"><h1>1. Overview</h1>
+<h2>What it is</h2>
+<p>A complete new front end for nityastones.co.uk: a fast, single-page store built on the yard's own stock, prices and photographs, with an area-based ordering system, a patio builder, guides, projects, trade and contact pages, dark and light themes, and a 3D view of every stone. It runs behind a password gate on GitHub Pages for review, and is prepared to go live on Cloudflare Pages.</p>
+<p>It replaces a WordPress/WooCommerce store whose listings contradict each other and whose pack sizes disagree with the warehouse. The new site takes its pack sizes from the warehouse database and its prices from the store, and computes everything else from those.</p>
+<h2>What it is not yet</h2>
+<ul>
+<li><b>Connected.</b> It does not talk to WooCommerce or the warehouse stock tracker. The checkout stops at the last step. No payment is taken, nothing is stored on a server.</li>
+<li><b>On the domain.</b> nityastones.co.uk still points at the old site.</li>
+<li><b>Carrying the blog and legal pages.</b> The 45 blog posts, Terms, Privacy, Refunds, Delivery Terms and My Account stay on WordPress until moved; redirects for all of them are already written.</li>
+</ul>
+<h2>The numbers</h2>
+<div class="tw"><table><thead><tr><th>Ranges</th><th>36 as listed on the store, plus cladding as 6 colourways = 41 product pages, plus samples</th></tr></thead><tbody><tr><td>Essentials (jointing, primer, steps, edging, granite)</td><td>15 lines from the warehouse sheet, priced at the counter</td></tr><tr><td>Photographs</td><td>109 gallery frames, 23 project photographs, 36 studio renders, 36 textures, all from the yard's own images</td></tr><tr><td>Guides</td><td>9, with drawings to scale</td></tr><tr><td>Routes</td><td>69 crawled</td></tr><tr><td>Source</td><td>about 3,700 lines across 11 files in <code>web/src</code></td></tr><tr><td>Commits</td><td>62, 10 to 14 September 2026</td></tr><tr><td>Gated page weight</td><td>about 1.1 MB to unlock; images and the 3D code load on demand</td></tr></tbody></table></div>
+<h2>Where everything lives</h2>
+<ul>
+<li>Code: github.com/feecrookz-bit/nitaya, branch <code>main</code>. Every push rebuilds the preview by itself.</li>
+<li>Preview: https://feecrookz-bit.github.io/nitaya/ behind a password. The password is a repository secret named SITE_PASSWORD and is given by phone, never in an email chain.</li>
+<li>Owner pack: <code>present/Nitya-Stones-Website-Upgrade-Pack.pdf</code>, 23 pages, with <code>present/SCRIPT.md</code> for the presenter.</li>
+<li>Stock tracker brief: <code>present/Nitya-Stones-Stock-Tracker-Link.pdf</code>.</li>
+<li>Private web copies of the site, the pack, the handover and the updates list exist as Claude artifacts; Fee holds the links.</li>
+</ul>
+<h2>Who does what</h2>
+<p>Fee built the site and does the go-live work (DNS, WooCommerce, the stock tracker) as the paid job. Once it is paid for, Nitya Stones owns everything on the site: code, design, graded photographs, documents. Upgrades and changes after that are arranged through Coleisha. Simar maintains the stock tracker sheet and script.</p>
+<h2>The rules it is built to</h2>
+<p>Nothing invented; only the yard's own photographs; the original logo; pack sizes only from the warehouse sheet; the wet view simulated and labelled; delivery bands marked indicative; no fee or charge the yard has not stated. Page 9 has the full list.</p></section><section id="p02"><h1>2. Architecture</h1>
+<h2>Stack</h2>
+<div class="tw"><table><thead><tr><th>Framework</th><th>React 19, one page, a tiny hash router written in <code>App.jsx</code></th></tr></thead><tbody><tr><td>Build</td><td>Vite 8 (rolldown), <code>web/vite.config.js</code></td></tr><tr><td>3D</td><td>three.js with react-three-fiber and drei, loaded lazily so the first paint never waits for it</td></tr><tr><td>Styling</td><td>One stylesheet, <code>web/src/index.css</code>, tokens at the top; no CSS framework</td></tr><tr><td>Type</td><td>Geist 400/500/700 and Cinzel 600, self-hosted from <code>web/src/fonts</code></td></tr><tr><td>Lint</td><td>oxlint</td></tr><tr><td>Hosting</td><td>GitHub Pages (preview), Cloudflare Pages (live), both static</td></tr><tr><td>Backend</td><td>None. See page 8 for how WooCommerce and the stock tracker attach without one</td></tr></tbody></table></div>
+<p>No TypeScript, no state library, no router library, no component library. The whole site is eleven source files.</p>
+<h2>File map</h2>
+<pre><code>nitaya/
+  web/                       the site
+    index.html               shell: meta, Open Graph, theme pre-paint, the path-to-hash shim
+    src/
+      main.jsx               mounts App
+      App.jsx                every page and component (1,200 lines), the router, bag, theme
+      data.js                products, packing, prices, business details, delivery, filters, search
+      content.js             long product copy: features, what is in the pack, laying, care
+      guides.js              the nine guides
+      Diagrams.jsx           the guides&#x27; drawings (SVG, to scale)
+      StoneScene.jsx         the 3D slab, laid field and wall
+      WetDry.jsx             the wet/dry slider
+      Motion.jsx             reveals, count-ups, marquee, parallax; all honour reduced-motion
+      Logo.jsx               the mark
+      index.css              the whole design
+      assets/                graded photographs, renders, textures, logo (21 MB, 211 files)
+      fonts/
+    public/                  favicon, touch icon, og.jpg, icons.svg, _redirects, _headers
+    scripts/
+      photos.py              fetch, grade, gallery, textures (page 5)
+      photos.json, gallery.json   the two photo manifests
+      inline.mjs, protect.mjs     the password gate (page 6)
+      pages.mjs              the Cloudflare build
+      serve-pages.mjs        a local Cloudflare-style server
+      social.py              social post templates in the site&#x27;s design
+      audit/                 the audit scripts (page 7)
+    AUDIT.md, PHOTOGRAPHY.md
+  present/                   owner pack, presenter script, stock tracker brief
+  wiki/                      this
+  .github/workflows/pages.yml   the preview deploy
+  HANDOVER.md DEPLOY.md OPTIONS.md COMPETITOR.md UPDATES.md README.md</code></pre>
+<p><code>index.html</code> at the repository root is the very first single-page prototype from 10 September and is not used.</p>
+<h2>The three builds</h2>
+<div class="tw"><table><thead><tr><th>Command (from <code>web/</code>)</th><th>Output</th><th>For</th></tr></thead><tbody><tr><td><code>BASE_PATH=/nitaya/ npm run build</code></td><td><code>dist/</code></td><td>GitHub Pages preview, served under <code>/nitaya/</code></td></tr><tr><td><code>npm run pages</code></td><td><code>publish/</code></td><td>Cloudflare Pages at the domain root (page 6)</td></tr><tr><td><code>SINGLE=1 npm run build</code></td><td><code>dist-single/index.html</code></td><td>One self-contained file with every image inlined; the audits and the pack screenshots run from it over <code>file://</code></td></tr></tbody></table></div>
+<p>A fourth, <code>BASE_PATH=./ OUT_DIR=dist-artifact npm run build</code>, makes a relative-path build for the private web copy.</p>
+<p>The default build puts the libraries in their own <code>vendor</code> chunk so the app chunk can be folded into the gated page while the lazy 3D chunk still finds React and three as plain files.</p>
+<h2>Routing</h2>
+<p>Addresses are hash routes: <code>/#/shop</code>, <code>/#/product/raj-green</code>, <code>/#/guide/laying-indian-sandstone</code>, <code>/#/shop?cat=indoor&amp;colour=grey</code>. The router in <code>App.jsx</code> (<code>useRoute</code>) reads the hash, splits page, id, query and anchor, and scrolls to the top on change. Every page sets its own <code>&lt;title&gt;</code> from a <code>TITLES</code> map and the product and guide pages set structured data for search engines.</p>
+<p>A path without the hash (<code>/product/raj-green</code>) is turned into the hash form by a short script in <code>index.html</code> before the app loads, so the redirects from the old store and hand-typed addresses both work.</p>
+<h2>State</h2>
+<p>Everything lives in memory and, for five things, in the browser's local storage under <code>nitya-</code> keys:</p>
+<div class="tw"><table><thead><tr><th>Key</th><th>Holds</th></tr></thead><tbody><tr><td><code>nitya-bag</code></td><td>The bag: line id and quantity per line</td></tr><tr><td><code>nitya-designs</code></td><td>Saved patio designs from the builder</td></tr><tr><td><code>nitya-theme</code></td><td>dark or light</td></tr><tr><td><code>nitya-pc</code></td><td>The last postcode typed into a delivery estimate</td></tr><tr><td><code>nitya-offer</code></td><td>When the offer pop-up last showed (it shows once a week)</td></tr></tbody></table></div>
+<p>Nothing is sent anywhere. The audits set <code>nitya-offer</code> before each run so the pop-up cannot intercept a click.</p>
+<h2>Themes and type</h2>
+<p>Dark is the default; a sun/moon button in the header switches, and a two-line script in <code>index.html</code> applies the saved theme before the first paint so there is no flash. The light theme is a second token set under <code>:root[data-theme="light"]</code>, with its secondary text and kicker gold darkened until every text/background pair clears 4.5:1.</p>
+<p>Type floor is 12 px anywhere on the site, 16 px for body text on phones. Tap targets are at least 44 px. Both are checked by script (page 7).</p></section><section id="p03"><h1>3. Data model</h1>
+<p>Everything a customer sees about a product comes from three files: <code>data.js</code> (the facts), <code>content.js</code> (the long copy) and the two photo manifests (page 5). There is no database.</p>
+<h2>A product</h2>
+<p>Each range is one entry in <code>PRODUCTS</code>, created by a helper per family (<code>sand</code>, <code>indoor</code>, and plain <code>add</code> for the rest). The fields that matter:</p>
+<div class="tw"><table><thead><tr><th>Field</th><th>Example</th><th>Source</th></tr></thead><tbody><tr><td><code>id</code></td><td><code>raj-green</code></td><td>Ours; it is the address of the product page and the key everywhere else</td></tr><tr><td><code>slug</code></td><td><code>raj-green</code> or the store's slug</td><td>Names the studio render and texture files</td></tr><tr><td><code>name</code>, <code>size</code>, <code>finish</code>, <code>cat</code></td><td>Raj Green, Mixed patio pack, Riven, sandstone</td><td>The store's listing</td></tr><tr><td><code>price</code>, <code>was</code></td><td>19.50, 22.20 per m² ex VAT</td><td>The store's current and struck prices</td></tr><tr><td><code>unit</code></td><td>per m², per pallet, per box, each</td><td>How the store sells it</td></tr><tr><td><code>packing</code></td><td>see below</td><td>The warehouse sheet</td></tr><tr><td><code>cover</code>, <code>slabs</code>, <code>pack</code></td><td>18.19, 60, "18.19 m² per pack · 60 slabs in four sizes"</td><td>Computed from <code>packing</code></td></tr><tr><td><code>split</code></td><td>true</td><td>Computed: every pack splits except boxes and cladding</td></tr><tr><td><code>gallery</code>, <code>img</code>, <code>texture</code></td><td>file lists</td><td>From the manifests, matched by id and slug</td></tr><tr><td><code>content</code></td><td>features, in the pack, laying, care</td><td><code>content.js</code>, by id</td></tr></tbody></table></div>
+<p>Categories: sandstone, limestone, outdoor (20 and 16 mm porcelain), indoor (8 mm tiles), cladding. Cladding is six products sharing one content block and one packing, one per colourway photograph on the store's listing; their names are a decision for the yard.</p>
+<h2>Packing: the one table that drives the maths</h2>
+<p><code>PACKING</code> in <code>data.js</code> holds, per product id, what a pack physically is. Its values come from the "Database Products" tab of the stock tracker sheet and from nowhere else; never type a coverage figure anywhere else.</p>
+<p>Two shapes:</p>
+<ul>
+<li><b>Mixed</b> (the four 22 mm sandstone patio packs): sizes with counts and slab areas. 16 × 900 × 600, 16 × 600 × 600, 16 × 600 × 290, 12 × 290 × 290 = 60 slabs, 18.19 m².</li>
+<li><b>Fixed</b> (<code>fixed(perPack, slabM2, perBox)</code>): one size. Kandla Grey 900 × 600 is 40 slabs of 0.54 m² = 21.60 m². Black Limestone 38 × 0.36. The 900 × 600 porcelains 40 × 0.54. The 16 mm 600 × 600 pallets 80 slabs in boxes of 2. Indoor 600 × 1200 tiles 64 a pallet in boxes of 2; 600 × 600 Brit Raven 160 in boxes of 4; 300 × 600 tiles 336 in boxes of 6 (Aspire Grey 280 in boxes of 5). Cladding 196 strips in boxes of 7.</li>
+<li>Sinai Pearl is not in the sheet; it is marked <code>assumed</code> at 50 slabs of 600 × 600 and listed for the yard to add.</li>
+</ul>
+<p>From the table the code sets <code>cover</code> (m² per pack or pallet), the unit wording, and <code>split</code>. Indoor tiles and cladding are sold by the box, and the box is the unit; the pallet is only the delivery quantity.</p>
+<h2>From an area to what leaves the yard</h2>
+<p><code>quantify(product, m2)</code> is the single function behind the product page's by-the-area mode, the calculator, the builder, the bag and the checkout. It returns whole packs plus loose slabs:</p>
+<ul>
+<li><b>Mixed packs</b>: whole packs, then the remainder made up in the pack's own four sizes by <code>mixFill</code>: first in the pack's proportions, then the last bit largest slab first, so the overshoot is never more than one small slab. 55 m² of Autumn Brown is 3 packs + 2 loose slabs = 55.01 m², not 4 packs = 72.76 m². If the loose set would be a whole pack it becomes one.</li>
+<li><b>Single-size packs that split</b> (sandstone 900 × 600, limestone, the porcelains): whole packs plus loose slabs by the slab.</li>
+<li><b>Boxes and kits</b>: whole units, rounded up.</li>
+</ul>
+<p>Prices follow: <code>m2Price</code> normalises per-pallet prices to per m², <code>slabPrice</code> is a slab's share, and <code>exVat</code> prices a quantity as packs at the pack price plus loose slabs at the per-m² price. The bag and the checkout total by calling these, so they cannot disagree with the product page.</p>
+<h2>Bag line ids</h2>
+<p>The bag stores line ids and quantities. The id says what the line is:</p>
+<div class="tw"><table><thead><tr><th>Prefix</th><th>Meaning</th></tr></thead><tbody><tr><td><code>raj-green</code></td><td>Whole packs of a product</td></tr><tr><td><code>slabs:kandla-grey-900</code></td><td>Loose slabs of a single-size pack</td></tr><tr><td><code>mix:raj-green:1.1.0.0</code></td><td>A loose set from a mixed pack, the four counts in the id, unit "per set"</td></tr><tr><td><code>sample:raj-green</code></td><td>A £5 sample</td></tr><tr><td><code>ask:jointtec-pitch-black</code></td><td>An Essentials line with no price: a quote request, priced at 0</td></tr></tbody></table></div>
+<p><code>lineProduct(id)</code> in <code>App.jsx</code> turns any of these back into a displayable line with name, unit, coverage and price.</p>
+<h2>Essentials</h2>
+<p><code>ESSENTIALS</code>: fifteen warehouse lines the store never listed. Joint-Tec in three colours, Por-Tec in four, primer, two step treads, two edgings, two granite setts and black cobbles, each with the sheet's per-pallet and per-box packing. They have no price on the site until the yard gives one; a customer can "Ask for a price", which puts a quote line in the bag. <code>essentialsFor(product)</code> picks the matching jointing compound and primer for the "Finish the job" strip.</p>
+<h2>Delivery</h2>
+<p><code>DELIVERY</code> has three indicative bands by postcode area (local, London and M25, England and Wales) and a list of areas that are "ask us". <code>deliveryFor(postcode)</code> picks the band. The bands are marked indicative on every page until the real rates arrive. Free over £500 inside the M25 and 3 to 5 working days are the store's own published terms. <code>workingDaysFrom(3)</code> gives the earliest delivery day shown on the product page, bag and checkout.</p>
+<h2>Filters and search</h2>
+<ul>
+<li>Colour groups (<code>COLOUR_GROUPS</code>, <code>colourOf</code>): Blacks, Whites, Greens and multi, Browns and rust, Creams and buffs, Greys, from a per-product word list.</li>
+<li>Size (<code>sizeOf</code>, <code>SIZE_LABEL</code>): the two dimensions sorted so 900 × 600 and 600 × 900 are one chip.</li>
+<li>Finish (<code>finishOf</code>, <code>FINISH_LABEL</code>): riven, riven-effect, honed, matt, polished, split face, read from the finish text.</li>
+<li>Search (<code>SEARCH_TAGS</code>): colour and use words customers type that product names do not contain.</li>
+</ul>
+<h2>Other tables</h2>
+<p><code>BUSINESS</code> (name, phones, WhatsApp, email, address, hours, socials, site) is the single source for every contact detail on the site; nothing else carries a phone number. <code>CATS</code>, <code>EDITIONS</code>, <code>SEASON</code>, <code>FAMILIES</code> and <code>PAIRS</code> arrange the same products into the home page's collections. <code>SCENES</code> is the 23 project photographs with captions. <code>PATTERNS</code> and <code>MIXED</code> describe the four laying patterns for the builder and the 3D field. <code>FAQ</code> and <code>REVIEWS</code> carry the store's own questions and its two reviews.</p></section><section id="p04"><h1>4. Pages and features</h1>
+<p>Every route, what is on it, and the components that do the work. All in <code>App.jsx</code> unless said otherwise.</p>
+<h2>Routes</h2>
+<div class="tw"><table><thead><tr><th>Route</th><th>Page</th><th>What is on it</th></tr></thead><tbody><tr><td><code>/</code></td><td>Home</td><td>Slideshow hero with the mark and four facts; the drag-to-turn Raj Green slab; editions; this season's palette; offers; the builder teaser; sourcing declaration; families; guides; projects strip; newsletter; reviews</td></tr><tr><td><code>/shop</code></td><td>Shop</td><td>Every range; tabs by category and Offers; filter chips by colour, size and finish (in the address, so a filtered view can be shared); search from the header or menu via <code>?q=</code>; editor's picks get the wide card</td></tr><tr><td><code>/product/:id</code></td><td>Product</td><td>Gallery with the 3D slide; unit table; the order box; See it in 3D; the story (features, in the pack, laying, care, honesty note); Finish the job; pairs with; FAQ</td></tr><tr><td><code>/essentials</code></td><td>Essentials</td><td>The fifteen warehouse lines, priced at the counter, Ask for a price</td></tr><tr><td><code>/collections</code></td><td>Collections</td><td>The editions and families as a browsing page</td></tr><tr><td><code>/build</code></td><td>Build your patio</td><td>Pick a stone, type width and length, pick a pattern, tick the allowance, see packs and price, save the design</td></tr><tr><td><code>/guides</code>, <code>/guide/:slug</code></td><td>Guides</td><td>Nine guides with drawings: porcelain or sandstone, laying sandstone, laying 20 mm porcelain, how many packs, sealing, cleaning, why slabs vary, the mixed pack, delivery day</td></tr><tr><td><code>/projects</code></td><td>Projects</td><td>23 of the yard's own photographs of laid stone, captioned by what is visible</td></tr><tr><td><code>/trade</code></td><td>Trade</td><td>A typical trade offer and a form; the wording is the yard's to confirm</td></tr><tr><td><code>/samples</code></td><td>Samples</td><td>£5 pieces of any range</td></tr><tr><td><code>/about</code>, <code>/faq</code>, <code>/contact</code></td><td></td><td>Yard, hours, map, the store's FAQ, the contact form</td></tr><tr><td><code>/cart</code></td><td>Bag</td><td>Lines with coverage, quantities, remove, delivery estimate, delivery-from date, collection</td></tr><tr><td><code>/checkout</code></td><td>Checkout</td><td>Contact, delivery or collection with the calendar, access notes, payment placeholder, summary; stops at the last step with the demo notice</td></tr></tbody></table></div>
+<p>Every page shows the header (logo, links, search on wide screens, bag, theme), the slide-out menu on narrow screens (with search and "WhatsApp the yard"), and the footer with every contact detail. The floating WhatsApp button appears on every page except checkout.</p>
+<h2>The order box (<code>OrderBox</code>)</h2>
+<p>At the top of every product page:</p>
+<ol>
+<li><b>Unit table</b>: per m², per slab (or "loose slabs by area" on mixed packs), per pack or pallet or box, each with the struck was-price.</li>
+<li><b>By the pack / By the area</b> toggle. Pack mode has a quantity stepper and, on single-size packs, a loose-slab stepper. Area mode takes m², a tick box for the allowance for cuts (5/10/15/20%), and says exactly what leaves the yard: "1 × 21.60 m² + 9 × 0.54 m² = 26.46 m²".</li>
+<li>Facts: delivery from the earliest day, free over £500 inside the M25, collection from Mark Road with hours and a map link, the sample button.</li>
+<li>Add to bag, which is also a sticky bar on phones.</li>
+</ol>
+<h2>The calculator (<code>Calculator</code>, <code>AreaRows</code>, <code>CutAllowance</code>)</h2>
+<p>Several areas (width × length rows), the allowance tick box, and one result line: packs × coverage = m², with loose slabs listed by size for mixed packs. The same <code>CutAllowance</code> component is used in the builder and the order box, so the three always offer the same choices.</p>
+<h2>Build your patio (<code>Build</code>, <code>Pattern</code>, <code>PatternThumb</code>)</h2>
+<p>Stone, dimensions, one of four patterns drawn to scale in SVG, allowance, whole packs and price, and a saved-designs list in local storage that can be re-added to the bag.</p>
+<h2>See it in 3D (<code>Stone3D</code>, <code>StoneScene.jsx</code>)</h2>
+<p>Two modes: one slab turned in the hand, or the stone laid in its pattern with pointed joints (a wall for cladding). Dry or wet. The face is the product's own texture (page 5) wrapped on a slab with a riven displacement for sandstone; the laid field gives each slab its own window on the texture, mirrored and rotated, so no two slabs read the same. The camera rig changes with the mode without remounting the canvas, which is what kept WebGL from losing its context. The wet look is a material change and is labelled simulated.</p>
+<h2>Gallery (<code>Gallery</code>)</h2>
+<p>Every photograph the store has for the range, swipeable, with a full-screen view rendered on the body so the header can never cover its close button. The first slide after the photographs is the turning slab, marked with a 3D badge on its thumbnail.</p>
+<h2>Offer pop-up (<code>OfferPopup</code>)</h2>
+<p>Once a week per browser, after nine seconds or when the mouse leaves for the tab bar. Built from the real was/now prices: the biggest saving and the count of ranges on sale. Never on the bag, checkout or builder; a dialog with focus inside it; Escape closes it.</p>
+<h2>Checkout calendar (<code>DayPicker</code>)</h2>
+<p>Earliest delivery is three working days out. The customer can keep "earliest" or pick a working day up to sixty days ahead; collection has the same choice with the yard's hours. The chosen day appears in the order confirmation. No slot fees exist because the yard has not stated any.</p>
+<h2>Search</h2>
+<p>The header form on wide screens and the menu form on every screen both go to <code>/shop?q=</code>. The shop matches names, families, finishes and the <code>SEARCH_TAGS</code> vocabulary.</p>
+<h2>Motion and themes</h2>
+<p><code>Motion.jsx</code> provides reveals, count-ups, the stone marquee and parallax; all stop under the system's reduced-motion setting. The theme button flips <code>data-theme</code> on the root and remembers the choice.</p></section><section id="p05"><h1>5. Photographs and assets</h1>
+<p>Every image on the site is the yard's own, taken from its WordPress media library, its listings, its About page and its blog. No stock, no competitor imagery. The wet view and the renders are made from those photographs and are labelled as such.</p>
+<h2>The pipeline (<code>web/scripts/photos.py</code>)</h2>
+<div class="tw"><table><thead><tr><th>Command</th><th>Does</th></tr></thead><tbody><tr><td><code>python3 scripts/photos.py fetch</code></td><td>Downloads the originals listed in <code>photos.json</code> into <code>scripts/originals/</code> (not committed)</td></tr><tr><td><code>python3 scripts/photos.py grade</code></td><td>Grades each original and writes <code>src/assets/&lt;name&gt;.jpg</code></td></tr><tr><td><code>python3 scripts/photos.py gallery</code></td><td>Builds the per-product gallery frames from <code>gallery.json</code></td></tr><tr><td><code>python3 scripts/photos.py textures</code></td><td>Cuts a 768 px square texture from each studio render for the 3D views</td></tr><tr><td><code>python3 scripts/photos.py sheet</code></td><td>A before/after contact sheet for checking the grade</td></tr></tbody></table></div>
+<p>The grade is the same pass for every image so the cards read as one shoot: grey-world white balance at 60%, auto-levels on the 0.5/99.5 percentiles, a gentle S-curve, +6% saturation, an unsharp mask, then a crop to the target aspect. A single tile on a plain ground is first cropped to the tile itself, which is what turns a phone snap on the yard floor into a product shot. Per-image overrides live in <code>photos.json</code>: <code>trim_top</code> and <code>trim_bottom</code> remove baked-in captions, <code>grade: false</code> skips the tonal work for texture maps.</p>
+<h2>The manifests</h2>
+<ul>
+<li><code>scripts/photos.json</code>: every scene, hero, yard and studio image, with its source URL, target name, crop mode and overrides.</li>
+<li><code>scripts/gallery.json</code>: the product galleries, in order, with captions.</li>
+</ul>
+<p>To add a photograph: put its URL (or a file) in the right manifest with a <code>scene-</code> or <code>g-</code> name, run the command, and for a project photograph add a line to <code>SCENES</code> in <code>data.js</code> with the caption.</p>
+<h2>What is in <code>src/assets</code></h2>
+<div class="tw"><table><thead><tr><th>Prefix</th><th>Count</th><th>What</th></tr></thead><tbody><tr><td><code>g-</code></td><td>109</td><td>Gallery frames, per product</td></tr><tr><td><code>scene-</code></td><td>23</td><td>Project photographs</td></tr><tr><td><code>p-</code></td><td>36</td><td>Studio renders: one slab per range on a neutral ground, made from the yard's photographs</td></tr><tr><td><code>t-</code></td><td>36</td><td>Textures for the 3D views, cut from the renders</td></tr><tr><td><code>hero</code>, <code>yard</code>, <code>pallets</code>, <code>slab</code></td><td>4</td><td>The hero slideshow, the yard, the stock, the drag-to-turn slab</td></tr><tr><td><code>logo</code></td><td>2</td><td>The original mark, cleaned</td></tr><tr><td><code>payments</code></td><td>1</td><td>The card marks on the checkout</td></tr></tbody></table></div>
+<p>21 MB in all; the site loads them lazily and the gated preview fetches them on demand.</p>
+<h2>Logo and fonts</h2>
+<p>The logo is the store's original, cleaned up, not redesigned. The site uses the 226 px web version upscaled; a vector is on the asks list for print and the favicon.</p>
+<p>Geist 400, 500 and 700 and Cinzel 600 are self-hosted in <code>src/fonts</code>. The audit found the 700 file was a copy of the 500 and replaced it with the real bold; every weight used in the stylesheet maps to a loaded face.</p>
+<h2>Better photographs</h2>
+<p><code>web/PHOTOGRAPHY.md</code> says, range by range, where studio-quality imagery comes from: the manufacturer's stockist packs for the branded porcelains, the factory catalogues for the Morbi tiles, and a half-day shoot at the yard for the quarry-named sandstones and limestones, with a shot list. The yard says it already has the photographs; the ask is for the originals rather than WhatsApp copies.</p></section><section id="p06"><h1>6. Build and deploy</h1>
+<p>The full step-by-step for the transfer and go-live is <code>DEPLOY.md</code>. This page explains the pieces.</p>
+<h2>Commands (from <code>web/</code>)</h2>
+<div class="tw"><table><thead><tr><th><code>npm ci</code></th><th>Install. <code>.npmrc</code> carries the flag the dependencies need; <code>.node-version</code> pins Node 22</th></tr></thead><tbody><tr><td><code>npm run dev</code></td><td>Local site with live reload</td></tr><tr><td><code>npm run build</code></td><td>Static build to <code>dist/</code>; <code>BASE_PATH=/nitaya/</code> for the GitHub preview</td></tr><tr><td><code>SINGLE=1 npm run build</code></td><td>One self-contained file to <code>dist-single/</code> for the audits</td></tr><tr><td><code>npm run pages</code></td><td>The Cloudflare build to <code>publish/</code></td></tr><tr><td><code>npm run preview:pages</code></td><td>Serve <code>publish/</code> locally the way Cloudflare does, on port 8788</td></tr><tr><td><code>npm run lint</code></td><td>oxlint</td></tr></tbody></table></div>
+<h2>The password gate</h2>
+<p>Two scripts, both under "things not to touch" in the handover:</p>
+<ul>
+<li><code>scripts/inline.mjs</code> folds the built page's own script and stylesheet into one HTML file, and deletes them from <code>dist/</code>, so nothing the gate protects is also published in the clear. Images, fonts and the lazy 3D chunk stay as hashed files and load on demand: about 1 MB to unlock rather than 25.</li>
+<li><code>scripts/protect.mjs</code> encrypts that file with AES-256-GCM under a key derived from the password (PBKDF2-SHA256, 250,000 iterations, random salt). What is published is ciphertext plus a small unlock form; the browser derives the key and decrypts locally. There is no back door: a lost password means republishing with a new one. The unlock remembers for the tab, and a deep link survives the gate.</li>
+</ul>
+<h2>GitHub Pages (the preview)</h2>
+<p><code>.github/workflows/pages.yml</code> runs on every push to <code>main</code>: install, build under <code>/nitaya/</code>, inline, protect with the <code>SITE_PASSWORD</code> secret, add <code>404.html</code> and <code>.nojekyll</code>, publish to the <code>gh-pages</code> branch. If the secret is missing it stops with an error rather than publishing the site open; a repository variable <code>PUBLIC_PREVIEW=true</code> is the only way past that. A deploy takes about half a minute; the audit compares the size of the live gate page with the local build to confirm it landed.</p>
+<h2>Cloudflare Pages (the live site)</h2>
+<p><code>scripts/pages.mjs</code> does the same job at the domain root, for Cloudflare to run on each push: gated when <code>SITE_PASSWORD</code> is set, open only when <code>PUBLIC_SITE=true</code>, and it refuses with neither. It writes no <code>404.html</code> on purpose: without one, Cloudflare serves the site with a 200 for any address, which the router and the path shim rely on.</p>
+<p>Project settings: root directory <code>web</code>, build command <code>npm run pages</code>, output <code>publish</code>. Everything else is in the repository.</p>
+<h2>Old addresses</h2>
+<p><code>web/public/_redirects</code> maps every address on the current store: 40 products to their new pages, the four samples to Samples, categories to the filtered shop, about, contact, wholesale, FAQs, designer and services to their new pages, and the 45 blog posts, the legal pages and My Account to WordPress on a subdomain. The subdomain is written as <code>wp.nityastones.co.uk</code>, a working name to replace once decided.</p>
+<p>Two of the old product addresses begin with an invisible character (<code>%e2%81%a0</code>); <code>DEPLOY.md</code> explains the check to run on the first deploy and the one-line fix if it fails.</p>
+<p><code>web/public/_headers</code> caches the hashed asset files for a year and sets the usual safety headers.</p>
+<h2>The path shim</h2>
+<p>Five lines in <code>web/index.html</code> turn a path like <code>/product/raj-green</code> into the router's <code>/#/product/raj-green</code> before the app loads, keeping the query string. It is what makes the redirects and hand-typed addresses land on the right page.</p>
+<h2>Ownership</h2>
+<p>At the end the GitHub repository is in a company organisation, the Cloudflare account and DNS are the company's, and Fee and Coleisha are members of both. Nothing depends on a personal account. <code>DEPLOY.md</code> section 6 has the table.</p></section><section id="p07"><h1>7. Audits</h1>
+<p>Tests are the definition of done here. Every check is a script in <code>web/scripts/audit/</code>, run from <code>web/</code>, and <code>web/AUDIT.md</code> records what each found and fixed. Most run against the single-file build (<code>SINGLE=1 npm run build</code>); the two that need the gate run against the gated build served locally.</p>
+<h2>Before a push</h2>
+<div class="tw"><table><thead><tr><th>Script</th><th>Checks</th><th>Needs</th></tr></thead><tbody><tr><td><code>flows.cjs</code></td><td>Behaviour: keyboard, focus, bag persistence, quantity edge cases, checkout validation, the ordering maths on the product page, calculator, builder, bag and checkout, the pop-up, business details on every page, structured data, route titles, the gate's failure paths</td><td>The gated <code>publish/</code> served at <code>http://localhost:8765/nitaya/</code></td></tr><tr><td><code>gate.cjs</code></td><td>Unlock, wrong password, remembered session, deep link through the gate</td><td>Same</td></tr><tr><td><code>typo.cjs</code></td><td>Fonts loaded, weights covered, nothing under 12 px, every text colour from the token set, every text/background pair at 4.5:1 (3:1 large), both themes</td><td>dist-single</td></tr><tr><td><code>axe.cjs</code></td><td>axe-core accessibility over 17 routes in both themes; 0 violations is the bar</td><td>dist-single, <code>AXE=</code> path to axe.min.js</td></tr><tr><td><code>crawl.cjs</code></td><td>69 routes: no console errors, no failed requests, one h1, alt on every image, a label on every field</td><td>dist-single</td></tr></tbody></table></div>
+<h2>Before a design change goes out</h2>
+<div class="tw"><table><thead><tr><th>Script</th><th>Checks</th></tr></thead><tbody><tr><td><code>fit.cjs</code></td><td>360, 400, 768, 1024, 1440 px: no horizontal overflow, no clipped text, tap targets at least 44 px</td></tr><tr><td><code>overphoto.cjs</code></td><td>Every line of text laid over a photograph, measured against the pixels behind it, both themes, 1440 and 400 px (<code>PNGJS=</code> path to pngjs)</td></tr><tr><td><code>visual.cjs</code></td><td>Contact sheets of 17 routes × 3 widths × 2 themes in <code>out/</code>, for a human look, plus two pages printed to PDF</td></tr><tr><td><code>strings.mjs</code> + <code>spell.mjs</code></td><td>Every visible string extracted and spell-checked (en-GB), and checked for consistency: m², ×, en dashes, curly apostrophes, one spelling of the name</td></tr></tbody></table></div>
+<h2>At go-live</h2>
+<p><code>golive.cjs</code> runs against the deployed site rather than a local build:</p>
+<pre><code>BASE=https://&lt;project&gt;.pages.dev node scripts/audit/golive.cjs
+BASE=https://nityastones.co.uk EXPECT=open node scripts/audit/golive.cjs</code></pre>
+<p>It checks the gate is up or down as expected, the safety headers, that an unknown path serves the site with a 200, that hashed assets are cached immutable, the favicon and share image, every one of the 114 fixed redirects and the two wildcards, the two invisible-character addresses, and, on an open site, that old product addresses land on the right product page in a real browser and the checkout loads without errors. It passes against the local Cloudflare-style server (<code>npm run preview:pages</code>) for both the open and the gated build.</p>
+<h2>Running the local server for flows and gate</h2>
+<pre><code>mkdir -p /tmp/srv &amp;&amp; ln -sfn &quot;$PWD/publish&quot; /tmp/srv/nitaya
+(cd /tmp/srv &amp;&amp; python3 -m http.server 8765 &amp;)</code></pre>
+<p>The server dies between sessions; restart it before <code>flows.cjs</code> and <code>gate.cjs</code>. All the scripts set the offer pop-up's storage key before each run so it cannot intercept a click; the pop-up has its own test in flows.</p>
+<h2>What the audits have caught so far</h2>
+<p>A synthesised bold (the 700 font file was a copy of the 500), a font weight with no face, text under 12 px in eleven places, kicker gold and secondary text failing contrast in the light theme, ink-on-ink headings in the dark panels, a white-on-white slider handle, gallery thumbnails with the wrong role, heading jumps, pages without an h1, unlabeled fields, a class name clash between the mixed-pack hint and the delivery estimate, the 3D badge losing contrast through a dimmed thumbnail, and the WhatsApp button outside any landmark. All fixed; the log is in <code>web/AUDIT.md</code>.</p></section><section id="p08"><h1>8. Integrations</h1>
+<p>The site has no backend and holds no secrets. The two systems it must work with, and how, without changing that.</p>
+<h2>The rule</h2>
+<p>Anything in the front end is readable by anyone who opens the page. So the WooCommerce key and the stock tracker's shared secret never go in the site's code, and the design avoids needing them in the browser at all.</p>
+<h2>WooCommerce: the till</h2>
+<p>WooCommerce stays as the system of record for orders and payments, on a subdomain after go-live.</p>
+<ul>
+<li>The site reads products, stock and creates the cart through WooCommerce's <b>Store API</b>, which is built to be called from a browser without a key.</li>
+<li>Payment happens on the gateway's hosted form (Stripe, PayPal, Klarna or WooPayments, whichever the store has). The checkout page in the demo has the same fields and hands over at the last step.</li>
+<li>What Fee needs from the company: a REST API key (for setup and the stock sync, not for the browser), the payment plugins and their test keys, shipping zones and rates, an admin or staging login. All listed in <code>HANDOVER.md</code>.</li>
+</ul>
+<h2>The stock tracker: the warehouse</h2>
+<p>A Google Sheet with an Apps Script, maintained by Simar, with roles for Admin, Director, Warehouse and Office. He changes it regularly, so the connection is to a fixed doorway, not to his script.</p>
+<ul>
+<li><b>Orders out</b>: WooCommerce's built-in webhook posts each paid order to the script's web app. No hosting on our side.</li>
+<li><b>Stock in</b>: the script runs on a timer and writes available quantities into WooCommerce's stock field using the REST key, which lives in the script's properties. The site then reads stock from WooCommerce like everything else.</li>
+<li><b>What stays fixed</b>: the web app address (deploy once, publish new versions to the same deployment), the shared secret, the two entry point names, and the field names. Everything else in the sheet and script is Simar's to change; a Changelog tab announces changes.</li>
+<li><b>The field list</b> is in <code>present/Nitya-Stones-Stock-Tracker-Link.pdf</code>: read stock (code, name, size, thickness, base unit, mode, per pallet, per box, m² per unit, available, active), record order (order number, placed at, customer, fulfilment, day, postcode, lines with code, quantity, unit and slab-size counts for a split mixed pack, notes), and the reply (ok or a reason the site can show).</li>
+<li><b>First job</b>: a product code on every row of the Database Products tab, matching the WooCommerce SKU. The sheet has no codes today, and no quantity column; both are decisions in that brief.</li>
+</ul>
+<h2>Sinai Pearl and the cladding</h2>
+<p>Sinai Pearl is missing from the sheet; the six cladding colourways are one row. Both need rows with codes before the sync can carry them.</p>
+<h2>Order of connection</h2>
+<ol>
+<li>Simar's test copy of the sheet and script, with made-up stock.</li>
+<li>The site's <code>pages.dev</code> address pointed at a WooCommerce staging copy; a test order end to end.</li>
+<li>Live sheet and live WooCommerce.</li>
+</ol>
+<p>Fee does this work as part of the build, up to and including go-live, and is paid for it. Once the build is paid for, Nitya Stones owns everything on the site. Upgrades and changes after that are arranged through Coleisha.</p></section><section id="p09"><h1>9. Rules, decisions and open items</h1>
+<h2>The rules the site is built to</h2>
+<p>These are why the demo is trusted, and they bind every future change:</p>
+<ol>
+<li><b>Nothing invented.</b> No reviews, figures, awards, "since" dates, delivery promises, fees or claims that did not come from the yard or its current site. An unconfirmed fact goes in <code>OPTIONS.md</code>, not on a page.</li>
+<li><b>Only the yard's own photographs.</b> Never a competitor's, never stock. Renders and 3D views are made from the yard's photographs and say so.</li>
+<li><b>The original logo</b>, cleaned, not redesigned.</li>
+<li><b>Pack sizes from the warehouse sheet only</b>, through <code>PACKING</code> in <code>data.js</code>. Never a coverage figure typed by hand.</li>
+<li><b>The wet look is simulated</b> and labelled until the hosed photographs are in.</li>
+<li><b>Delivery bands are indicative</b> until the real rates arrive; free over £500 inside the M25 and 3 to 5 working days are the store's own terms.</li>
+<li><b>The offer pop-up</b> reads the real was/now prices, never shows on the bag, checkout or builder, once a week, Escape closes it. Not a discount code the yard has not agreed.</li>
+<li><b>Text over photographs stays readable</b>, measured; nothing under 12 px.</li>
+<li><b>Both themes, three widths</b> checked before anything visual is pushed.</li>
+<li><b>No secrets in the front end.</b></li>
+<li><b>The gate scripts, the workflow and the photo script</b> are not edited by hand.</li>
+</ol>
+<h2>What the yard still owes</h2>
+<p>The full list with detail is <code>OPTIONS.md</code>; the short form is <code>HANDOVER.md</code> "What we need". In three groups:</p>
+<ul>
+<li><b>Access (for Fee)</b>: WooCommerce REST key; payment plugins and test keys; shipping rates; a WordPress admin or staging login; view access to the sheet and the script's web app URL; DNS access nearer the day.</li>
+<li><b>Answers (for Coleisha to put on the site)</b>: cladding colourway names; delivery terms today and any split-pack or cutting charge; the copy confirmations ("since 2016", price match, own quarries, £5 samples, what a trade account includes); the five store listings to correct so they match the sheet; Sinai Pearl added to the sheet; whether WooCommerce stays as the till; the WordPress subdomain name.</li>
+<li><b>Assets (for Coleisha)</b>: the photograph originals; the logo as a vector; a reviews link; prices for the fifteen Essentials lines.</li>
+</ul>
+<h2>Deliberately left alone</h2>
+<p>From the Royale Stones study (<code>COMPETITOR.md</code>): showrooms, the £80 split-pallet fee and other fees, a paid cutting service, Trustpilot and its reviews, size variants in a dropdown, bathrooms and pergolas, quantity discounts at checkout, a price-range slider. Each waits on the yard's own answer, not on a build.</p>
+<h2>Decisions already made</h2>
+<ul>
+<li>The mixed patio pack is sold honestly: the pack is 16/16/16/12 = 18.19 m² and the calculator never rounds it away; every pack splits.</li>
+<li>Cladding is six products, one per colourway photograph.</li>
+<li>Dark is the default theme; the owner can choose light.</li>
+<li>WooCommerce stays as the till, with the sheet syncing to it, rather than the site talking to the sheet.</li>
+<li>Cloudflare Pages for the live site, GitHub Pages for the preview; no Vercel.</li>
+<li>The blog moves under Guides with redirects rather than being dropped.</li>
+</ul></section><section id="p10"><h1>10. Glossary</h1>
+<div class="tw"><table><thead><tr><th>Term</th><th>Meaning</th></tr></thead><tbody><tr><td><b>Range</b></td><td>One product as the store lists it: a stone or tile in one size and thickness. 36 on the store, 41 product pages on the site</td></tr><tr><td><b>Pack</b></td><td>The unit the yard sells natural stone in: a crate of slabs. Mixed packs hold four sizes; single-size packs one</td></tr><tr><td><b>Pallet</b></td><td>The delivery unit for porcelain and tiles. On the site "pack" and "pallet" are the same quantity; the word follows the category</td></tr><tr><td><b>Box</b></td><td>The sales unit for indoor tiles and cladding; the pallet is only the delivery quantity</td></tr><tr><td><b>Cover</b></td><td>m² per pack, pallet or box, computed from the packing</td></tr><tr><td><b>Split</b></td><td>Selling part of a pack: loose slabs. Every pack splits except boxes and cladding</td></tr><tr><td><b>Loose slabs</b></td><td>Slabs sold outside a whole pack; for mixed packs, a set in the pack's four sizes</td></tr><tr><td><b>Mixed patio pack</b></td><td>22 mm sandstone: 16 × 900 × 600, 16 × 600 × 600, 16 × 600 × 290, 12 × 290 × 290 = 18.19 m²</td></tr><tr><td><b>Allowance for cuts</b></td><td>The extra ordered for cutting and breakage, 5/10/15/20%, a tick box, never silently added</td></tr><tr><td><b>Essentials</b></td><td>The warehouse's jointing compounds (Joint-Tec, Por-Tec), primer, step treads, edging, granite setts and cobbles</td></tr><tr><td><b>Ask for a price</b></td><td>An Essentials line put in the bag as a quote because the yard has not given a price</td></tr><tr><td><b>Edition, family, season</b></td><td>Ways the home page arranges the same products; nothing is sold differently</td></tr><tr><td><b>Studio render</b></td><td>A slab on a neutral ground made from the yard's photograph; the <code>p-</code> files</td></tr><tr><td><b>Texture</b></td><td>The square crop of a render used by the 3D views; the <code>t-</code> files</td></tr><tr><td><b>Scene</b></td><td>A project photograph of laid stone; the <code>scene-</code> files</td></tr><tr><td><b>Gate</b></td><td>The password page in front of the preview; the site is encrypted behind it</td></tr><tr><td><b>Single-file build</b></td><td>The one-HTML-file build used by the audits and the pack screenshots</td></tr><tr><td><b>Hash route</b></td><td>An address of the form <code>/#/page/id</code>; the site has no server-side pages</td></tr><tr><td><b>Path shim</b></td><td>The script that turns <code>/product/x</code> into <code>/#/product/x</code></td></tr><tr><td><b>Redirects file</b></td><td><code>_redirects</code>: the signposts from every old store address to the new site</td></tr><tr><td><b>The sheet</b></td><td>"stock tracker main", the Google Sheet and Apps Script that is the warehouse's stock system; its "Database Products" tab is the authority on pack sizes</td></tr><tr><td><b>Store API</b></td><td>WooCommerce's browser-safe API for products, cart and checkout, needing no key</td></tr><tr><td><b>The pack</b></td><td>The owner presentation pack (PDF), separate from a pack of stone</td></tr><tr><td><b>Fee, Coleisha, Simar</b></td><td>Fee built the site and does DNS and the connections; Coleisha takes over the site; Simar maintains the sheet</td></tr></tbody></table></div></section><section id="p11"><h1>11. History</h1>
+<p>Sixty-two commits over five days, from the commit log.</p>
+<h2>10 September: from a page to a store</h2>
+<p>A single-page prototype with drawn swatches and no photographs. The same day: a React rebuild with the 3D sandstone hero; the yard's own photography fetched from its media library and graded with a repeatable pass; the full catalogue; a rebuild as a store with shop, product pages, bag and checkout, studio renders and the dark design; editions, the patio builder and stone families; guides with drawings; the social template generator; the GitHub Pages deploy.</p>
+<h2>11 September: motion and the gate</h2>
+<p>The cinematic hero, marquee, count-ups and reveals. The password gate: the single-file build encrypted behind an unlock page, made to hold until the site frame has loaded, and to refuse an open deploy without the secret. The wet/dry slider, the delivery estimate, lazy 3D, guide diagrams, smarter search, bag coverage.</p>
+<h2>12 September: the design upgrade</h2>
+<p>One type system, self-hosted fonts, the taller hero, banners, pairings, the sticky buy bar, a fuller About. Dark theme as a second token set with a switch. Trade, Projects and Offers. The original logo restored everywhere. Header fixes for phones: the drawer, logo aspect, tap targets, hero text on pale photographs. <code>OPTIONS.md</code> written.</p>
+<h2>13 September: every photograph, then the audit</h2>
+<p>Every photograph the store has, on the product pages, with the detail from the listings. The full-screen gallery. The stone at scale on home and shop. The launch audit: fonts, copy, business details, accessibility, behaviour, print, with the fixes. The owner pack with the current site beside the new one, and the presenter script.</p>
+<h2>14 September: the meeting and after</h2>
+<p>The seven customer photographs from About and nine more from listings and the blog. Captions over photographs made readable. Then the ordering rework: by the pack or by the area, loose slabs, the unit table, delivery dates, the offer pop-up, pack sizes from the warehouse database. See it in 3D on every product; cladding as six colourways; the 3D slide in the gallery. Pack sizes settled by the sheet. The handover. The allowance for cuts as a tick box. Essentials. The checkout calendar. Every pack splits, mixed packs in their four sizes. <code>UPDATES.md</code>. Shop filters, header search, the WhatsApp button. The stock tracker brief for Coleisha and Simar. Hosting and ownership in the handover. The Cloudflare preparation: build script, redirects, headers, path shim, <code>DEPLOY.md</code>. The go-live audit and this wiki.</p></section></main></div>
+</body></html>
