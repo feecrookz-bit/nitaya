@@ -16,6 +16,10 @@ Do this first; Cloudflare connects to wherever the repository ends up.
 
 In a Cloudflare account created with a Nitya Stones email, with Fee and Coleisha added as members (Manage Account → Members).
 
+**The way it is set up now (no dashboard clicks):** `.github/workflows/cloudflare.yml` builds the site and uploads it to the Pages project `nitya-stones` with wrangler on every push to `main`, creating the project the first time. It needs two repository secrets, `CLOUDFLARE_API_TOKEN` (an API token with Account → Cloudflare Pages → Edit) and `CLOUDFLARE_ACCOUNT_ID`. Moving to the company's account is changing those two secrets and the fallback id in the workflow; the next push re-creates the project there. The gate follows the same variables as the GitHub preview (`PUBLIC_PREVIEW`, `SITE_PASSWORD`, and `PUBLIC_SITE` for go-live). Custom domains are still added in the dashboard (section 5).
+
+**The dashboard way, if preferred instead:**
+
 1. Workers & Pages → Create → Pages → **Connect to Git** → pick the transferred repository, production branch `main`.
 2. Build settings:
 
@@ -28,7 +32,7 @@ In a Cloudflare account created with a Nitya Stones email, with Fee and Coleisha
 
    Node 22 is pinned by `web/.node-version`; `web/.npmrc` carries the install flag the dependencies need. Nothing else to set.
 3. Environment variables (Settings → Environment variables, production):
-   - While previewing: `SITE_PASSWORD` = the preview password. The Cloudflare copy is then the same gated site as the GitHub one.
+   - While previewing: `SITE_PASSWORD` = the preview password, or `PUBLIC_PREVIEW` = `true` for the open preview with a noindex tag. The Cloudflare copy is then the same site as the GitHub one.
    - At go-live: remove `SITE_PASSWORD` and add `PUBLIC_SITE` = `true`. The build refuses to run with neither, so a lost variable can never publish the site open by accident.
 4. Save and deploy. The project gets a `*.pages.dev` address; every push to `main` rebuilds it, exactly as the GitHub preview does.
 
